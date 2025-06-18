@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="test installations and imports">
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data_import_preprocess.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Data_import_preprocess.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/sample.ipynb" afterDir="false" />
@@ -125,6 +124,10 @@
       <workItem from="1749567797718" duration="3696000" />
       <workItem from="1749628944921" duration="14685000" />
       <workItem from="1749716403945" duration="7000" />
+      <workItem from="1749736245688" duration="2279000" />
+      <workItem from="1750019996116" duration="1186000" />
+      <workItem from="1750071779000" duration="7401000" />
+      <workItem from="1750175972761" duration="2324000" />
     </task>
     <task id="LOCAL-00001" summary="test installations and imports">
       <option name="closed" value="true" />
@@ -142,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749551677221</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="test installations and imports">
+      <option name="closed" value="true" />
+      <created>1750020033359</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750020033359</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
