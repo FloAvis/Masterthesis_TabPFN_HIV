@@ -74,7 +74,7 @@ cutoff_df = pd.DataFrame(thresholds, index=index, columns=columns)
 
 # Reading in and processing high quality File
 
-df = pd.read_csv("data\\PI_DataSet.txt", sep='\t')
+df = pd.read_csv(r"data/PI_DataSet.txt", sep='\t')
 #print(df)
 df = df.iloc[:,1:-1]
 #print(df2)
