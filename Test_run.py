@@ -169,4 +169,4 @@ ax = df.plot(x='Model', y='ROC AUC', kind='bar', figsize=(10, 6))
 ax.set_ylim(df['ROC AUC'].min() * 0.995, min(1.0, df['ROC AUC'].max() * 1.005))
 ax.set_title('Model Comparison - 5-fold Cross-validation')
 
-ax.savefig("preliminary_test.pdf")
+plt.savefig("preliminary_test.pdf")
