@@ -160,7 +160,7 @@ scores = {name: cross_val_score(model, X_trafo, y, cv=5, scoring=scoring, n_jobs
 scores.update({'TabPFN':score})
 
 for model, score in scores.items():
-    print(model + ": " + score)
+    print(model + ": " + str(score))
 
 
 # Plot results
