@@ -94,7 +94,7 @@ def running_models(input_file, output_file):
     #going through the drugs and splitting them to test and training depending on the drug
 
     results = pd.DataFrame(columns=["Drug",
-                                    "Samples"
+                                    "Samples",
                                     "AUC ROC",
                                     "Time",
                                     "AUC RF",
