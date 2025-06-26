@@ -1,12 +1,6 @@
-import time
 
-start_time = time.time()
+files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
-fib = 0
-for i in range (1000000):
-    fib += i
-
-end_time = time.time()
-
-print(fib)
-print(end_time - start_time)
+for file in files:
+    print(file)
+    print(file.split("/")[-1].strip(".txt") + "_results.csv")
