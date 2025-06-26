@@ -102,6 +102,7 @@ def running_models(input_file, output_file):
                                     "AUC CatB"])
 
 
+
     for drug in drugs:
         #print(drug)
         tmp_drugs = drugs.copy()
@@ -114,6 +115,12 @@ def running_models(input_file, output_file):
         #print(dataframe.head())
 
         dataframe = dataframe.dropna()
+
+        if drug not in index:
+            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None,
+                                                None, None]], columns=results.columns),
+                                 results], ignore_index=True)
+            continue
 
         # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
         dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
