@@ -25,7 +25,6 @@ from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.datasets import fetch_openml
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
-from IPython.display import display, Markdown, Latex
 
 # Baseline Imports
 from xgboost import XGBClassifier, XGBRegressor
