@@ -1,0 +1,6 @@
+,Drug,Samples,AUC ROC,Time,AUC RF,AUC XGB,AUC CatB
+0,CAB,0,,,,,
+1,BIC,167,,,,,
+2,DTG,317,,,,,
+3,EVG,674,,,,,
+4,RAL,733,,,,,
