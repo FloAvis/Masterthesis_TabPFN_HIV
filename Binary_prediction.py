@@ -164,7 +164,7 @@ def running_models(input_file, output_file, mode="sensitive"):
 
         # Calculate PRC AUC (handles currently only binary)
         tab_prec, tab_rec, thresholds = precision_recall_curve(y_test, y_pred[:, 1])
-        score_prc = auc(tab_prec, tab_rec)
+        score_prc = auc(tab_rec, tab_prec)
         print(f"TabPFN PRC AUC: {score_prc:.4f}")
 
     print("-------------------------------------------------------------------------------------")
