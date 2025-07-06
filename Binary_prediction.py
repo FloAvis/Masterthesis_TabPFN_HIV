@@ -182,11 +182,11 @@ def running_models(input_file, output_file, mode="sensitive"):
                   for name, model in models}
         scores.update({'TabPFN':score_roc})
 
-    #saving the resulting statistics
-    results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score_roc, score_prc, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
+        #saving the resulting statistics
+        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score_roc, score_prc, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
 
-    for model, score in scores.items():
-        print(model + ": " + str(score))
+        for model, score in scores.items():
+            print(model + ": " + str(score))
 
     results.to_csv(output_file)
 
