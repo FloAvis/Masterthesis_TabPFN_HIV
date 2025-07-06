@@ -7,13 +7,6 @@
     <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="More debugging and Onehot vs internal">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binary_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Binary_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/INI_DataSe_results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/INI_DataSe_results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NNRTI_DataSe_results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/NNRTI_DataSe_results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NRTI_DataSe_results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/NRTI_DataSe_results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OneHot_vs_internal.py" beforeDir="false" afterPath="$PROJECT_DIR$/OneHot_vs_internal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PI_DataSe_results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/PI_DataSe_results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Standard_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Standard_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Statistics_single_drug.py.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Statistics_single_drug.py.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +148,7 @@
       <workItem from="1751466850979" duration="8000" />
       <workItem from="1751471414955" duration="105000" />
       <workItem from="1751740503360" duration="1594000" />
-      <workItem from="1751794395430" duration="6097000" />
+      <workItem from="1751794395430" duration="7042000" />
     </task>
     <task id="LOCAL-00001" summary="test installations and imports">
       <option name="closed" value="true" />
@@ -333,7 +326,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751810392895</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="More debugging and Onehot vs internal">
+      <option name="closed" value="true" />
+      <created>1751811729375</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1751811729375</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

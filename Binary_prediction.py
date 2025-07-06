@@ -167,20 +167,20 @@ def running_models(input_file, output_file, mode="sensitive"):
         score_prc = auc(tab_rec, tab_prec)
         print(f"TabPFN PRC AUC: {score_prc:.4f}")
 
-    print("-------------------------------------------------------------------------------------")
-    # Define models
-    models = [
-        #('TabPFN', TabPFNClassifier(random_state=42)),
-        ('RandomForest', RandomForestClassifier(random_state=42)),
-        ('XGBoost', XGBClassifier(random_state=42)),
-        ('CatBoost', CatBoostClassifier(random_state=42, verbose=0))
-    ]
+        print("-------------------------------------------------------------------------------------")
+        # Define models
+        models = [
+            #('TabPFN', TabPFNClassifier(random_state=42)),
+            ('RandomForest', RandomForestClassifier(random_state=42)),
+            ('XGBoost', XGBClassifier(random_state=42)),
+            ('CatBoost', CatBoostClassifier(random_state=42, verbose=0))
+        ]
 
-    # Calculate scores
-    scoring = 'roc_auc_ovr' if len(np.unique(y)) > 2 else 'roc_auc'
-    scores = {name: cross_val_score(model, X_trafo, y, cv=10, scoring=scoring, n_jobs=1, verbose=1).mean()
-              for name, model in models}
-    scores.update({'TabPFN':score_roc})
+        # Calculate scores
+        scoring = 'roc_auc_ovr' if len(np.unique(y)) > 2 else 'roc_auc'
+        scores = {name: cross_val_score(model, X_trafo, y, cv=10, scoring=scoring, n_jobs=1, verbose=1).mean()
+                  for name, model in models}
+        scores.update({'TabPFN':score_roc})
 
     #saving the resulting statistics
     results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score_roc, score_prc, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
@@ -194,7 +194,8 @@ def main():
     files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_binary_results.csv"))
+        for mode in ["sensitive", "precise"]:
+            running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"), mode=mode)
 
 if __name__ == '__main__':
     main()
