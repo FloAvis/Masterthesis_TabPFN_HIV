@@ -15,6 +15,8 @@ from sklearn.metrics import (
     root_mean_squared_error,
     r2_score,
     roc_auc_score,
+    auc,
+    precision_recall_curve
 )
 from sklearn.model_selection import train_test_split
 
@@ -95,11 +97,12 @@ def running_models(input_file, output_file):
 
     results = pd.DataFrame(columns=["Drug",
                                     "Samples",
-                                    "AUC ROC",
-                                    "Time",
-                                    "AUC RF",
-                                    "AUC XGB",
-                                    "AUC CatB"])
+                                    "AUC ROC One Hot",
+                                    "AUC PRC One Hot",
+                                    "AUC ROC Intrinsic",
+                                    "AUC PRC Intrinsic",
+                                    "Time One Hot",
+                                    "Time Intrinsic"])
 
 
 
@@ -117,8 +120,7 @@ def running_models(input_file, output_file):
         dataframe = dataframe.dropna()
 
         if drug not in index:
-            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None,
-                                                None, None]], columns=results.columns),
+            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None, None, None, None]], columns=results.columns),
                                  results], ignore_index=True)
             continue
 
@@ -131,31 +133,40 @@ def running_models(input_file, output_file):
 
         X, y = dataframe.drop([drug, drug + "_level"], axis=1), np.array(dataframe[drug + "_level"])
 
-        print(X)
+        #print(X)
+
+        scores = []
+        times = []
+
 
         X_trafo = enc.transform(X).toarray()
 
-        print(X_trafo.shape)
+        for encoding in [X_trafo, X]:
+            #print(X_trafo.shape)
 
-        #print(y)
-        X_train, X_test, y_train, y_test = train_test_split(X_trafo, y, test_size=0.33, random_state=42)
+            #print(y)
+            X_train, X_test, y_train, y_test = train_test_split(encoding, y, test_size=0.33, random_state=42)
 
-        start_time = time.time()
-        # Train and evaluate TabPFN
-        y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
+            start_time = time.time()
+            # Train and evaluate TabPFN
+            y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
 
-        taken_time = time.time() - start_time
+            times.append(time.time() - start_time)
 
-        # Calculate ROC AUC (handles both binary and multiclass)
-        score = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
-        print(f"TabPFN ROC AUC: {score:.4f}")
+            # Calculate ROC AUC (handles both binary and multiclass)
+            score_roc = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
+            print(f"TabPFN ROC AUC: {score_roc:.4f}")
 
+            # Calculate PRC AUC (handles currently only binary)
+            tab_prec, tab_rec, thresholds = precision_recall_curve(y_test, y_pred[:, 1])
+            score_prc = auc(tab_rec, tab_prec)
+            print(f"TabPFN PRC AUC: {score_prc:.4f}")
+
+            scores.append((score_roc, score_prc))
 
         #saving the resulting statistics
-        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
+        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], scores[0][0], scores[0][1], scores[1][0], scores[1][1], times[0], times[1]]], columns=results.columns), results], ignore_index=True)
 
-        for model, score in scores.items():
-            print(model + ": " + str(score))
 
     results.to_csv(output_file)
 
@@ -163,7 +174,7 @@ def main():
     files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, (file.split("/")[-1].strip(".txt") + "_results.csv"))
+        running_models(file, (file.split("/")[-1].strip(".txt") + "_OneHot_vs_Internal_results.csv"))
 
 if __name__ == '__main__':
     main()

@@ -120,7 +120,7 @@ def running_models(input_file, output_file, mode="sensitive"):
         dataframe = dataframe.dropna()
 
         if drug not in index:
-            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None,
+            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None, None,
                                                 None, None]], columns=results.columns),
                                  results], ignore_index=True)
             continue
@@ -159,8 +159,8 @@ def running_models(input_file, output_file, mode="sensitive"):
         score_roc = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
         print(f"TabPFN ROC AUC: {score_roc:.4f}")
 
-        print(y_test.shape)
-        print(y_pred.shape)
+        #print(y_test.shape)
+        #print(y_pred.shape)
 
         # Calculate PRC AUC (handles currently only binary)
         tab_prec, tab_rec, thresholds = precision_recall_curve(y_test, y_pred[:, 1])
@@ -194,7 +194,7 @@ def main():
     files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, (file.split("/")[-1].strip(".txt") + "_results.csv"))
+        running_models(file, (file.split("/")[-1].strip(".txt") + "_binary_results.csv"))
 
 if __name__ == '__main__':
     main()
