@@ -15,8 +15,6 @@ from sklearn.metrics import (
     root_mean_squared_error,
     r2_score,
     roc_auc_score,
-    precision_recall_curve,
-    auc, average_precision_score
 )
 from sklearn.model_selection import train_test_split
 
@@ -41,7 +39,7 @@ from tabpfn_extensions.post_hoc_ensembles.sklearn_interface import AutoTabPFNCla
 
 # table for the encoding of the resistance testing into three classes: "susceptible", "intermediate-level resistant", "high-level resistant" with lower and upper thresholds
 
-def running_models(input_file, output_file, mode="sensitive"):
+def running_models(input_file, output_file):
 
     #thresholds defined by the database for the classes of "susceptible", "partly susceptible", and "resistant"
     thresholds = [
@@ -98,13 +96,12 @@ def running_models(input_file, output_file, mode="sensitive"):
     results = pd.DataFrame(columns=["Drug",
                                     "Samples",
                                     "AUC ROC",
-                                    "AUC PRC",
                                     "Time",
                                     "AUC RF",
                                     "AUC XGB",
                                     "AUC CatB"])
 
-    print(input_file)
+
 
     for drug in drugs:
         #print(drug)
@@ -125,25 +122,20 @@ def running_models(input_file, output_file, mode="sensitive"):
                                  results], ignore_index=True)
             continue
 
-        if mode == "sensitive":
-            # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
-            dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
-            dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "lower"], drug + "_level"] = 1
-        elif mode == "precise":
-            dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "upper"], drug + "_level"] = 0
-            dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "upper"], drug + "_level"] = 1
-        else:
-            raise Exception("Mode not accepted")
+        # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
+        dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
+        dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "upper"], drug + "_level"] = 2
+        dataframe.loc[(dataframe[drug] >= cutoff_df.loc[drug, "lower"]) & (dataframe[drug] < cutoff_df.loc[drug, "upper"]), drug + "_level"] = 1
 
         #print(dataframe.head())
 
         X, y = dataframe.drop([drug, drug + "_level"], axis=1), np.array(dataframe[drug + "_level"])
 
-        #print(X)
+        print(X)
 
         X_trafo = enc.transform(X).toarray()
 
-        #print(X_trafo.shape)
+        print(X_trafo.shape)
 
         #print(y)
         X_train, X_test, y_train, y_test = train_test_split(X_trafo, y, test_size=0.33, random_state=42)
@@ -153,40 +145,17 @@ def running_models(input_file, output_file, mode="sensitive"):
         y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
 
         taken_time = time.time() - start_time
-        print(drug + ":")
 
         # Calculate ROC AUC (handles both binary and multiclass)
-        score_roc = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
-        print(f"TabPFN ROC AUC: {score_roc:.4f}")
+        score = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
+        print(f"TabPFN ROC AUC: {score:.4f}")
 
-        print(y_test.shape)
-        print(y_pred.shape)
 
-        # Calculate PRC AUC (handles currently only binary)
-        tab_prec, tab_rec = precision_recall_curve(y_test, y_pred)
-        score_prc = auc(tab_prec, tab_rec)
-        print(f"TabPFN PRC AUC: {score_prc:.4f}")
+        #saving the resulting statistics
+        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
 
-    print("-------------------------------------------------------------------------------------")
-    # Define models
-    models = [
-        #('TabPFN', TabPFNClassifier(random_state=42)),
-        ('RandomForest', RandomForestClassifier(random_state=42)),
-        ('XGBoost', XGBClassifier(random_state=42)),
-        ('CatBoost', CatBoostClassifier(random_state=42, verbose=0))
-    ]
-
-    # Calculate scores
-    scoring = 'roc_auc_ovr' if len(np.unique(y)) > 2 else 'roc_auc'
-    scores = {name: cross_val_score(model, X_trafo, y, cv=10, scoring=scoring, n_jobs=1, verbose=1).mean()
-              for name, model in models}
-    scores.update({'TabPFN':score_roc})
-
-    #saving the resulting statistics
-    results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score_roc, score_prc, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
-
-    for model, score in scores.items():
-        print(model + ": " + str(score))
+        for model, score in scores.items():
+            print(model + ": " + str(score))
 
     results.to_csv(output_file)
 
