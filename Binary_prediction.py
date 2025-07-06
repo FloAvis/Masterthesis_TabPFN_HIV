@@ -163,7 +163,7 @@ def running_models(input_file, output_file, mode="sensitive"):
         print(y_pred.shape)
 
         # Calculate PRC AUC (handles currently only binary)
-        tab_prec, tab_rec = precision_recall_curve(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1])
+        tab_prec, tab_rec = precision_recall_curve(y_test, y_pred[:, 1])
         score_prc = auc(tab_prec, tab_rec)
         print(f"TabPFN PRC AUC: {score_prc:.4f}")
 
