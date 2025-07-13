@@ -124,11 +124,15 @@ def running_models(input_file, output_file):
                                  results], ignore_index=True)
             continue
 
-        # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
+        '''# encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
         dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
         dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "upper"], drug + "_level"] = 2
         dataframe.loc[(dataframe[drug] >= cutoff_df.loc[drug, "lower"]) & (dataframe[drug] < cutoff_df.loc[drug, "upper"]), drug + "_level"] = 1
+        '''
 
+        # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
+        dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
+        dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "lower"], drug + "_level"] = 1
         #print(dataframe.head())
 
         X, y = dataframe.drop([drug, drug + "_level"], axis=1), np.array(dataframe[drug + "_level"])
