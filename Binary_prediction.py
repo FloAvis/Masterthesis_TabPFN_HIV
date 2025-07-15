@@ -195,12 +195,18 @@ def running_models(input_file, output_file, mode="sensitive"):
     results.to_csv(output_file)
 
 def main():
-
-    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt", r"data/INI_DataSet.txt"]
+    '''
+    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
         for mode in ["sensitive", "precise"]:
-            running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"), mode=mode)
+            running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"), mode=mode)'''
+
+    file = r"data/INI_DataSet.txt"
+
+    for mode in ["sensitive", "precise"]:
+        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"),
+                       mode=mode)
 
 if __name__ == '__main__':
     main()

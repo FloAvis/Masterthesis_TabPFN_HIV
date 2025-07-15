@@ -63,8 +63,8 @@ def running_models(input_file, output_file):
         [3, 10],    # RPV
         [2.5, 10],  # BIC
         [4, 13],    # DTG
-        [2.5, 10],  # EVG
-        [1.5, 10]   # RAL
+        [2.5, 10],  # EVG - upper threshold guessed
+        [1.5, 10]   # RAL - upper threshold guessed
     ]
 
     # Define row and column names
@@ -188,7 +188,7 @@ def running_models(input_file, output_file):
 def main():
 
     '''
-    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt", r"data/INI_DataSet.txt"]
+    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
