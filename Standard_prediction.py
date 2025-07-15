@@ -61,12 +61,16 @@ def running_models(input_file, output_file):
         [3, 10],    # NVP
         [3, 10],    # ETR
         [3, 10],    # RPV
+        [2.5, 10],  # BIC
+        [4, 13],    # DTG
+        [2.5, 10],  # EVG
+        [1.5, 10]   # RAL
     ]
 
     # Define row and column names
     index = ["FPV","ATV","IDV","LPV","NFV","SQV","TPV","DRV",
              "3TC","ABC","AZT","D4T","DDI","TDF",
-             "EFV","NVP","ETR","RPV"]
+             "EFV","NVP","ETR","RPV", "BIC", "DTG", "EVG", "RAL"]
     columns = ["lower", "upper"]
 
     # Create DataFrame
@@ -182,10 +186,15 @@ def running_models(input_file, output_file):
     results.to_csv(output_file)
 
 def main():
-    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
+
+    '''
+    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt", r"data/INI_DataSet.txt"]
 
     for file in files:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
+    '''
+    file = r"data/INI_DataSet.txt"
 
+    running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
 if __name__ == '__main__':
     main()

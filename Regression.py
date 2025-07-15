@@ -1,5 +1,5 @@
-"""This script calculates the ROC AUC for the prediction of TabPFN, Random Forest, XGBoost, and
-CatBoost and saves time in a file for all drugs in the stanford database file"""
+"""This script performs regression for all drugs and then (if possible) assigns classes based on
+the predicted values and calculates AUC ROC and PRC"""
 
 # Setup Imports
 import pandas as pd
@@ -45,34 +45,30 @@ def running_models(input_file, output_file, mode="sensitive"):
 
     #thresholds defined by the database for the classes of "susceptible", "partly susceptible", and "resistant"
     thresholds = [
-        [3, 15],  # FPV
-        [3, 15],  # ATV
-        [3, 15],  # IDV
-        [9, 55],  # LPV
-        [3, 6],  # NFV
-        [3, 15],  # SQV
-        [2, 8],  # TPV
-        [10, 90],  # DRV
-        [5, 25],  # X3TC
-        [2, 6],  # ABC
-        [3, 15],  # AZT
-        [1.5, 3],  # D4T
-        [1.5, 3],  # DDI
-        [1.5, 3],  # TDF
-        [3, 10],  # EFV
-        [3, 10],  # NVP
-        [3, 10],  # ETR
-        [3, 10],  # RPV
-        [2.5, 10],  # BIC
-        [4, 13],  # DTG
-        [2.5, 10],  # EVG - upper threshold guessed
-        [1.5, 10]  # RAL - upper threshold guessed
+        [3, 15],    # FPV
+        [3, 15],    # ATV
+        [3, 15],    # IDV
+        [9, 55],    # LPV
+        [3, 6],     # NFV
+        [3, 15],    # SQV
+        [2, 8],     # TPV
+        [10, 90],   # DRV
+        [5, 25],    # X3TC
+        [2, 6],     # ABC
+        [3, 15],    # AZT
+        [1.5, 3],   # D4T
+        [1.5, 3],   # DDI
+        [1.5, 3],   # TDF
+        [3, 10],    # EFV
+        [3, 10],    # NVP
+        [3, 10],    # ETR
+        [3, 10],    # RPV
     ]
 
     # Define row and column names
-    index = ["FPV", "ATV", "IDV", "LPV", "NFV", "SQV", "TPV", "DRV",
-             "3TC", "ABC", "AZT", "D4T", "DDI", "TDF",
-             "EFV", "NVP", "ETR", "RPV", "BIC", "DTG", "EVG", "RAL"]
+    index = ["FPV","ATV","IDV","LPV","NFV","SQV","TPV","DRV",
+             "3TC","ABC","AZT","D4T","DDI","TDF",
+             "EFV","NVP","ETR","RPV"]
     columns = ["lower", "upper"]
 
     # Create DataFrame
@@ -100,13 +96,12 @@ def running_models(input_file, output_file, mode="sensitive"):
     #going through the drugs and splitting them to test and training depending on the drug
 
     results = pd.DataFrame(columns=["Drug",
-                                    "Samples",
-                                    "AUC ROC",
-                                    "AUC PRC",
-                                    "Time",
-                                    "AUC RF",
-                                    "AUC XGB",
-                                    "AUC CatB"])
+                                    "OLS",
+                                    "AUC ROC MC",
+                                    "AUC PRC MC",
+                                    "AUC ROC BI",
+                                    "AUC PRC BI",
+                                    "Time"])
 
     print(input_file)
 
@@ -172,19 +167,7 @@ def running_models(input_file, output_file, mode="sensitive"):
         print(f"TabPFN PRC AUC: {score_prc:.4f}")
 
         print("-------------------------------------------------------------------------------------")
-        # Define models
-        models = [
-            #('TabPFN', TabPFNClassifier(random_state=42)),
-            ('RandomForest', RandomForestClassifier(random_state=42)),
-            ('XGBoost', XGBClassifier(random_state=42)),
-            ('CatBoost', CatBoostClassifier(random_state=42, verbose=0))
-        ]
 
-        # Calculate scores
-        scoring = 'roc_auc_ovr' if len(np.unique(y)) > 2 else 'roc_auc'
-        scores = {name: cross_val_score(model, X_trafo, y, cv=10, scoring=scoring, n_jobs=1, verbose=1).mean()
-                  for name, model in models}
-        scores.update({'TabPFN':score_roc})
 
         #saving the resulting statistics
         results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score_roc, score_prc, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
@@ -195,8 +178,7 @@ def running_models(input_file, output_file, mode="sensitive"):
     results.to_csv(output_file)
 
 def main():
-
-    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt", r"data/INI_DataSet.txt"]
+    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
         for mode in ["sensitive", "precise"]:
