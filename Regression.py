@@ -176,14 +176,14 @@ def running_models(input_file, output_file):
         else:
             print(y_test, y_pred)
 
-            y_test_class = [0 if i < cutoff_df.loc[drug, "lower"] else 2 if i > cutoff_df.loc[drug, "upper"] else 1 for i in y_test]
+            y_test_class = np.array([0 if i < cutoff_df.loc[drug, "lower"] else 2 if i > cutoff_df.loc[drug, "upper"] else 1 for i in y_test])
 
-            y_test_bi_class = [0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_test]
+            y_test_bi_class = np.array([0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_test])
 
-            y_pred_class = [0 if i < cutoff_df.loc[drug, "lower"] else 2 if i > cutoff_df.loc[drug, "upper"] else 1 for i in
-                            y_pred]
+            y_pred_class = np.array([0 if i < cutoff_df.loc[drug, "lower"] else 2 if i > cutoff_df.loc[drug, "upper"] else 1 for i in
+                            y_pred])
 
-            y_pred_bi_class = [0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_pred]
+            y_pred_bi_class = np.array([0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_pred])
 
             print(y_test_class)
             print(y_pred_class)
