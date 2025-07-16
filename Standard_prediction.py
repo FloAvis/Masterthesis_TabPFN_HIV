@@ -155,14 +155,6 @@ def running_models(input_file, output_file):
         print(f"TabPFN ROC AUC: {score:.4f}")
 
 
-        # Calculate ROC AUC (handles both binary and multiclass)
-        score = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
-        print(f"TabPFN ROC AUC: {score:.4f}")
-        '''
-        # Calculate ROC AUC (handles both binary and multiclass)
-        score = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovo', average='macro')
-        print(f"TabPFN ROC AUC: {score:.4f}")'''
-
         # Define models
         models = [
             #('TabPFN', TabPFNClassifier(random_state=42)),

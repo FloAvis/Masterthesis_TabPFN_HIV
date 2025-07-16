@@ -7,7 +7,10 @@ import numpy as np
 import time
 
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import (
+    cross_val_score,
+    KFold
+)
 from sklearn.metrics import (
     accuracy_score,
     mean_absolute_error,
@@ -41,34 +44,38 @@ from tabpfn_extensions.post_hoc_ensembles.sklearn_interface import AutoTabPFNCla
 
 # table for the encoding of the resistance testing into three classes: "susceptible", "intermediate-level resistant", "high-level resistant" with lower and upper thresholds
 
-def running_models(input_file, output_file, mode="sensitive"):
+def running_models(input_file, output_file):
 
     #thresholds defined by the database for the classes of "susceptible", "partly susceptible", and "resistant"
     thresholds = [
-        [3, 15],    # FPV
-        [3, 15],    # ATV
-        [3, 15],    # IDV
-        [9, 55],    # LPV
-        [3, 6],     # NFV
-        [3, 15],    # SQV
-        [2, 8],     # TPV
-        [10, 90],   # DRV
-        [5, 25],    # X3TC
-        [2, 6],     # ABC
-        [3, 15],    # AZT
-        [1.5, 3],   # D4T
-        [1.5, 3],   # DDI
-        [1.5, 3],   # TDF
-        [3, 10],    # EFV
-        [3, 10],    # NVP
-        [3, 10],    # ETR
-        [3, 10],    # RPV
+        [3, 15],  # FPV
+        [3, 15],  # ATV
+        [3, 15],  # IDV
+        [9, 55],  # LPV
+        [3, 6],  # NFV
+        [3, 15],  # SQV
+        [2, 8],  # TPV
+        [10, 90],  # DRV
+        [5, 25],  # X3TC
+        [2, 6],  # ABC
+        [3, 15],  # AZT
+        [1.5, 3],  # D4T
+        [1.5, 3],  # DDI
+        [1.5, 3],  # TDF
+        [3, 10],  # EFV
+        [3, 10],  # NVP
+        [3, 10],  # ETR
+        [3, 10],  # RPV
+        [2.5, 10],  # BIC
+        [4, 13],  # DTG
+        [2.5, 10],  # EVG - upper threshold guessed
+        [1.5, 10]  # RAL - upper threshold guessed
     ]
 
     # Define row and column names
-    index = ["FPV","ATV","IDV","LPV","NFV","SQV","TPV","DRV",
-             "3TC","ABC","AZT","D4T","DDI","TDF",
-             "EFV","NVP","ETR","RPV"]
+    index = ["FPV", "ATV", "IDV", "LPV", "NFV", "SQV", "TPV", "DRV",
+             "3TC", "ABC", "AZT", "D4T", "DDI", "TDF",
+             "EFV", "NVP", "ETR", "RPV", "BIC", "DTG", "EVG", "RAL"]
     columns = ["lower", "upper"]
 
     # Create DataFrame
@@ -96,11 +103,14 @@ def running_models(input_file, output_file, mode="sensitive"):
     #going through the drugs and splitting them to test and training depending on the drug
 
     results = pd.DataFrame(columns=["Drug",
-                                    "OLS",
+                                    "RMSE",
                                     "AUC ROC MC",
-                                    "AUC PRC MC",
                                     "AUC ROC BI",
                                     "AUC PRC BI",
+                                    "R2 TabPFN",
+                                    "R2 RF",
+                                    "R2 XG",
+                                    "R2 Cat",
                                     "Time"])
 
     print(input_file)
@@ -118,27 +128,26 @@ def running_models(input_file, output_file, mode="sensitive"):
 
         dataframe = dataframe.dropna()
 
-        if drug not in index:
-            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None, None,
-                                                None, None]], columns=results.columns),
-                                 results], ignore_index=True)
-            continue
+        '''
+        
+        # encoding the levels of susceptibility as 0 for susceptible, 1 as resistant
+        dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level_binary"] = 0
+        dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "lower"], drug + "_level_binary"] = 1
 
-        if mode == "sensitive":
-            # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
-            dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
-            dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "lower"], drug + "_level"] = 1
-        elif mode == "precise":
-            dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "upper"], drug + "_level"] = 0
-            dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "upper"], drug + "_level"] = 1
-        else:
-            raise Exception("Mode not accepted")
+        # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
+        dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
+        dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "upper"], drug + "_level"] = 2
+        dataframe.loc[(dataframe[drug] >= cutoff_df.loc[drug, "lower"]) & (
+                    dataframe[drug] < cutoff_df.loc[drug, "upper"]), drug + "_level"] = 1
 
         #print(dataframe.head())
 
-        X, y = dataframe.drop([drug, drug + "_level"], axis=1), np.array(dataframe[drug + "_level"])
+        X, y = dataframe.drop([drug, drug + "_level"], drug + "_level_binary", axis=1), np.array(dataframe[drug])
+        '''
 
-        #print(X)
+        X, y = dataframe.drop(drug, axis=1), np.array(dataframe[drug])
+
+        #print(y)
 
         X_trafo = enc.transform(X).toarray()
 
@@ -149,28 +158,90 @@ def running_models(input_file, output_file, mode="sensitive"):
 
         start_time = time.time()
         # Train and evaluate TabPFN
-        y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
+        y_pred = TabPFNRegressor(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict(X_test)
 
         taken_time = time.time() - start_time
         print(drug + ":")
 
         # Calculate ROC AUC (handles both binary and multiclass)
-        score_roc = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
-        print(f"TabPFN ROC AUC: {score_roc:.4f}")
+        score_rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        print(f"TabPFN RMSE: {score_rmse:.4f}")
 
         #print(y_test.shape)
         #print(y_pred.shape)
+        if drug not in index: # if there are no thresholds no classification labels can be assigned to the drug
+            auc_roc_mc = None
+            auc_roc_bi = None
+            auc_prc_bi = None
+        else:
+            y_test_class = [0 if i < cutoff_df.loc[drug, "lower"] else 2 if i > cutoff_df.loc[drug, "upper"] else 1 for i in y_test]
 
-        # Calculate PRC AUC (handles currently only binary)
-        tab_prec, tab_rec, thresholds = precision_recall_curve(y_test, y_pred[:, 1])
-        score_prc = auc(tab_rec, tab_prec)
-        print(f"TabPFN PRC AUC: {score_prc:.4f}")
+            y_test_bi_class = [0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_test]
+
+            y_pred_class = [0 if i < cutoff_df.loc[drug, "lower"] else 2 if i > cutoff_df.loc[drug, "upper"] else 1 for i in
+                            y_pred]
+
+            y_pred_bi_class = [0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_pred]
+
+            # Calculate ROC AUC (handles both binary and multiclass)
+            auc_roc_mc = roc_auc_score(y_test_class, y_pred_class, multi_class='ovr')
+            print(f"TabPFN ROC AUC Multiclass: {auc_roc_mc:.4f}")
+
+
+            # Calculate ROC AUC (handles both binary and multiclass)
+            auc_roc_bi = roc_auc_score(y_test_bi_class, y_pred_bi_class)
+            print(f"TabPFN ROC AUC Binary: {auc_roc_bi:.4f}")
+
+
+            # Calculate PRC AUC (handles currently only binary)
+            tab_prec, tab_rec, thresholds = precision_recall_curve(y_test_bi_class, y_pred_bi_class)
+            auc_prc_bi = auc(tab_rec, tab_prec)
+            print(f"TabPFN PRC AUC: {auc_prc_bi:.4f}")
+
+
 
         print("-------------------------------------------------------------------------------------")
 
+        models = [
+            ("TabPFN", TabPFNRegressor(random_state=42)),
+            (
+                "RandomForest",
+                    RandomForestRegressor(random_state=42)
+
+            ),
+            (
+                "XGBoost",
+                    XGBRegressor(random_state=42)
+
+            ),
+            (
+                "CatBoost",
+                    CatBoostRegressor(random_state=42, verbose=0)
+            )
+        ]
+
+        # Calculate scores
+        scoring = "r2"
+        cv = KFold(n_splits=5, random_state=42, shuffle=True)
+        scores = {
+            name: cross_val_score(
+                model, X_trafo, y, cv=cv, scoring=scoring, n_jobs=1, verbose=1
+            ).mean()
+            for name, model in models
+        }
 
         #saving the resulting statistics
-        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score_roc, score_prc, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
+        results = pd.concat([pd.DataFrame([[drug,
+                                            score_rmse,
+                                            auc_roc_mc,
+                                            auc_roc_bi,
+                                            auc_prc_bi,
+                                            scores['TabPFN'],
+                                            scores['RandomForest'],
+                                            scores['XGBoost'],
+                                            scores['CatBoost'],
+                                            taken_time]],
+                                          columns=results.columns), results], ignore_index=True)
 
         for model, score in scores.items():
             print(model + ": " + str(score))
@@ -181,8 +252,7 @@ def main():
     files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
-        for mode in ["sensitive", "precise"]:
-            running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"), mode=mode)
+        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_regression_results.csv"))
 
 if __name__ == '__main__':
     main()
