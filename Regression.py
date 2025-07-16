@@ -188,6 +188,8 @@ def running_models(input_file, output_file):
             print(y_test_class)
             print(y_pred_class)
 
+            #TO DO: figure out a way to get auc working
+            '''
             # Calculate ROC AUC (handles both binary and multiclass)
             auc_roc_mc = roc_auc_score(y_test_class, y_pred_class, multi_class='ovr')
             print(f"TabPFN ROC AUC Multiclass: {auc_roc_mc:.4f}")
@@ -196,7 +198,9 @@ def running_models(input_file, output_file):
             # Calculate ROC AUC (handles both binary and multiclass)
             auc_roc_bi = roc_auc_score(y_test_bi_class, y_pred_bi_class)
             print(f"TabPFN ROC AUC Binary: {auc_roc_bi:.4f}")
-
+            '''
+            auc_roc_mc = accuracy_score(y_test_class, y_pred_class)
+            auc_roc_bi = accuracy_score(y_test_bi_class, y_pred_bi_class)
 
             # Calculate PRC AUC (handles currently only binary)
             tab_prec, tab_rec, thresholds = precision_recall_curve(y_test_bi_class, y_pred_bi_class)
