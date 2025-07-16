@@ -212,7 +212,7 @@ def running_models(input_file, output_file):
         print("-------------------------------------------------------------------------------------")
 
         models = [
-            ("TabPFN", TabPFNRegressor(random_state=42)),
+            ("TabPFN", TabPFNRegressor(random_state=42, ignore_pretraining_limits=True)),
             (
                 "RandomForest",
                     RandomForestRegressor(random_state=42)
