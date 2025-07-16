@@ -149,6 +149,21 @@ def running_models(input_file, output_file):
 
         #print(y)
 
+        if X.shape[0] == 0:
+            results = pd.concat([pd.DataFrame([[drug,
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None,
+                                                None]],
+                                              columns=results.columns), results], ignore_index=True)
+
+            continue
+
         X_trafo = enc.transform(X).toarray()
 
         #print(X_trafo.shape)
@@ -258,7 +273,8 @@ def running_models(input_file, output_file):
     results.to_csv(output_file)
 
 def main():
-    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
+    #files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
+    files = [r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_regression_results.csv"))
