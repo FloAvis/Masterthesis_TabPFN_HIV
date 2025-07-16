@@ -174,6 +174,8 @@ def running_models(input_file, output_file):
             auc_roc_bi = None
             auc_prc_bi = None
         else:
+            print(y_test, y_pred)
+
             y_test_class = [0 if i < cutoff_df.loc[drug, "lower"] else 2 if i > cutoff_df.loc[drug, "upper"] else 1 for i in y_test]
 
             y_test_bi_class = [0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_test]
@@ -182,6 +184,9 @@ def running_models(input_file, output_file):
                             y_pred]
 
             y_pred_bi_class = [0 if i < cutoff_df.loc[drug, "lower"] else 1 for i in y_pred]
+
+            print(y_test_class)
+            print(y_pred_class)
 
             # Calculate ROC AUC (handles both binary and multiclass)
             auc_roc_mc = roc_auc_score(y_test_class, y_pred_class, multi_class='ovr')
