@@ -15,8 +15,6 @@ from sklearn.metrics import (
     root_mean_squared_error,
     r2_score,
     roc_auc_score,
-    auc,
-    precision_recall_curve
 )
 from sklearn.model_selection import train_test_split
 
@@ -45,34 +43,34 @@ def running_models(input_file, output_file):
 
     #thresholds defined by the database for the classes of "susceptible", "partly susceptible", and "resistant"
     thresholds = [
-        [3, 15],  # FPV
-        [3, 15],  # ATV
-        [3, 15],  # IDV
-        [9, 55],  # LPV
-        [3, 6],  # NFV
-        [3, 15],  # SQV
-        [2, 8],  # TPV
-        [10, 90],  # DRV
-        [5, 25],  # X3TC
-        [2, 6],  # ABC
-        [3, 15],  # AZT
-        [1.5, 3],  # D4T
-        [1.5, 3],  # DDI
-        [1.5, 3],  # TDF
-        [3, 10],  # EFV
-        [3, 10],  # NVP
-        [3, 10],  # ETR
-        [3, 10],  # RPV
+        [3, 15],    # FPV
+        [3, 15],    # ATV
+        [3, 15],    # IDV
+        [9, 55],    # LPV
+        [3, 6],     # NFV
+        [3, 15],    # SQV
+        [2, 8],     # TPV
+        [10, 90],   # DRV
+        [5, 25],    # X3TC
+        [2, 6],     # ABC
+        [3, 15],    # AZT
+        [1.5, 3],   # D4T
+        [1.5, 3],   # DDI
+        [1.5, 3],   # TDF
+        [3, 10],    # EFV
+        [3, 10],    # NVP
+        [3, 10],    # ETR
+        [3, 10],    # RPV
         [2.5, 10],  # BIC
-        [4, 13],  # DTG
+        [4, 13],    # DTG
         [2.5, 10],  # EVG - upper threshold guessed
-        [1.5, 10]  # RAL - upper threshold guessed
+        [1.5, 10]   # RAL - upper threshold guessed
     ]
 
     # Define row and column names
-    index = ["FPV", "ATV", "IDV", "LPV", "NFV", "SQV", "TPV", "DRV",
-             "3TC", "ABC", "AZT", "D4T", "DDI", "TDF",
-             "EFV", "NVP", "ETR", "RPV", "BIC", "DTG", "EVG", "RAL"]
+    index = ["FPV","ATV","IDV","LPV","NFV","SQV","TPV","DRV",
+             "3TC","ABC","AZT","D4T","DDI","TDF",
+             "EFV","NVP","ETR","RPV", "BIC", "DTG", "EVG", "RAL"]
     columns = ["lower", "upper"]
 
     # Create DataFrame
@@ -101,12 +99,11 @@ def running_models(input_file, output_file):
 
     results = pd.DataFrame(columns=["Drug",
                                     "Samples",
-                                    "AUC ROC One Hot",
-                                    "AUC PRC One Hot",
-                                    "AUC ROC Intrinsic",
-                                    "AUC PRC Intrinsic",
-                                    "Time One Hot",
-                                    "Time Intrinsic"])
+                                    "AUC ROC",
+                                    "Time",
+                                    "AUC RF",
+                                    "AUC XGB",
+                                    "AUC CatB"])
 
 
 
@@ -124,73 +121,72 @@ def running_models(input_file, output_file):
         dataframe = dataframe.dropna()
 
         if drug not in index:
-            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None, None, None, None]], columns=results.columns),
+            results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None,
+                                                None, None]], columns=results.columns),
                                  results], ignore_index=True)
             continue
 
-        '''# encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
+        # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
         dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
         dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "upper"], drug + "_level"] = 2
         dataframe.loc[(dataframe[drug] >= cutoff_df.loc[drug, "lower"]) & (dataframe[drug] < cutoff_df.loc[drug, "upper"]), drug + "_level"] = 1
-        '''
 
-        # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
-        dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
-        dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "lower"], drug + "_level"] = 1
         #print(dataframe.head())
 
         X, y = dataframe.drop([drug, drug + "_level"], axis=1), np.array(dataframe[drug + "_level"])
 
-        #print(X)
-
-        scores = []
-        times = []
-
+        print(X)
 
         X_trafo = enc.transform(X).toarray()
 
-        for encoding in [X_trafo, X]:
-            #print(X_trafo.shape)
+        print(X_trafo.shape)
 
-            #print(y)
-            X_train, X_test, y_train, y_test = train_test_split(encoding, y, test_size=0.33, random_state=42)
+        #print(y)
+        X_train, X_test, y_train, y_test = train_test_split(X_trafo, y, test_size=0.33, random_state=42)
 
-            start_time = time.time()
-            # Train and evaluate TabPFN
-            y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
+        start_time = time.time()
+        # Train and evaluate TabPFN
+        y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
 
-            times.append(time.time() - start_time)
+        taken_time = time.time() - start_time
 
-            # Calculate ROC AUC (handles both binary and multiclass)
-            score_roc = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
-            print(f"TabPFN ROC AUC: {score_roc:.4f}")
+        # Calculate ROC AUC (handles both binary and multiclass)
+        score = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
+        print(f"TabPFN ROC AUC: {score:.4f}")
 
-            # Calculate PRC AUC (handles currently only binary)
-            tab_prec, tab_rec, thresholds = precision_recall_curve(y_test, y_pred[:, 1])
-            score_prc = auc(tab_rec, tab_prec)
-            print(f"TabPFN PRC AUC: {score_prc:.4f}")
 
-            scores.append((score_roc, score_prc))
+        # Define models
+        models = [
+            #('TabPFN', TabPFNClassifier(random_state=42)),
+            ('RandomForest', RandomForestClassifier(random_state=42)),
+            ('XGBoost', XGBClassifier(random_state=42)),
+            ('CatBoost', CatBoostClassifier(random_state=42, verbose=0))
+        ]
+
+        # Calculate scores
+        scoring = 'roc_auc_ovr' if len(np.unique(y)) > 2 else 'roc_auc'
+        scores = {name: cross_val_score(model, X_trafo, y, cv=5, scoring=scoring, n_jobs=1, verbose=1).mean()
+                  for name, model in models}
+        scores.update({'TabPFN':score})
 
         #saving the resulting statistics
-        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], scores[0][0], scores[0][1], scores[1][0], scores[1][1], times[0], times[1]]], columns=results.columns), results], ignore_index=True)
+        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
 
+        for model, score in scores.items():
+            print(model + ": " + str(score))
 
     results.to_csv(output_file)
 
 def main():
 
-
-    '''files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt", ]
+    '''
+    files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_OneHot_vs_Internal_results.csv"))
+        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
     '''
+    file = r"../data/INI_DataSet.txt"
 
-
-    file = r"data/INI_DataSet.txt"
-
-    running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_OneHot_vs_Internal_results.csv"))
-
+    running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
 if __name__ == '__main__':
     main()

@@ -202,7 +202,7 @@ def main():
         for mode in ["sensitive", "precise"]:
             running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"), mode=mode)'''
 
-    file = r"data/INI_DataSet.txt"
+    file = r"../data/INI_DataSet.txt"
 
     for mode in ["sensitive", "precise"]:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"),

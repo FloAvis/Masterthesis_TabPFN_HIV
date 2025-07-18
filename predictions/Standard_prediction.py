@@ -6,7 +6,8 @@ import pandas as pd
 import numpy as np
 import time
 
-from sklearn.model_selection import train_test_split
+import utils
+
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import (
     accuracy_score,
@@ -18,11 +19,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
-from sklearn.inspection import DecisionBoundaryDisplay
 
-from sklearn.datasets import fetch_openml
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 
@@ -31,60 +28,25 @@ from xgboost import XGBClassifier, XGBRegressor
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from catboost import CatBoostClassifier, CatBoostRegressor
 
-import torch
+
 
 from tabpfn import TabPFNClassifier, TabPFNRegressor
 from tabpfn_extensions.post_hoc_ensembles.sklearn_interface import AutoTabPFNClassifier, AutoTabPFNRegressor
+
+
 
 
 # table for the encoding of the resistance testing into three classes: "susceptible", "intermediate-level resistant", "high-level resistant" with lower and upper thresholds
 
 def running_models(input_file, output_file):
 
-    #thresholds defined by the database for the classes of "susceptible", "partly susceptible", and "resistant"
-    thresholds = [
-        [3, 15],    # FPV
-        [3, 15],    # ATV
-        [3, 15],    # IDV
-        [9, 55],    # LPV
-        [3, 6],     # NFV
-        [3, 15],    # SQV
-        [2, 8],     # TPV
-        [10, 90],   # DRV
-        [5, 25],    # X3TC
-        [2, 6],     # ABC
-        [3, 15],    # AZT
-        [1.5, 3],   # D4T
-        [1.5, 3],   # DDI
-        [1.5, 3],   # TDF
-        [3, 10],    # EFV
-        [3, 10],    # NVP
-        [3, 10],    # ETR
-        [3, 10],    # RPV
-        [2.5, 10],  # BIC
-        [4, 13],    # DTG
-        [2.5, 10],  # EVG - upper threshold guessed
-        [1.5, 10]   # RAL - upper threshold guessed
-    ]
-
-    # Define row and column names
-    index = ["FPV","ATV","IDV","LPV","NFV","SQV","TPV","DRV",
-             "3TC","ABC","AZT","D4T","DDI","TDF",
-             "EFV","NVP","ETR","RPV", "BIC", "DTG", "EVG", "RAL"]
-    columns = ["lower", "upper"]
-
-    # Create DataFrame
-    cutoff_df = pd.DataFrame(thresholds, index=index, columns=columns)
 
     # Reading in and processing high quality File
-
     df = pd.read_csv(input_file, sep='\t')
-    #print(df)
-    df = df.iloc[:,1:-1]
-    #print(df2)
 
-    #Checking how much data is available for each drug
-    #print(df.loc[:,"FPV":"DRV"].count())
+    #removing index and summary column
+    df = df.iloc[:,1:-1]
+
 
     #list of current drugs of the dataset
     drugs = [drug for drug in list(df.columns) if not drug.startswith("P") ]
@@ -94,9 +56,7 @@ def running_models(input_file, output_file):
 
     enc.fit(df.loc[:,[drug for drug in list(df.columns) if drug.startswith("P")]])
 
-
-    #going through the drugs and splitting them to test and training depending on the drug
-
+    #result dataframe
     results = pd.DataFrame(columns=["Drug",
                                     "Samples",
                                     "AUC ROC",
@@ -108,43 +68,40 @@ def running_models(input_file, output_file):
 
 
     for drug in drugs:
-        #print(drug)
-        tmp_drugs = drugs.copy()
-        #print(tmp_drugs)
-        tmp_drugs.remove(drug)
-        #print(tmp_drugs)
-        last_col = list(df.columns)[-1]
-        dataframe = df.drop(tmp_drugs, axis=1)
 
-        #print(dataframe.head())
+        tmp_drugs = drugs.copy().remove(drug)
+
+        #getting labels of only needed drug
+        dataframe = df.drop(tmp_drugs, axis=1)
 
         dataframe = dataframe.dropna()
 
-        if drug not in index:
+        #If no thresholds for drug available no prediction possible
+        if drug not in utils.THRESHOLD_INDICES:
             results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None,
                                                 None, None]], columns=results.columns),
                                  results], ignore_index=True)
             continue
 
+
         # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
-        dataframe.loc[dataframe[drug] < cutoff_df.loc[drug, "lower"], drug + "_level"] = 0
-        dataframe.loc[dataframe[drug] >= cutoff_df.loc[drug, "upper"], drug + "_level"] = 2
-        dataframe.loc[(dataframe[drug] >= cutoff_df.loc[drug, "lower"]) & (dataframe[drug] < cutoff_df.loc[drug, "upper"]), drug + "_level"] = 1
+        y = utils.get_classes(dataframe, drug, mode="multiclass")
 
-        #print(dataframe.head())
 
-        X, y = dataframe.drop([drug, drug + "_level"], axis=1), np.array(dataframe[drug + "_level"])
+        X = dataframe.drop([drug], axis=1)
 
-        print(X)
+
 
         X_trafo = enc.transform(X).toarray()
 
-        print(X_trafo.shape)
 
-        #print(y)
+
+        #getting train test split
         X_train, X_test, y_train, y_test = train_test_split(X_trafo, y, test_size=0.33, random_state=42)
 
+        #Timing TabPFN
         start_time = time.time()
+
         # Train and evaluate TabPFN
         y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
 
@@ -185,7 +142,7 @@ def main():
     for file in files:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
     '''
-    file = r"data/INI_DataSet.txt"
+    file = r"../data/INI_DataSet.txt"
 
     running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
 if __name__ == '__main__':
