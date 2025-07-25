@@ -4,6 +4,12 @@
 import pandas as pd
 import numpy as np
 import time
+from sklearn.metrics import (
+    precision_recall_curve,
+    auc, average_precision_score
+)
+from sklearn.preprocessing import LabelBinarizer
+
 
 THRESHOLDS = [
     [3, 15],  # FPV
@@ -93,11 +99,51 @@ def get_classes(df, drug, mode="multiclass"):
     return np.select(conditions, choices, default=default)
 
 
-def prc_auc_score(moroc_auc scorede):
+def prc_auc_score(y_true, y_score, multiclass="raise"):
+
+    if y_score.shape[1] == 0:
+        tab_prec, tab_rec, thresholds = precision_recall_curve(y_true, y_score[:, 1])
+        score_prc = auc(tab_rec, tab_prec)
+
+    else:
+        if multiclass == "raise":
+            raise ValueError("multi_class must be in ('ovo', 'ovr')")
+        elif multiclass == "ovo":
+            pass
+        elif multiclass == "ovr":
+
+            label_binarizer = LabelBinarizer().fit(y_test)
+            y_onehot_test = label_binarizer.transform(y_test)
+
+            # print(y_test)
+            # print(y_onehot_test)
+
+            Y_test = y_onehot_test
+
+            y_score = y_pred
+            n_classes = 3
+
+            # For each class
+            precision = dict()
+            recall = dict()
+            average_precision = dict()
+            for i in range(n_classes):
+                precision[i], recall[i], _ = precision_recall_curve(Y_test[:, i], y_score[:, i])
+                average_precision[i] = average_precision_score(Y_test[:, i], y_score[:, i])
+
+            # A "micro-average": quantifying score on all classes jointly
+            precision["micro"], recall["micro"], _ = precision_recall_curve(
+                Y_test.ravel(), y_score.ravel()
+            )
+            average_precision["micro"] = average_precision_score(Y_test, y_score, average="micro")
+
+
+    tab_prec, tab_rec, thresholds = precision_recall_curve(y_true, y_score[:, 1])
+    score_prc = auc(tab_rec, tab_prec)
 
 
 
-
+    return score_prc
 
 
 
