@@ -122,8 +122,8 @@ def prc_auc_score(y_true, y_score, multiclass="raise"):
             pass
         elif multiclass == "ovr":
 
-            label_binarizer = LabelBinarizer().fit(y_score)
-            Y_test = label_binarizer.transform(y_score)
+            label_binarizer = LabelBinarizer().fit(y_true)
+            Y_test = label_binarizer.transform(y_true)
 
             # print(y_test)
             # print(y_onehot_test)
