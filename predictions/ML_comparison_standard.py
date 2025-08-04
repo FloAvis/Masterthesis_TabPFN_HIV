@@ -63,12 +63,13 @@ def running_models(input_file, output_file):
 
     for drug in drugs:
         print(input_file.split("/")[1].split("_")[0] + ": " + drug)
+
         tmp_drugs = drugs.copy().remove(drug)
 
-        #getting labels of only needed drug
-        #dataframe = df.drop(tmp_drugs, axis=1)
+        # getting labels of only needed drug
+        dataframe = df.drop(tmp_drugs, axis=1)
 
-        dataframe = df.dropna(subset=[drug])
+        dataframe = dataframe.dropna()
 
         #If no thresholds for drug available no prediction possible
         if drug not in utils.THRESHOLD_INDICES:
@@ -142,7 +143,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Multilabel_prediction"))
+        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Standard_comparison"))
 
 
     results.to_csv(output_file)
@@ -153,7 +154,7 @@ def main():
     files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_multilabel_results.csv"))
+        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_Standard_comparison_results.csv"))
 
 if __name__ == '__main__':
     main()
