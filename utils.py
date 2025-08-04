@@ -3,7 +3,10 @@
 # Setup Imports
 import pandas as pd
 import numpy as np
-import time
+
+from pathlib import Path
+
+
 from sklearn.metrics import (
     precision_recall_curve,
     auc, average_precision_score
@@ -100,8 +103,15 @@ def get_classes(df, drug, mode="multiclass"):
 
 
 def prc_auc_score(y_true, y_score, multiclass="raise"):
-
-    if y_score.shape[1] == 0:
+    """
+    Calculating AUC PRC for binary and multiclass setting. OVR multiclass setting
+    was adapted from https://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html
+    :param y_true: True labels
+    :param y_score: Predicted labels
+    :param multiclass: which mode of multiclass to use
+    :return: prc score
+    """
+    if y_score.shape[1] == 2:
         tab_prec, tab_rec, thresholds = precision_recall_curve(y_true, y_score[:, 1])
         score_prc = auc(tab_rec, tab_prec)
 
@@ -112,16 +122,14 @@ def prc_auc_score(y_true, y_score, multiclass="raise"):
             pass
         elif multiclass == "ovr":
 
-            label_binarizer = LabelBinarizer().fit(y_test)
-            y_onehot_test = label_binarizer.transform(y_test)
+            label_binarizer = LabelBinarizer().fit(y_score)
+            Y_test = label_binarizer.transform(y_score)
 
             # print(y_test)
             # print(y_onehot_test)
 
-            Y_test = y_onehot_test
 
-            y_score = y_pred
-            n_classes = 3
+            n_classes = y_score.shape[1]
 
             # For each class
             precision = dict()
@@ -131,23 +139,50 @@ def prc_auc_score(y_true, y_score, multiclass="raise"):
                 precision[i], recall[i], _ = precision_recall_curve(Y_test[:, i], y_score[:, i])
                 average_precision[i] = average_precision_score(Y_test[:, i], y_score[:, i])
 
+
             # A "micro-average": quantifying score on all classes jointly
             precision["micro"], recall["micro"], _ = precision_recall_curve(
                 Y_test.ravel(), y_score.ravel()
             )
-            average_precision["micro"] = average_precision_score(Y_test, y_score, average="micro")
 
+            # score_prc = average_precision_score(Y_test, y_score, average="micro")
 
-    tab_prec, tab_rec, thresholds = precision_recall_curve(y_true, y_score[:, 1])
-    score_prc = auc(tab_rec, tab_prec)
-
+            score_prc = auc(recall["micro"], precision["micro"])
 
 
     return score_prc
 
 
 
+def save_results(y_pred, y_true, label, path="../prediction_results/"):
+    """
+    Script to save the prediction results to a file for later evaluation
 
+    :param y_pred: Predicted probabilities of the classes
+    :param y_true: true labels
+    :param label: name for the file without .csv attachement
+    :param path: path of directory where the file should be saved. Default
+    :return: Saving predictions and true labels into file
+    """
+
+    if y_true.shape[0] != y_pred.shape[0]:
+        raise Exception("True labels do not match predicted labels")
+
+    splt = label.split('/')[:-1]
+    sub_filepath = '/'.join(splt)
+
+    #print(sub_filepath)
+
+    Path(path + sub_filepath).mkdir(parents=True, exist_ok=True)
+
+    data = {"True": y_true}
+
+    for i, column in enumerate(y_pred.T):
+        data.update( {str(i): column })
+
+    df = pd.DataFrame(data)
+
+    df.to_csv(path + label + ".csv")
 
 
 

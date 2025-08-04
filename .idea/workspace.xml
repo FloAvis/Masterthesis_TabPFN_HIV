@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Finished changes for the use with INI">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Regression 4 more debugging">
       <change beforePath="$PROJECT_DIR$/.idea/Masterthesis_TabPFN_HIV.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Masterthesis_TabPFN_HIV.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Multilabel_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Multilabel_prediction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sample.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/sample.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
@@ -48,7 +49,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/PriorLabs/tabpfn-extensions&quot;,
+    &quot;url&quot;: &quot;https://github.com/FloAvis/Masterthesis_TabPFN_HIV.git&quot;,
     &quot;accountId&quot;: &quot;481e9583-9466-481a-8fa9-b9565ade5888&quot;
   }
 }</component>
@@ -56,6 +57,7 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2xLtB7eEc23AGkbYa0fNAMm0vZX" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -67,21 +69,22 @@
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/flori/Desktop/Masterarbeit/Models/sample.ipynb&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/flori/Desktop/Masterarbeit/Models&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Jupyter Settings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.jupyter.core.jupyter.connections.configuration.JupyterServerConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\predictions" />
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\statistics" />
       <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\output" />
     </key>
   </component>
@@ -95,6 +98,7 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="C:\Users\flori\anaconda3" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -113,8 +117,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PY-251.26927.90" />
-        <option value="bundled-python-sdk-41e8cd69c857-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26927.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-PY-243.22562.180" />
+        <option value="bundled-python-sdk-85c76a3b01b3-9a18a617cbe4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.22562.180" />
       </set>
     </attachedChunks>
   </component>
@@ -152,9 +156,27 @@
       <workItem from="1751471414955" duration="105000" />
       <workItem from="1751740503360" duration="1594000" />
       <workItem from="1751794395430" duration="8473000" />
-      <workItem from="1753387105100" duration="242000" />
-      <workItem from="1753387495577" duration="842000" />
-      <workItem from="1753428583724" duration="7128000" />
+      <workItem from="1752427612060" duration="2093000" />
+      <workItem from="1752478956760" duration="11222000" />
+      <workItem from="1752563835717" duration="1487000" />
+      <workItem from="1752568254772" duration="2707000" />
+      <workItem from="1752576460449" duration="1029000" />
+      <workItem from="1752589597109" duration="439000" />
+      <workItem from="1752593087316" duration="480000" />
+      <workItem from="1752606380152" duration="1101000" />
+      <workItem from="1752648400504" duration="4918000" />
+      <workItem from="1752653535879" duration="82000" />
+      <workItem from="1752653873899" duration="3797000" />
+      <workItem from="1752662744310" duration="74000" />
+      <workItem from="1752663884652" duration="231000" />
+      <workItem from="1752674176814" duration="1413000" />
+      <workItem from="1752678274653" duration="142000" />
+      <workItem from="1752680193511" duration="200000" />
+      <workItem from="1752738756756" duration="3543000" />
+      <workItem from="1752746953170" duration="5317000" />
+      <workItem from="1752823671262" duration="387000" />
+      <workItem from="1753443338167" duration="100000" />
+      <workItem from="1754289537346" duration="10847000" />
     </task>
     <task id="LOCAL-00001" summary="test installations and imports">
       <option name="closed" value="true" />
@@ -348,7 +370,71 @@
       <option name="project" value="LOCAL" />
       <updated>1751812719098</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="updating Onehot vs internal for binary">
+      <option name="closed" value="true" />
+      <created>1752423017301</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1752423017301</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Regression file">
+      <option name="closed" value="true" />
+      <created>1752653318950</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1752653318950</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Regression debugging">
+      <option name="closed" value="true" />
+      <created>1752654253908</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1752654253908</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Regression more debugging">
+      <option name="closed" value="true" />
+      <created>1752654824685</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1752654824685</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Regression 2 more debugging">
+      <option name="closed" value="true" />
+      <created>1752655325363</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1752655325363</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Regression 3 more debugging">
+      <option name="closed" value="true" />
+      <created>1752655590902</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1752655590902</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Regression 4 more debugging">
+      <option name="closed" value="true" />
+      <created>1752657492105</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1752657492105</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Code cleanup and regression statistics">
+      <option name="closed" value="true" />
+      <created>1752824046994</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1752824046994</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -359,7 +445,13 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -377,7 +469,15 @@
     <MESSAGE value="I need to fidn a better way for this debugging" />
     <MESSAGE value="more more debugging" />
     <MESSAGE value="More debugging and Onehot vs internal" />
-    <option name="LAST_COMMIT_MESSAGE" value="More debugging and Onehot vs internal" />
+    <MESSAGE value="updating Onehot vs internal for binary" />
+    <MESSAGE value="Regression file" />
+    <MESSAGE value="Regression debugging" />
+    <MESSAGE value="Regression more debugging" />
+    <MESSAGE value="Regression 2 more debugging" />
+    <MESSAGE value="Regression 3 more debugging" />
+    <MESSAGE value="Regression 4 more debugging" />
+    <MESSAGE value="Code cleanup and regression statistics" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code cleanup and regression statistics" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Sandbox.coverage" NAME="Sandbox Coverage Results" MODIFIED="1750931842395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

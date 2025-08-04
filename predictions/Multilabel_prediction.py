@@ -15,10 +15,12 @@ from sklearn.metrics import (
     mean_squared_error,
     root_mean_squared_error,
     r2_score,
+    f1_score,
     roc_auc_score,
 )
 from sklearn.model_selection import train_test_split
 
+from scipy.stats import pearsonr
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
@@ -61,6 +63,7 @@ def running_models(input_file, output_file):
                                     "Samples",
                                     "Accuracy",
                                     "Pearson",
+                                    "F1"
                                     "AUC PRC",
                                     "AUC ROC",
                                     "Time"])
@@ -92,8 +95,11 @@ def running_models(input_file, output_file):
 
 
 
-        X_trafo = enc.transform(X).toarray()
+        #X_trafo = enc.transform(X).toarray()
 
+
+        #----------------------------------------------------------------------------------------------------------------
+        #Training
 
 
         #getting train test split
@@ -107,30 +113,54 @@ def running_models(input_file, output_file):
 
         taken_time = time.time() - start_time
 
-        # Calculate ROC AUC (handles both binary and multiclass)
-        score = roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')
-        print(f"TabPFN ROC AUC: {score:.4f}")
+        y_pred_class = np.argmax(y_pred, axis=1)
 
+        #--------------------------------------------------------------------------------------------------------------------
+        # Evaluation metrics
+
+        #Accuracy:
+        scores = {"Accuracy": accuracy_score(y_test, y_pred_class)}
+
+        #Person coefficient:
+        scores.update({"Pearson": pearsonr(y_test, y_pred_class)[0]})
+
+        #F1 score:
+        scores.update({"F1": f1_score(y_test, y_pred_class, average="micro")})
+
+        # Calculate PRC AUC
+        scores.update({"AUC PRC" : utils.prc_auc_score(y_test, y_pred, multiclass="ovr")})
+        #print(f"TabPFN PRC AUC: {score_prc:.4f}")
+
+        # Calculate ROC AUC (handles both binary and multiclass)
+        scores.update({ "AUC ROC": roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')})
+        #print(f"TabPFN ROC AUC: {score_roc:.4f}")
 
 
         #saving the resulting statistics
-        results = pd.concat([pd.DataFrame([[drug, X_trafo.shape[0], score, taken_time, scores['RandomForest'], scores['XGBoost'], scores['CatBoost']]], columns=results.columns), results], ignore_index=True)
+        results = pd.concat([pd.DataFrame([[
+                                            drug,
+                                            X.shape[0],
+                                            scores["Accuracy"],
+                                            scores["Pearson"],
+                                            scores["F1"],
+                                            scores["AUC PRC"],
+                                            scores["AUC ROC"],
+                                            taken_time
+                                        ]], columns=results.columns), results], ignore_index=True)
 
-        for model, score in scores.items():
-            print(model + ": " + str(score))
+        #saving results:
+        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Multilabel_prediction"))
+
 
     results.to_csv(output_file)
 
 def main():
 
-    '''
+
     files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
-    '''
-    file = r"../data/INI_DataSet.txt"
 
-    running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
 if __name__ == '__main__':
     main()
