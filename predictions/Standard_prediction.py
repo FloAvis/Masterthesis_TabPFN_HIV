@@ -24,16 +24,11 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 
 # Baseline Imports
-from xgboost import XGBClassifier, XGBRegressor
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from catboost import CatBoostClassifier, CatBoostRegressor
+from xgboost import XGBClassifier
+from sklearn.ensemble import RandomForestClassifier
+from catboost import CatBoostClassifier
 
-
-
-from tabpfn import TabPFNClassifier, TabPFNRegressor
-from tabpfn_extensions.post_hoc_ensembles.sklearn_interface import AutoTabPFNClassifier, AutoTabPFNRegressor
-
-
+from tabpfn import TabPFNClassifier
 
 
 # table for the encoding of the resistance testing into three classes: "susceptible", "intermediate-level resistant", "high-level resistant" with lower and upper thresholds

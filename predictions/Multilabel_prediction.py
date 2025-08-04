@@ -9,17 +9,12 @@ import time
 import sys
 import os
 
-sys.path.append(os.path.abspath('..'))
+#sys.path.append(os.path.abspath('..'))
 
-import utils
+from .. import utils
 
-from sklearn.model_selection import cross_val_score
 from sklearn.metrics import (
     accuracy_score,
-    mean_absolute_error,
-    mean_squared_error,
-    root_mean_squared_error,
-    r2_score,
     f1_score,
     roc_auc_score,
 )
@@ -27,20 +22,11 @@ from sklearn.model_selection import train_test_split
 
 from scipy.stats import pearsonr
 
-from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 
 # Baseline Imports
-from xgboost import XGBClassifier, XGBRegressor
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from catboost import CatBoostClassifier, CatBoostRegressor
 
-
-
-from tabpfn import TabPFNClassifier, TabPFNRegressor
-from tabpfn_extensions.post_hoc_ensembles.sklearn_interface import AutoTabPFNClassifier, AutoTabPFNRegressor
-
-
+from tabpfn import TabPFNClassifier
 
 
 # table for the encoding of the resistance testing into three classes: "susceptible", "intermediate-level resistant", "high-level resistant" with lower and upper thresholds
@@ -82,7 +68,7 @@ def running_models(input_file, output_file):
         #getting labels of only needed drug
         #dataframe = df.drop(tmp_drugs, axis=1)
 
-        dataframe = dataframe.dropna(subset=[drug])
+        dataframe = df.dropna(subset=[drug])
 
         #If no thresholds for drug available no prediction possible
         if drug not in utils.THRESHOLD_INDICES:
