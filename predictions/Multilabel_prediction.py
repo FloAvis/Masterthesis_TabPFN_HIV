@@ -6,6 +6,11 @@ import pandas as pd
 import numpy as np
 import time
 
+import sys
+import os
+
+sys.path.append(os.path.abspath('..'))
+
 import utils
 
 from sklearn.model_selection import cross_val_score
