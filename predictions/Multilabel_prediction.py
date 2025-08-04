@@ -73,7 +73,7 @@ def running_models(input_file, output_file):
         #If no thresholds for drug available no prediction possible
         if drug not in utils.THRESHOLD_INDICES:
             results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None,
-                                                None, None]], columns=results.columns),
+                                                None, None, None]], columns=results.columns),
                                  results], ignore_index=True)
             continue
 
