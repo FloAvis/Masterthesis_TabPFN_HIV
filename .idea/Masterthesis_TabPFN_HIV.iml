@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tabpfn-extensions/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/models" />
     </content>
-    <orderEntry type="jdk" jdkName="Masterarbeit" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="C:\Users\flori\anaconda3" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

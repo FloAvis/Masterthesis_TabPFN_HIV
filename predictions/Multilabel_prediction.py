@@ -160,7 +160,7 @@ def main():
     files = [r"data/PI_DataSet.txt", r"data/INI_DataSet.txt", r"data/NRTI_DataSet.txt", r"data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
+        running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "multilabel_results.csv"))
 
 if __name__ == '__main__':
     main()
