@@ -64,7 +64,12 @@ def running_models(input_file, output_file):
     for drug in drugs:
         print(input_file.split("/")[1].split("_")[0] + ": " + drug)
 
-        tmp_drugs = drugs.copy().remove(drug)
+        tmp_drugs = drugs.copy()
+        tmp_drugs.remove(drug)
+
+        #print(drugs)
+
+        print(tmp_drugs)
 
         # getting labels of only needed drug
         dataframe = df.drop(tmp_drugs, axis=1)
