@@ -11,7 +11,7 @@ import os
 
 #sys.path.append(os.path.abspath('..'))
 
-from .. import utils
+import utils
 
 from sklearn.metrics import (
     accuracy_score,
