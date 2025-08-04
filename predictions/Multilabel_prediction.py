@@ -54,7 +54,7 @@ def running_models(input_file, output_file):
                                     "Samples",
                                     "Accuracy",
                                     "Pearson",
-                                    "F1"
+                                    "F1",
                                     "AUC PRC",
                                     "AUC ROC",
                                     "Time"])
@@ -62,7 +62,7 @@ def running_models(input_file, output_file):
 
 
     for drug in drugs:
-
+        print(input_file.split("/")[1].split("_")[0] + ": " + drug)
         tmp_drugs = drugs.copy().remove(drug)
 
         #getting labels of only needed drug
