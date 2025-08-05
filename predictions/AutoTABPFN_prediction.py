@@ -100,9 +100,12 @@ def running_models(input_file, output_file):
         #----------------------------------------------------------------------------------------------------------------
         #Training
 
+        print(X_trafo)
+
+        print(X)
 
         #getting train test split
-        X_train, X_test, y_train, y_test = train_test_split(X_trafo, y, test_size=0.33, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
         #Timing TabPFN
         start_time = time.time()
@@ -150,7 +153,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "AutoTabPFN_results"))
+        utils.save_results(y_pred, y_test, label= (input_file.split("/")[-1].split("_")[0] + "_results/" + drug + "_results/" + "AutoTabPFN_results"))
 
 
     results.to_csv(output_file)
@@ -160,9 +163,14 @@ def main():
 
     files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
 
+
     for file in files:
         running_models(file, "../output/" + (file.split("/")[-1].strip(".txt") + "AutoTabPFN_results.csv"))
 
+    """
+    file = r"../data/INI_DataSet.txt"
 
+    running_models(file, "../output/" + (file.split("/")[-1].strip(".txt") + "AutoTabPFN_results.csv"))
+    """
 if __name__ == '__main__':
     main()

@@ -148,7 +148,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Standard_comparison"))
+        utils.save_results(y_pred, y_test, label= (input_file.split("/")[-1].split("_")[0] + "_results/" + drug + "_results/" + "Standard_comparison"))
 
 
     results.to_csv(output_file)
