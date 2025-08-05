@@ -94,7 +94,7 @@ def running_models(input_file, output_file):
 
 
 
-        #X_trafo = enc.transform(X).toarray()
+        X_trafo = enc.transform(X).toarray()
 
 
         #----------------------------------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ def running_models(input_file, output_file):
 
 
         #getting train test split
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_trafo, y, test_size=0.33, random_state=42)
 
         #Timing TabPFN
         start_time = time.time()
