@@ -1,5 +1,5 @@
-"""This script calculates the ROC AUC for the prediction of TabPFN, Random Forest, XGBoost, and
-CatBoost and saves time in a file for all drugs in the stanford database file"""
+"""This script calculates calculates different statistics of Multilabel predictions for
+the different drugs"""
 
 # Setup Imports
 import pandas as pd
