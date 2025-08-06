@@ -30,6 +30,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 from tabpfn_extensions.post_hoc_ensembles.sklearn_interface import AutoTabPFNClassifier
 
+from autogluon.features.generators import AutoMLPipelineFeatureGenerator
 
 # table for the encoding of the resistance testing into three classes: "susceptible", "intermediate-level resistant", "high-level resistant" with lower and upper thresholds
 
@@ -94,18 +95,28 @@ def running_models(input_file, output_file):
 
 
 
-        X_trafo = enc.transform(X).toarray()
+        #X_trafo = enc.transform(X).toarray()
 
 
         #----------------------------------------------------------------------------------------------------------------
         #Training
 
-        print(X_trafo)
+        #print(X_trafo)
 
         print(X)
 
         #getting train test split
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+        X_train_raw, X_test_raw, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+
+        feature_generator = AutoMLPipelineFeatureGenerator()
+        feature_generator.fit(X_train_raw)
+
+        # Transform the datasets
+        X_train = feature_generator.transform(X_train_raw)
+        X_test = feature_generator.transform(X_test_raw)
+
+        print(X_test.shape)
+        print(X_train.shape)
 
         #Timing TabPFN
         start_time = time.time()
