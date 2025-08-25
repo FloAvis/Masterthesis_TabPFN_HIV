@@ -67,40 +67,59 @@ def get_thresholds():
 
 
 
-def get_classes(df, drug, mode="multiclass"):
+def get_classes(df, drugs, mode="binary"):
     """
-        Classify resistance scores for a given drug into binary or multiclass levels.
+        Classify resistance scores for a given drug or drugs into binary or multiclass levels.
 
     Args:
         df (pandas.DataFrame): DataFrame containing resistance scores for various drugs.
-        drug (str): The drug name (must match the threshold index).
+        drugs (str): The drugs name or list of drugs (must match the threshold index).
         mode (str, optional): Classification mode. Must be either "multiclass" or "binary".
-                              Defaults to "multiclass".
+                              Defaults to "binary".
 
     Returns:
-        numpy.ndarray: Array of classified resistance levels:
+        pandas.Dataframe: Dataframe of categorical classes of given drugs
                        - In 'multiclass' mode: 0 = susceptible, 1 = intermediate, 2 = resistant.
                        - In 'binary' mode: 0 = susceptible, 1 = resistant.
     """
 
-    lower, upper = get_thresholds().loc[drug, ["lower", "upper"]]
-
-    if mode == "multiclass":
-        conditions = [
-            df[drug] < lower,
-            df[drug] >= upper
-        ]
-        choices = [0, 2]
-        default = 1
-    elif mode == "binary":
-        conditions = [df[drug] < lower]
-        choices = [0]
-        default = 1
+    """if type(drugs) != list:
+        drug_list = [drugs]
     else:
-        raise ValueError("mode must be either 'multiclass' or 'binary'")
+        drug_list = drugs
+    print(type(drugs))
+    """
 
-    return np.select(conditions, choices, default=default)
+    if type(drugs) != list:
+        drugs = [drugs]
 
+    classes = {}
+
+
+    for drug in drugs:
+
+        lower, upper = get_thresholds().loc[drug, ["lower", "upper"]]
+
+        if mode == "multiclass":
+            conditions = [
+                df[drug] < lower,
+                df[drug] >= upper,
+                np.isnan(df[drug])
+            ]
+            choices = [0, 2, np.nan]
+            default = 1
+        elif mode == "binary":
+            conditions = [
+                df[drug] < lower,
+                np.isnan(df[drug])]
+            choices = [0, np.nan]
+            default = 1
+        else:
+            raise ValueError("mode must be either 'multiclass' or 'binary'")
+
+        classes.update({drug : np.select(conditions, choices, default=default)})
+
+    return pd.DataFrame(classes)
 
 def prc_auc_score(y_true, y_score, multiclass="raise"):
     """
