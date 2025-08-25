@@ -173,7 +173,7 @@ def main():
 
 
         multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
-        y_pred = multi_target_pfn.fit(X, Y).predict(X)
+        y_pred = multi_target_pfn.fit(X_train, y_train).predict(X_test)
 
 
 
