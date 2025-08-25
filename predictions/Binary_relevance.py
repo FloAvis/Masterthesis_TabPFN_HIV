@@ -182,10 +182,12 @@ def main():
 
         #results = BR.predict(X, Y)
 
+        y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+
+        y_test_df = pd.DataFrame(y_test, columns=drugs)
 
 
-
-        utils.save_results(y_pred, y_test, label= (file.split("/")[1].split("_")[0] + "_results/" + file.split("/")[1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
+        utils.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[1].split("_")[0] + "_results/" + file.split("/")[1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
 
 
 

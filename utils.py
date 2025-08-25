@@ -205,7 +205,33 @@ def save_results(y_pred, y_true, label, path="../prediction_results/"):
 
 
 
+def save_multilabel(y_pred, y_true, label, path="../prediction_results/"):
+    """
+    Script to save the prediction results to a file for later evaluation
 
+    :param y_pred: Predicted labels
+    :param y_true: true labels
+    :param label: name for the file without .csv attachement
+    :param path: path of directory where the file should be saved. Default
+    :return: Saving predicted and true labels into file
+    """
+
+    if y_true.shape != y_pred.shape:
+        raise Exception("True labels do not match predicted labels")
+
+    splt = label.split('/')[:-1]
+    sub_filepath = '/'.join(splt)
+
+    #print(sub_filepath)
+
+    Path(path + sub_filepath).mkdir(parents=True, exist_ok=True)
+
+    y_pred_new = y_pred.add_prefix("Pred_")
+    y_true_new = y_true.add_prefix("True_")
+
+    df = pd.concat([y_true_new, y_pred_new], axis=1, sort=False)
+
+    df.to_csv(path + label + ".csv")
 
 
 
