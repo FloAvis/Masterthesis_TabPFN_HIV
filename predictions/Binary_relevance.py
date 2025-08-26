@@ -154,6 +154,7 @@ def main():
         # list of current drugs of the dataset
         drugs = [drug for drug in list(df.columns) if not drug.startswith("P")]
 
+        #Filtering out drugs with less than 10 labels present
         unusable_drugs = [drug for drug in drugs if df[drug].count() <= 10]
 
         if len(unusable_drugs) > 0:
@@ -198,7 +199,7 @@ def main():
         y_test_df = pd.DataFrame(y_test, columns=drugs)
 
 
-        utils.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[1].split("_")[0] + "_results/" + file.split("/")[1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
+        utils.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
 
 
 
