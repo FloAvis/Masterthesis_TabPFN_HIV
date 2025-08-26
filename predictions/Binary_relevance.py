@@ -154,7 +154,15 @@ def main():
         # list of current drugs of the dataset
         drugs = [drug for drug in list(df.columns) if not drug.startswith("P")]
 
+        unusable_drugs = [drug for drug in drugs if df[drug].count() <= 10]
+
+        if len(unusable_drugs) > 0:
+            df.drop(columns=unusable_drugs, inplace=True)
+
+            drugs = [drug for drug in drugs if drug not in unusable_drugs]
+
         df.dropna(subset=drugs, inplace=True)
+
 
         # creating the one hot encoding for the features
         #enc = OneHotEncoder(handle_unknown='error')
@@ -164,6 +172,9 @@ def main():
 
 
         X = df.drop(drugs, axis=1)
+
+
+
 
         Y = utils.get_classes(df, drugs, mode="binary")
 
