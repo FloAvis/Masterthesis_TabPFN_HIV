@@ -229,7 +229,9 @@ def save_multilabel(y_pred, y_true, label, path="../prediction_results/"):
     y_pred_new = y_pred.add_prefix("Pred_")
     y_true_new = y_true.add_prefix("True_")
 
-    df = pd.concat([y_true_new, y_pred_new], axis=1, sort=False, ignore_index=True)
+    y_true_new.reset_index(inplace=True, drop=True)
+
+    df = pd.concat([y_true_new, y_pred_new], axis=1, sort=False)
 
     df.to_csv(path + label + ".csv")
 
