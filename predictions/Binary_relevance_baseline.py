@@ -93,12 +93,11 @@ def main():
 
         Y = utils.get_classes(df, drugs, mode="binary")
 
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
-
-
         # Encode target labels to classes for baselines
-        le = LabelEncoder()
-        y = le.fit_transform(Y)
+        #le = LabelEncoder()
+        #y = le.fit_transform(Y)
+
+        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
         # Define models
         models = [
