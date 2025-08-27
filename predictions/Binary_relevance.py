@@ -185,6 +185,8 @@ def main():
 
 
         multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
+
+        """
         y_pred = multi_target_pfn.fit(X_train, y_train).predict(X_test)
 
 
@@ -200,6 +202,17 @@ def main():
 
 
         utils.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
+        """
+
+        y_pred_proba = multi_target_pfn.fit(X_train, y_train).predict_proba(X_test)
+
+        #y_pred_df = pd.DataFrame(y_pred_proba, columns=drugs)
+
+        y_test_df = pd.DataFrame(y_test, columns=drugs)
+
+        utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                0] + "_Binary_Relevance_probabilities_MOC_prediction"))
 
 
 

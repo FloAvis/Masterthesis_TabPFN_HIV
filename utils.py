@@ -235,13 +235,68 @@ def save_multilabel(y_pred, y_true, label, path="../prediction_results/"):
 
     df.to_csv(path + label + ".csv")
 
+def subset_acc(y_pred, y_true):
+    """
+    Calculates the subset accuracy for multilabel prediction
+
+    :param y_pred: Predicted labels
+    :param y_true: true labels
+    :return: calculated subset accuracy
+    """
+
+    acc = 0
+
+    for i in range(y_pred.shape[0]):
+        tmp = 1
+        for j in range(y_pred.shape[1]):
+            if y_pred.iloc[i,j] != y_true.iloc[i,j]:
+                tmp = 0
+                break
+        acc = acc + tmp
+
+    acc = acc/y_pred.shape[0]
+
+    return acc
+
+def save_multilabel_proba(y_pred_probas, y_true, label, path="../prediction_results/"):
+    """
+    Script to save the prediction probabilities for each label, binary only
+
+    :param y_pred_probas: Probabilities of predictions
+    :param y_true: true labels
+    :param label: name for the file without .csv attachement
+    :param path: path of directory where the file should be saved. Default
+    :return: Saving predicted probabilities of the positive labels and true labels into file
+    """
+
+    y_pred_dict = {}
+
+    drugs = y_true.columns.values.tolist()
+
+    for i, probas in enumerate(y_pred_probas):
+        y_pred_dict.update({drugs[i]: probas[:, 1]})
+
+    y_pred = pd.DataFrame(y_pred_dict)
 
 
+    if y_true.shape != y_pred.shape:
+        raise Exception("True labels do not match predicted labels")
 
+    splt = label.split('/')[:-1]
+    sub_filepath = '/'.join(splt)
 
+    #print(sub_filepath)
 
+    Path(path + sub_filepath).mkdir(parents=True, exist_ok=True)
 
+    y_pred_new = y_pred.add_prefix("Pred_Proba_")
+    y_true_new = y_true.add_prefix("True_")
 
+    y_true_new.reset_index(inplace=True, drop=True)
+
+    df = pd.concat([y_true_new, y_pred_new], axis=1, sort=False)
+
+    df.to_csv(path + label + ".csv")
 
 
 
