@@ -143,7 +143,6 @@ def main():
     files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
 
     for file in files:
-        #running_models(file, "../output/" + (file.split("/")[-1].strip(".txt") + "_multilabel_results.csv"))
 
         # Reading in and processing high quality File
         df = pd.read_csv(file, sep='\t')
@@ -162,19 +161,12 @@ def main():
 
             drugs = [drug for drug in drugs if drug not in unusable_drugs]
 
-        df.dropna(subset=drugs, inplace=True)
 
-
-        # creating the one hot encoding for the features
-        #enc = OneHotEncoder(handle_unknown='error')
-
-        #enc.fit(df.loc[:, [drug for drug in list(df.columns) if drug.startswith("P")]])
-
+        #dropping rows with na labels
+        #df.dropna(subset=drugs, inplace=True)
 
 
         X = df.drop(drugs, axis=1)
-
-
 
 
         Y = utils.get_classes(df, drugs, mode="binary")
@@ -186,33 +178,27 @@ def main():
 
         multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
 
-        """
-        y_pred = multi_target_pfn.fit(X_train, y_train).predict(X_test)
+        trained_model_pfn = multi_target_pfn.fit(X_train, y_train)
 
+        y_pred = trained_model_pfn.predict(X_test)
 
-
-        #BR = BinaryRelevanceTabPFN()
-
-
-        #results = BR.predict(X, Y)
 
         y_pred_df = pd.DataFrame(y_pred, columns=drugs)
 
         y_test_df = pd.DataFrame(y_test, columns=drugs)
 
 
-        utils.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
-        """
+        utils.save_multilabel(y_pred_df, y_test_df, label= (
+                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0]
+                + "_BR_NaInc_MOC_prediction"))
 
-        y_pred_proba = multi_target_pfn.fit(X_train, y_train).predict_proba(X_test)
 
-        #y_pred_df = pd.DataFrame(y_pred_proba, columns=drugs)
+        y_pred_proba = trained_model_pfn.predict_proba(X_test)
 
-        y_test_df = pd.DataFrame(y_test, columns=drugs)
 
         utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_MOC_prediction"))
+                0] + "_BR_NaInc_probabilities_MOC_prediction"))
 
 
 
