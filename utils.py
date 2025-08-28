@@ -258,13 +258,14 @@ def subset_acc(y_pred, y_true):
 
     return acc
 
-def save_multilabel_proba(y_pred_probas, y_true, label, path="../prediction_results/"):
+def save_multilabel_proba(y_pred_probas, y_true, label, k_folds=None, path="../prediction_results/"):
     """
     Script to save the prediction probabilities for each label, binary only
 
     :param y_pred_probas: Probabilities of predictions
     :param y_true: true labels
     :param label: name for the file without .csv attachement
+    :param k_folds: array with sequence of k_folds
     :param path: path of directory where the file should be saved. Default
     :return: Saving predicted probabilities of the positive labels and true labels into file
     """
@@ -290,6 +291,11 @@ def save_multilabel_proba(y_pred_probas, y_true, label, path="../prediction_resu
     Path(path + sub_filepath).mkdir(parents=True, exist_ok=True)
 
     y_pred_new = y_pred.add_prefix("Pred_Proba_")
+
+    if k_folds is not None:
+        y_pred_new["kFolds"] = k_folds
+
+
     y_true_new = y_true.add_prefix("True_")
 
     y_true_new.reset_index(inplace=True, drop=True)
@@ -297,6 +303,31 @@ def save_multilabel_proba(y_pred_probas, y_true, label, path="../prediction_resu
     df = pd.concat([y_true_new, y_pred_new], axis=1, sort=False)
 
     df.to_csv(path + label + ".csv")
+
+
+def calc_labels(y_pred):
+    """
+    Returns the labels for a given probability matrix
+
+    :param y_pred_probas: Probabilities of predictions
+    :return: np.ndarray of labels
+    """
+
+    y_pred_probas = np.array(y_pred)
+
+
+    y_pred_new = np.zeros((y_pred_probas[0].shape[0], len(y_pred_probas)))
+
+    print(y_pred_new)
+
+    for j, clas in enumerate(y_pred_probas):
+        for i in range(clas.shape[0]):
+            if clas[i, 1] >= 0.5:
+                y_pred_new[i, j] = 1
+            else:
+                y_pred_new[i, j] = 0
+
+    return y_pred_new
 
 
 

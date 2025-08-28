@@ -20,6 +20,7 @@ from sklearn.metrics import (
 from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
 
+
 from scipy.stats import pearsonr
 
 from sklearn.preprocessing import OneHotEncoder
@@ -36,6 +37,7 @@ from sklearn.model_selection import (
     StratifiedKFold,
     cross_val_score,
     train_test_split,
+    cross_val_predict
 )
 from sklearn.compose import make_column_selector, make_column_transformer
 from sklearn.pipeline import make_pipeline
@@ -97,7 +99,6 @@ def main():
         #le = LabelEncoder()
         #y = le.fit_transform(Y)
 
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
         # Define models
         models = [
@@ -124,32 +125,85 @@ def main():
             ),
         ]
 
+        use_kfold = True
+
+        folds = 5
+
+        kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+
+
 
         for name, model in models:
+
             multi_target = MultiOutputClassifier(model, n_jobs=2)
-            trained_model = multi_target.fit(X_train, y_train)
-            y_pred =  trained_model.predict(X_test)
 
-            y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+            if use_kfold == False:
 
-            y_test_df = pd.DataFrame(y_test, columns=drugs)
+                X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
-            utils.save_multilabel(y_pred_df, y_test_df, label=(
+
+                trained_model = multi_target.fit(X_train, y_train)
+                y_pred =  trained_model.predict(X_test)
+
+                y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+
+                y_test_df = pd.DataFrame(y_test, columns=drugs)
+
+                utils.save_multilabel(y_pred_df, y_test_df, label=(
+                            file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                        0] +"_" + name + "_Binary_Relevance_MOC_prediction"))
+
+                try:
+                    y_pred_proba = trained_model.predict_proba(X_test)
+
+                    # y_pred_df = pd.DataFrame(y_pred_proba, columns=drugs)
+
+                    # y_test_df = pd.DataFrame(y_test, columns=drugs)
+
+                    utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
+                            file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                        0] + "_" + name + "_Binary_Relevance_probabilities_MOC_prediction"))
+                except:
+                    print("Model " + name + " cannot return probabilities")
+
+            else:
+
+
+                y_pred = cross_val_predict(multi_target, X, Y, cv=kf, method="predict_proba")
+
+                y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
+
+                kfolds = np.zeros((y_pred.shape[0], 1))
+
+                k = 0
+
+                for _, test in kf.split(X, Y):
+                    for i in test:
+                        kfolds[i] = k
+                    k += 1
+
+                y_pred_df["kFolds"] = kfolds
+
+                y_test = np.zeros((y_pred.shape[0], Y.shape[1]))
+
+                t = 0
+
+                for _, test in kf.split(X, Y):
+                    for i in test:
+                        # print(i)
+                        for j in range(Y.shape[1]):
+                            y_test[t, j] = Y[i, j]
+                        t += 1
+
+                y_test_df = pd.DataFrame(y_test, columns=drugs)
+
+                utils.save_multilabel(y_pred_df, y_test_df, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] +"_" + name + "_Binary_Relevance_MOC_prediction"))
+                    0] + "_" + name + "_Binary_Relevance_"+ str(folds) + "_fold_MOC_prediction"))
 
-            try:
-                y_pred_proba = trained_model.predict_proba(X_test)
-
-                # y_pred_df = pd.DataFrame(y_pred_proba, columns=drugs)
-
-                # y_test_df = pd.DataFrame(y_test, columns=drugs)
-
-                utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
+                utils.save_multilabel_proba(y_pred, y_test_df, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_" + name + "_Binary_Relevance_probabilities_MOC_prediction"))
-            except:
-                print("Model " + name + " cannot return probabilities")
+                    0] + "_" + name + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_MOC_prediction"))
 
 
 

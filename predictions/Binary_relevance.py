@@ -19,6 +19,10 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
+from sklearn.model_selection import StratifiedKFold, KFold
+
+
+from sklearn.model_selection import cross_val_predict, cross_val_score, cross_validate
 
 from scipy.stats import pearsonr
 
@@ -29,120 +33,13 @@ from sklearn.preprocessing import OneHotEncoder
 from tabpfn import TabPFNClassifier
 
 
-class BinaryRelevanceTabPFN():
-
-    def predict(x, y):
-        """
-        #result dataframe
-        results = pd.DataFrame(columns=["Drug",
-                                        "Samples",
-                                        "Accuracy",
-                                        "Pearson",
-                                        "F1",
-                                        "AUC PRC",
-                                        "AUC ROC",
-                                        "Time"])
-
-
-
-        for drug in drugs:
-            print(input_file.split("/")[1].split("_")[0] + ": " + drug)
-            tmp_drugs = drugs.copy().remove(drug)
-
-            #getting labels of only needed drug
-            #dataframe = df.drop(tmp_drugs, axis=1)
-
-            dataframe = df.dropna(subset=[drug])
-
-            #If no thresholds for drug available no prediction possible
-            if drug not in utils.THRESHOLD_INDICES:
-                results = pd.concat([pd.DataFrame([[drug, dataframe.shape[0], None, None, None,
-                                                    None, None, None]], columns=results.columns),
-                                     results], ignore_index=True)
-                continue
-
-
-            # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
-            y = utils.get_classes(dataframe, drug, mode="multiclass")
-
-
-            X = dataframe.drop([drug], axis=1)
-
-
-
-            #X_trafo = enc.transform(X).toarray()
-
-
-            #----------------------------------------------------------------------------------------------------------------
-            #Training
-
-
-            #getting train test split
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-
-            #Timing TabPFN
-            start_time = time.time()
-
-            # Train and evaluate TabPFN
-            y_pred = TabPFNClassifier(random_state=42, ignore_pretraining_limits=True).fit(X_train, y_train).predict_proba(X_test)
-
-            taken_time = time.time() - start_time
-
-            y_pred_class = np.argmax(y_pred, axis=1)
-
-            #--------------------------------------------------------------------------------------------------------------------
-            # Evaluation metrics
-
-            #Accuracy:
-            scores = {"Accuracy": accuracy_score(y_test, y_pred_class)}
-
-            #Person coefficient:
-            scores.update({"Pearson": pearsonr(y_test, y_pred_class)[0]})
-
-            #F1 score:
-            scores.update({"F1": f1_score(y_test, y_pred_class, average="micro")})
-
-            # Calculate PRC AUC
-            scores.update({"AUC PRC" : utils.prc_auc_score(y_test, y_pred, multiclass="ovr")})
-            #print(f"TabPFN PRC AUC: {score_prc:.4f}")
-
-            # Calculate ROC AUC (handles both binary and multiclass)
-            scores.update({ "AUC ROC": roc_auc_score(y_test, y_pred if len(np.unique(y)) > 2 else y_pred[:, 1], multi_class='ovr')})
-            #print(f"TabPFN ROC AUC: {score_roc:.4f}")
-
-
-            #saving the resulting statistics
-            results = pd.concat([pd.DataFrame([[
-                                                drug,
-                                                X.shape[0],
-                                                scores["Accuracy"],
-                                                scores["Pearson"],
-                                                scores["F1"],
-                                                scores["AUC PRC"],
-                                                scores["AUC ROC"],
-                                                taken_time
-                                            ]], columns=results.columns), results], ignore_index=True)
-
-
-            """
-
-
-
-
-        pass
-
-        #saving results:
-        #utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Multilabel_prediction"))
-
-
-        #return results
-
 def main():
 
 
     files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
 
     for file in files:
+
 
         # Reading in and processing high quality File
         df = pd.read_csv(file, sep='\t')
@@ -163,7 +60,7 @@ def main():
 
 
         #dropping rows with na labels
-        #df.dropna(subset=drugs, inplace=True)
+        df.dropna(subset=drugs, inplace=True)
 
 
         X = df.drop(drugs, axis=1)
@@ -171,34 +68,86 @@ def main():
 
         Y = utils.get_classes(df, drugs, mode="binary")
 
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
-
         clf = TabPFNClassifier()
-
 
         multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
 
-        trained_model_pfn = multi_target_pfn.fit(X_train, y_train)
-
-        y_pred = trained_model_pfn.predict(X_test)
-
-
-        y_pred_df = pd.DataFrame(y_pred, columns=drugs)
-
-        y_test_df = pd.DataFrame(y_test, columns=drugs)
+        use_kfold = True
+        folds = 5
 
 
-        utils.save_multilabel(y_pred_df, y_test_df, label= (
-                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0]
-                + "_BR_NaInc_MOC_prediction"))
+        if use_kfold == False:
+
+            X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
 
-        y_pred_proba = trained_model_pfn.predict_proba(X_test)
+            trained_model_pfn = multi_target_pfn.fit(X_train, y_train)
+
+            y_pred = trained_model_pfn.predict(X_test)
 
 
-        utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
+            y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+
+            y_test_df = pd.DataFrame(y_test, columns=drugs)
+
+
+            utils.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
+
+
+            y_pred_proba = trained_model_pfn.predict_proba(X_test)
+
+
+            utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
+                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                    0] + "_Binary_Relevance_probabilities_MOC_prediction"))
+
+        else:
+
+            kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+
+            y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
+
+
+
+
+            y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
+
+            kfolds = np.zeros((y_pred.shape[0], 1))
+
+            k = 0
+
+            for _, test in kf.split(X, Y):
+                for i in test:
+                    kfolds[i] = k
+                k += 1
+
+            y_pred_df["kFolds"] = kfolds
+
+            y_test = np.zeros((y_pred.shape[0], Y.shape[1]))
+
+            t = 0
+
+            for _, test in kf.split(X, Y):
+                for i in test:
+                    # print(i)
+                    for j in range(Y.shape[1]):
+                        y_test[t, j] = Y[i, j]
+                    t += 1
+
+
+
+            y_test_df = pd.DataFrame(y_test, columns=drugs)
+
+            utils.save_multilabel(y_pred_df, y_test_df, label=(
+                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_MOC_prediction"))
+
+
+
+            utils.save_multilabel_proba(y_pred, y_test_df, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_BR_NaInc_probabilities_MOC_prediction"))
+                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_MOC_prediction"))
+
 
 
 
