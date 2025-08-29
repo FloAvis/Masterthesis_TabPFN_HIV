@@ -192,7 +192,7 @@ def main():
                     for i in test:
                         # print(i)
                         for j in range(Y.shape[1]):
-                            y_test[t, j] = Y[i, j]
+                            y_test[t, j] = Y.iloc[i, j]
                         t += 1
 
                 y_test_df = pd.DataFrame(y_test, columns=drugs)
