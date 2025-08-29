@@ -205,7 +205,7 @@ def save_results(y_pred, y_true, label, path="../prediction_results/"):
 
 
 
-def save_multilabel(y_pred, y_true, label, path="../prediction_results/"):
+def save_multilabel(y_pred, y_true, label, k_folds=None, path="../prediction_results/"):
     """
     Script to save the prediction results to a file for later evaluation
 
@@ -217,7 +217,7 @@ def save_multilabel(y_pred, y_true, label, path="../prediction_results/"):
     """
 
     if y_true.shape != y_pred.shape:
-        raise Exception("True labels do not match predicted labels")
+        raise Exception("True labels  do not match predicted labels: " + str(y_true.shape) + " != " + str(y_pred.shape))
 
     splt = label.split('/')[:-1]
     sub_filepath = '/'.join(splt)
@@ -227,6 +227,10 @@ def save_multilabel(y_pred, y_true, label, path="../prediction_results/"):
     Path(path + sub_filepath).mkdir(parents=True, exist_ok=True)
 
     y_pred_new = y_pred.add_prefix("Pred_")
+
+    if k_folds is not None:
+        y_pred_new["kFolds"] = k_folds
+
     y_true_new = y_true.add_prefix("True_")
 
     y_true_new.reset_index(inplace=True, drop=True)
@@ -281,7 +285,8 @@ def save_multilabel_proba(y_pred_probas, y_true, label, k_folds=None, path="../p
 
 
     if y_true.shape != y_pred.shape:
-        raise Exception("True labels do not match predicted labels")
+        raise Exception("True labels  do not match predicted labels: " + str(y_true.shape) + " != " + str(y_pred.shape))
+
 
     splt = label.split('/')[:-1]
     sub_filepath = '/'.join(splt)
@@ -318,7 +323,7 @@ def calc_labels(y_pred):
 
     y_pred_new = np.zeros((y_pred_probas[0].shape[0], len(y_pred_probas)))
 
-    print(y_pred_new)
+    #print(y_pred_new)
 
     for j, clas in enumerate(y_pred_probas):
         for i in range(clas.shape[0]):

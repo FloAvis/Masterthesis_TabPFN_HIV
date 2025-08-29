@@ -182,7 +182,7 @@ def main():
                         kfolds[i] = k
                     k += 1
 
-                y_pred_df["kFolds"] = kfolds
+                #y_pred_df["kFolds"] = kfolds
 
                 y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
 
@@ -197,7 +197,7 @@ def main():
 
                 y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-                utils.save_multilabel(y_pred_df, y_test_df, label=(
+                utils.save_multilabel(y_pred_df, y_test_df, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_" + name + "_Binary_Relevance_"+ str(folds) + "_fold_MOC_prediction"))
 
