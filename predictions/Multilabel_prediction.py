@@ -121,6 +121,8 @@ def running_models(input_file, output_file):
 
         y_pred_class = np.argmax(y_pred, axis=1)
 
+        y_test = list(y_test[drug])
+
         #--------------------------------------------------------------------------------------------------------------------
         # Evaluation metrics
 
@@ -157,7 +159,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_complete_Multilabel_prediction"))
+        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_complete_labels_Multilabel_prediction"))
 
 
     results.to_csv(output_file)
