@@ -78,13 +78,14 @@ def running_models(input_file, output_file):
 
     for drug in drugs:
         print(input_file.split("/")[1].split("_")[0] + ": " + drug)
+
         tmp_drugs = drugs.copy()
         tmp_drugs.remove(drug)
 
         #getting labels of only needed drug
-        dataframe = df.drop(tmp_drugs, axis=1)
+        #dataframe = df.drop(tmp_drugs, axis=1)
 
-        #dataframe = df.dropna(subset=[drug])
+        dataframe = df.dropna(subset=[drug])
 
         #If no thresholds for drug available no prediction possible
         if drug not in utils.THRESHOLD_INDICES:
