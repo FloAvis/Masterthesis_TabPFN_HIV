@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="New binary predictions bugfixing 2">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="New binary predictions bugfixing 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/Multilabel_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Multilabel_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/statistics/Binary_relevance_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/Binary_relevance_statistics.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,15 +191,7 @@
       <workItem from="1756361912882" duration="10154000" />
       <workItem from="1756454287788" duration="14203000" />
       <workItem from="1756559120336" duration="5819000" />
-      <workItem from="1756629227406" duration="12308000" />
-    </task>
-    <task id="LOCAL-00021" summary="more more debugging">
-      <option name="closed" value="true" />
-      <created>1751809204926</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1751809204926</updated>
+      <workItem from="1756629227406" duration="14840000" />
     </task>
     <task id="LOCAL-00022" summary="More debugging and Onehot vs internal">
       <option name="closed" value="true" />
@@ -585,7 +577,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756645700612</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="New binary predictions bugfixing 3">
+      <option name="closed" value="true" />
+      <created>1756647685589</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1756647685589</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -609,7 +609,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="AutoTABPFN prediction upload" />
     <MESSAGE value="AutoTABPFN one hot encoding as needed" />
     <MESSAGE value="AutoTABPFN bugfixing" />
     <MESSAGE value="AutoTABPFN manual feature selection" />
@@ -634,7 +633,8 @@
     <MESSAGE value="New binary predictions using all labels in the multilabel_predictions.py file" />
     <MESSAGE value="New binary predictions bugfixing" />
     <MESSAGE value="New binary predictions bugfixing 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="New binary predictions bugfixing 2" />
+    <MESSAGE value="New binary predictions bugfixing 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="New binary predictions bugfixing 3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />

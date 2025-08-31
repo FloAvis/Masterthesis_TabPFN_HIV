@@ -78,12 +78,13 @@ def running_models(input_file, output_file):
 
     for drug in drugs:
         print(input_file.split("/")[1].split("_")[0] + ": " + drug)
-        tmp_drugs = drugs.copy().remove(drug)
+        tmp_drugs = drugs.copy()
+        tmp_drugs.remove(drug)
 
         #getting labels of only needed drug
-        #dataframe = df.drop(tmp_drugs, axis=1)
+        dataframe = df.drop(tmp_drugs, axis=1)
 
-        dataframe = df.dropna(subset=[drug])
+        #dataframe = df.dropna(subset=[drug])
 
         #If no thresholds for drug available no prediction possible
         if drug not in utils.THRESHOLD_INDICES:
@@ -99,7 +100,11 @@ def running_models(input_file, output_file):
 
         X = dataframe.drop([drug], axis=1)
 
+        #encoding the classes in X
+        classes = utils.get_classes(X, tmp_drugs, mode="binary")
 
+        for clas in tmp_drugs:
+            X[clas] = classes[clas].values
 
         #X_trafo = enc.transform(X).toarray()
 
@@ -158,7 +163,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, np.array(list(y_test[drug])), label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_complete_labels_Multilabel_prediction"))
+        utils.save_results(y_pred, np.array(list(y_test[drug])), label= (input_file.split("/")[-1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_complete_labels_Multilabel_prediction"))
 
 
     results.to_csv(output_file)
