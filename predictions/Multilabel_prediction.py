@@ -121,7 +121,6 @@ def running_models(input_file, output_file):
 
         y_pred_class = np.argmax(y_pred, axis=1)
 
-        y_test = list(y_test[drug])
 
         #--------------------------------------------------------------------------------------------------------------------
         # Evaluation metrics
@@ -130,7 +129,7 @@ def running_models(input_file, output_file):
         scores = {"Accuracy": accuracy_score(y_test, y_pred_class)}
 
         #Person coefficient:
-        scores.update({"Pearson": pearsonr(y_test, y_pred_class)[0]})
+        scores.update({"Pearson": pearsonr(list(y_test[drug]), y_pred_class)[0]})
 
         #F1 score:
         scores.update({"F1": f1_score(y_test, y_pred_class, average="micro")})
