@@ -79,7 +79,7 @@ def running_models(input_file, output_file):
 
 
         # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
-        y = utils.get_classes(dataframe, drug, mode="multiclass")
+        y = utils.get_classes(dataframe, drug, mode="binary")
 
 
         X = dataframe.drop([drug], axis=1)
@@ -142,7 +142,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Multilabel_prediction"))
+        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_Multilabel_prediction"))
 
 
     results.to_csv(output_file)
@@ -153,7 +153,7 @@ def main():
     files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, "../output/" + (file.split("/")[-1].strip(".txt") + "_multilabel_results.csv"))
+        running_models(file, "../output/" + (file.split("/")[-1].strip(".txt") + "_binary_multilabel_results.csv"))
 
 if __name__ == '__main__':
     main()
