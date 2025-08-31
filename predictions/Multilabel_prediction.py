@@ -44,6 +44,21 @@ def running_models(input_file, output_file):
     #list of current drugs of the dataset
     drugs = [drug for drug in list(df.columns) if not drug.startswith("P") ]
 
+    #-----------------------------------------------------------------------------------------------
+    #Removign all examples where not all drugs are present for comparison with binary relevance
+
+    # Filtering out drugs with less than 10 labels present
+    unusable_drugs = [drug for drug in drugs if df[drug].count() <= 10]
+
+    if len(unusable_drugs) > 0:
+        df.drop(columns=unusable_drugs, inplace=True)
+
+        drugs = [drug for drug in drugs if drug not in unusable_drugs]
+
+    # dropping rows with na labels
+    df.dropna(subset=drugs, inplace=True)
+
+    #---------------------------------------------------------------------------------------------------------
     #creating the one hot encoding for the features
     enc = OneHotEncoder(handle_unknown='error')
 
@@ -142,7 +157,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_Multilabel_prediction"))
+        utils.save_results(y_pred, y_test, label= (input_file.split("/")[1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_complete_Multilabel_prediction"))
 
 
     results.to_csv(output_file)
