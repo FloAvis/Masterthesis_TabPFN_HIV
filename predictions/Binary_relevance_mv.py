@@ -48,7 +48,7 @@ class BinaryRelevance:
         self.estimators_ = []
 
         for i in range(Y.shape[1]):
-            self.estimators_.append(self.estimator(self.tabpfn_params).fit(X, Y[:, i]))
+            self.estimators_.append(self.estimator(**self.tabpfn_params).fit(X, Y[:, i]))
 
         return self
 
