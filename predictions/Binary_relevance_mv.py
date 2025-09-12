@@ -31,7 +31,7 @@ from sklearn.preprocessing import OneHotEncoder
 from tabpfn import TabPFNClassifier
 
 
-class BinaryRelevance():
+class BinaryRelevance:
 
     def __init__(self, estimator, **tabpfn_params):
         # Store parameters
@@ -100,9 +100,9 @@ def main():
 
         Y = utils.get_classes(df, drugs, mode="binary")
 
-        clf = TabPFNClassifier()
+        #clf = TabPFNClassifier()
 
-        multi_target_pfn = BinaryRelevance(clf)
+        multi_target_pfn = BinaryRelevance(TabPFNClassifier, random_state=42)
 
         use_kfold = False
 
