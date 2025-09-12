@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="New binary multilabel predictions with class labels and new saving location debugging 1">
-      <change afterPath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/statistics/Binary_relevance_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/Binary_relevance_statistics.ipynb" afterDir="false" />
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Binary relevance self implementation for the work with missing label information">
+      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,15 +197,7 @@
       <workItem from="1756710411188" duration="189000" />
       <workItem from="1756710630300" duration="1740000" />
       <workItem from="1757061304489" duration="980000" />
-      <workItem from="1757663052557" duration="4341000" />
-    </task>
-    <task id="LOCAL-00024" summary="More debugging and Onehot vs internal">
-      <option name="closed" value="true" />
-      <created>1751812719096</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1751812719098</updated>
+      <workItem from="1757663052557" duration="5003000" />
     </task>
     <task id="LOCAL-00025" summary="updating Onehot vs internal for binary">
       <option name="closed" value="true" />
@@ -593,7 +583,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756650670386</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="Binary relevance self implementation for the work with missing label information">
+      <option name="closed" value="true" />
+      <created>1757667488881</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1757667488881</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -617,7 +615,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="AutoTABPFN manual feature selection" />
     <MESSAGE value="new datasets and Binary relevance MultiOutputClassifier test" />
     <MESSAGE value="Debugging Biinary_relevance" />
     <MESSAGE value="Adding saving multilable prediction function" />
@@ -642,7 +639,8 @@
     <MESSAGE value="New binary predictions bugfixing 3" />
     <MESSAGE value="New binary multilabel predictions with class labels and new saving location" />
     <MESSAGE value="New binary multilabel predictions with class labels and new saving location debugging 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="New binary multilabel predictions with class labels and new saving location debugging 1" />
+    <MESSAGE value="Binary relevance self implementation for the work with missing label information" />
+    <option name="LAST_COMMIT_MESSAGE" value="Binary relevance self implementation for the work with missing label information" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
