@@ -23,10 +23,21 @@ class BinaryRelevance:
 
         self.estimators_ = []
 
-        y = np.asarray(Y)
+
 
         for i in range(Y.shape[1]):
-            self.estimators_.append(self.estimator(**self.tabpfn_params).fit(X, y[:, i]))
+
+            tmp_comb = X.join(Y)
+
+            tmp_comb.dropna(subset=Y.columns.values.tolist()[i], inplace=True)
+
+            filt_X = tmp_comb[X.columns.values.tolist()]
+
+            filt_Y = tmp_comb[Y.columns.values.tolist()]
+
+            filt_y = np.asarray(filt_Y)
+
+            self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
 
         return self
 
