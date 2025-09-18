@@ -4,10 +4,10 @@ import numpy as np
 
 import random
 
+from sklearn.base import BaseEstimator, ClassifierMixin
 
 
-
-class BinaryRelevance:
+class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
     def __init__(self, estimator, **tabpfn_params):
         # Store parameters

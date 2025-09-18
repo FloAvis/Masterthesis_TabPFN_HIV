@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Binary relevance self implementation including na rows">
-      <change afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Binary relevance self implementation debugging removing nas from y">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classifiers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifiers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox.ipynb" afterDir="false" />
@@ -202,15 +201,7 @@
       <workItem from="1757061304489" duration="980000" />
       <workItem from="1757663052557" duration="10215000" />
       <workItem from="1757924614639" duration="6088000" />
-      <workItem from="1758178732113" duration="11003000" />
-    </task>
-    <task id="LOCAL-00030" summary="Regression 3 more debugging">
-      <option name="closed" value="true" />
-      <created>1752655590902</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1752655590902</updated>
+      <workItem from="1758178732113" duration="14085000" />
     </task>
     <task id="LOCAL-00031" summary="Regression 4 more debugging">
       <option name="closed" value="true" />
@@ -596,7 +587,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758186701338</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Binary relevance self implementation debugging removing nas from y">
+      <option name="closed" value="true" />
+      <created>1758194482316</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1758194482316</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -620,7 +619,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="debugging label savings" />
     <MESSAGE value="debugging label savings 2" />
     <MESSAGE value="Adding probability prediction and baseline comparison methods" />
     <MESSAGE value="Debugging by removing label encoder as done already explicitly" />
@@ -645,7 +643,8 @@
     <MESSAGE value="Binary relevance self implementation debugging 3" />
     <MESSAGE value="Binary relevance self implementation debugging and classifier chain as well as prediction test" />
     <MESSAGE value="Binary relevance self implementation including na rows" />
-    <option name="LAST_COMMIT_MESSAGE" value="Binary relevance self implementation including na rows" />
+    <MESSAGE value="Binary relevance self implementation debugging removing nas from y" />
+    <option name="LAST_COMMIT_MESSAGE" value="Binary relevance self implementation debugging removing nas from y" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
