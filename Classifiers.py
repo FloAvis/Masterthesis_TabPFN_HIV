@@ -52,6 +52,8 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
             self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
 
+            self.classes_ = [estimator.classes_ for estimator in self.estimators_]
+
         return self
 
 
