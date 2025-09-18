@@ -1,7 +1,7 @@
 """File for implementation of different classifiers for multilabel prediction with TabPFN"""
 
 import numpy as np
-
+import pandas as pd
 import random
 
 from sklearn.base import BaseEstimator, ClassifierMixin
@@ -27,13 +27,26 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
         for i in range(Y.shape[1]):
 
-            tmp_comb = X.join(Y)
+            if isinstance(X, np.ndarray):
+                col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+                df_X = pd.DataFrame(X, columns=col_names)
+            else:
+                df_X = X
 
-            tmp_comb.dropna(subset=Y.columns.values.tolist()[i], inplace=True)
+            if isinstance(Y, np.ndarray):
+                col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
+                df_Y = pd.DataFrame(Y, columns=col_names)
+            else:
+                df_Y = Y
 
-            filt_X = tmp_comb[X.columns.values.tolist()]
 
-            filt_Y = tmp_comb[Y.columns.values.tolist()]
+            tmp_comb = df_X.join(df_Y)
+
+            tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
+
+            filt_X = tmp_comb[df_X.columns.values.tolist()]
+
+            filt_Y = tmp_comb[df_Y.columns.values.tolist()]
 
             filt_y = np.asarray(filt_Y)
 
