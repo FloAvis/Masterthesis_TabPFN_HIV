@@ -30,7 +30,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 from tabpfn import TabPFNClassifier
 
-from Classifiers import BinaryRelevance as br
+from Classifiers import ClassifierChains as cc
 
 
 
@@ -67,7 +67,7 @@ def main():
 
         #clf = TabPFNClassifier()
 
-        multi_target_pfn = br(TabPFNClassifier, random_state=42)
+        multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
         use_kfold = False
 
@@ -87,13 +87,13 @@ def main():
 
         utils.save_multilabel(y_pred_df, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_homebrew_prediction"))
+                0] + "_Classifier_Chain_homebrew_prediction"))
 
         y_pred_proba = trained_model_pfn.predict_proba(X_test)
 
         utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
                 file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Binary_Relevance_probabilities_homebrew_prediction"))
+            0] + "_Classifier_Chain_probabilities_homebrew_prediction"))
 
 
 
@@ -131,11 +131,11 @@ def main():
 
         utils.save_multilabel(y_pred_df, Y, k_folds=kfolds, label=(
                 file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Binary_Relevance_" + str(folds) + "_fold_homebrew_prediction"))
+            0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction"))
 
         utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds, label=(
                 file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Binary_Relevance_probabilities_" + str(folds) + "_fold_homebrew_prediction"))
+            0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction"))
 
 
 if __name__ == '__main__':

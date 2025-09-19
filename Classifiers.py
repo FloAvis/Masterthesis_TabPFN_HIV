@@ -23,21 +23,19 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
         self.estimators_ = []
 
+        if isinstance(X, np.ndarray):
+            col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+            df_X = pd.DataFrame(X, columns=col_names)
+        else:
+            df_X = X
 
+        if isinstance(Y, np.ndarray):
+            col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
+            df_Y = pd.DataFrame(Y, columns=col_names)
+        else:
+            df_Y = Y
 
         for i in range(Y.shape[1]):
-
-            if isinstance(X, np.ndarray):
-                col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
-                df_X = pd.DataFrame(X, columns=col_names)
-            else:
-                df_X = X
-
-            if isinstance(Y, np.ndarray):
-                col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
-                df_Y = pd.DataFrame(Y, columns=col_names)
-            else:
-                df_Y = Y
 
 
             tmp_comb = df_X.join(df_Y)
@@ -52,7 +50,7 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
             self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
 
-            self.classes_ = [estimator.classes_ for estimator in self.estimators_]
+        self.classes_ = [estimator.classes_ for estimator in self.estimators_]
 
         return self
 
@@ -74,7 +72,7 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
 
 
-class ClassifierChains:
+class ClassifierChains(ClassifierMixin, BaseEstimator):
     def __init__(self, estimator, **tabpfn_params):
         # Store parameters
         self.tabpfn_params = tabpfn_params
@@ -93,21 +91,47 @@ class ClassifierChains:
         order = list(range(Y.shape[1]))
         random.shuffle(order)
 
-
         self.order = order
 
         self.estimators_ = []
 
-        y = np.asarray(Y)
+        if isinstance(X, np.ndarray):
+            col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+            df_X = pd.DataFrame(X, columns=col_names)
+        else:
+            df_X = X
+
+        if isinstance(Y, np.ndarray):
+            col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
+            df_Y = pd.DataFrame(Y, columns=col_names)
+        else:
+            df_Y = Y
+
+
 
         for est_num, i in enumerate(self.order):
-            tmp_X = X.copy()
+
+            tmp_X = df_X.copy()
+
+
+            tmp_comb = tmp_X.join(df_Y)
+
+            tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
+
+            filt_X = tmp_comb[df_X.columns.values.tolist()]
+
+            filt_Y = tmp_comb[df_Y.columns.values.tolist()]
+
+            filt_y = np.asarray(filt_Y)
+
 
             for j in range(est_num):
-                tmp_X[j] = y[:, self.order[j]]
+                filt_X[j] = filt_y[:, self.order[j]]
 
 
-            self.estimators_.append(self.estimator(**self.tabpfn_params).fit(tmp_X, y[:, i]))
+            self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
+
+        self.classes_ = [estimator.classes_ for estimator in self.estimators_]
 
         return self
 
