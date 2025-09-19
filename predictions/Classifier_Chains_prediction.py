@@ -99,7 +99,7 @@ def main():
 
         kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-        y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
+        y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, params={"random_state":42}, method="predict_proba")
 
         y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
 
