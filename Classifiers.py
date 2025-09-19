@@ -126,7 +126,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
 
             for j in range(est_num):
-                filt_X["Feat_" + str(j)] = filt_y[:, self.order[j]]
+                filt_X[("Feat_" + str(j))] = filt_y[:, self.order[j]]
 
 
             self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
@@ -145,7 +145,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
         for est_num, i in enumerate(self.order):
 
             if est_num != 0:
-                tmp_X[est_num - 1] = y[self.order[est_num - 1]]
+                tmp_X[("Feat_" + str(est_num - 1))] = y[self.order[est_num - 1]]
 
             y[i] = self.estimators_[est_num].predict(tmp_X)
 
@@ -160,7 +160,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
         for est_num, i in enumerate(self.order):
 
             if est_num != 0:
-                tmp_X[est_num - 1] = y_pred_class
+                tmp_X[("Feat_" + str(est_num - 1))] = y_pred_class
 
             results[i] = self.estimators_[est_num].predict_proba(tmp_X)
 
