@@ -6,25 +6,14 @@ import pandas as pd
 import numpy as np
 import time
 
-import sys
-import os
 
 import utils
 
-from sklearn.metrics import (
-    accuracy_score,
-    f1_score,
-    roc_auc_score,
-)
+
 from sklearn.model_selection import train_test_split
-from sklearn.multioutput import MultiOutputClassifier
-from sklearn.model_selection import StratifiedKFold, KFold
+from sklearn.model_selection import KFold
 
-from sklearn.model_selection import cross_val_predict, cross_val_score, cross_validate
-
-from scipy.stats import pearsonr
-
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import cross_val_predict
 
 # Baseline Imports
 
@@ -99,7 +88,7 @@ def main():
 
         kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-        y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, params={"random_state":42}, method="predict_proba")
+        y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
 
         y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
 

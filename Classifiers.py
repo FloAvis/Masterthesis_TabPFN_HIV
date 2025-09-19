@@ -4,14 +4,16 @@ import numpy as np
 import pandas as pd
 import random
 
+import utils
+
 from sklearn.base import BaseEstimator, ClassifierMixin
 
 
 class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
-    def __init__(self, estimator, **tabpfn_params):
+    def __init__(self, estimator, random_state=42):
         # Store parameters
-        self.tabpfn_params = tabpfn_params
+        self.random_state = random_state
         self.estimator = estimator
 
         # Initialize the underlying classifier with given parameters
@@ -48,7 +50,7 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
             filt_y = np.asarray(filt_Y)
 
-            self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
+            self.estimators_.append(self.estimator(random_state=self.random_state).fit(filt_X, filt_y[:, i]))
 
         self.classes_ = [estimator.classes_ for estimator in self.estimators_]
 
@@ -73,9 +75,9 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
 
 class ClassifierChains(ClassifierMixin, BaseEstimator):
-    def __init__(self, estimator, **tabpfn_params):
+    def __init__(self, estimator, random_state=42):
         # Store parameters
-        self.tabpfn_params = tabpfn_params
+        self.random_state = random_state
         self.estimator = estimator
 
 
@@ -86,7 +88,8 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
     def fit(self, X, Y, sample_weight=None, **fit_params):
 
-        random.seed(self.tabpfn_params["random_state"])
+        print(self.random_state)
+        random.seed(self.random_state)
 
         order = list(range(Y.shape[1]))
         random.shuffle(order)
@@ -129,7 +132,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
                 filt_X[("Feat_" + str(j))] = filt_y[:, self.order[j]]
 
 
-            self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
+            self.estimators_.append(self.estimator(random_state=self.random_state).fit(filt_X, filt_y[:, i]))
 
         self.classes_ = [estimator.classes_ for estimator in self.estimators_]
 
