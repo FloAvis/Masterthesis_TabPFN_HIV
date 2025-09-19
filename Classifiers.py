@@ -126,7 +126,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
 
             for j in range(est_num):
-                filt_X[j] = filt_y[:, self.order[j]]
+                filt_X["Feat_" + str(j)] = filt_y[:, self.order[j]]
 
 
             self.estimators_.append(self.estimator(**self.tabpfn_params).fit(filt_X, filt_y[:, i]))
