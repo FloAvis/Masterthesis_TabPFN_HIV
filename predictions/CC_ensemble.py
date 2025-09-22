@@ -80,16 +80,17 @@ def main():
 
         y_test_df = pd.DataFrame(y_test, columns=drugs)
 
+        y_pred_proba_new = []
 
-        for i, proba in enumerate(y_pred_proba):
-            y_pred_proba[i] = np.stack(proba, axis=1)
+        for proba in y_pred_proba:
+            y_pred_proba_new.append( np.stack(proba, axis=1))
 
         utils.save_ensemble(y_pred, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                 0] + "_Classifier_Chain_ensemble"))
 
 
-        utils.save_ensemble_proba(y_pred_proba, y_test_df, label=(
+        utils.save_ensemble_proba(y_pred_proba_new, y_test_df, label=(
                 file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
             0] + "_Classifier_Chain_ensemble_probabilities"))
 
