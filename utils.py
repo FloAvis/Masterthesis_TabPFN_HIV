@@ -239,12 +239,15 @@ def save_multilabel(y_pred, y_true, label, k_folds=None, path="../prediction_res
 
     df.to_csv(path + label + ".csv")
 
-def subset_acc(y_pred, y_true):
+def subset_acc(y_pred, y_true, nan_mode="warning"):
     """
     Calculates the subset accuracy for multilabel prediction
 
     :param y_pred: Predicted labels
     :param y_true: true labels
+    :param nan_mode: mode determining what happens when NaN is encountered:
+                        - "warning": message informing about presence of NaNs which always leads to negative result
+                        - "ignore": ignoring the NaNs in calculation
     :return: calculated subset accuracy
     """
 
@@ -253,9 +256,21 @@ def subset_acc(y_pred, y_true):
     for i in range(y_pred.shape[0]):
         tmp = 1
         for j in range(y_pred.shape[1]):
-            if y_pred.iloc[i,j] != y_true.iloc[i,j]:
-                tmp = 0
-                break
+            if np.isnan(y_true.iloc[i,j]):
+                if nan_mode == "ignore":
+                    continue
+                elif nan_mode == "warning":
+                    print("Warning: True label is Missing, example not determinable")
+                    tmp = 0
+                    break
+                else:
+                    print("Invalid NaN handling")
+                    return
+            else:
+                if y_pred.iloc[i,j] != y_true.iloc[i,j]:
+                    tmp = 0
+                    break
+
         acc = acc + tmp
 
     acc = acc/y_pred.shape[0]
@@ -335,6 +350,86 @@ def calc_labels(y_pred):
     return y_pred_new
 
 
+def save_ensemble(y_pred_ensemble, y_true, label, k_folds=None, path="../prediction_results/"):
+    """
+    Script to save the prediction probabilities for each label, binary only
+
+    :param y_pred_probas: Probabilities of predictions
+    :param y_true: true labels
+    :param label: name for the file without .csv attachement
+    :param k_folds: array with sequence of k_folds
+    :param path: path of directory where the file should be saved. Default
+    :return: Saving predicted probabilities of the positive labels and true labels into file
+    """
+
+    if np.array(y_pred_ensemble).shape[1:3] != y_true.shape:
+        raise Exception("True labels  do not match predicted labels: " + str(y_true.shape) + " != " + str(np.array(y_pred_probas_ensemble).T.shape[1:3]))
+
+
+    Path(path + label).mkdir(parents=True, exist_ok=True)
+
+    drugs = y_true.columns.values.tolist()
+
+    for j, y_pred_arr in enumerate(y_pred_ensemble):
+
+        y_pred = pd.DataFrame(y_pred_arr, columns=drugs)
+
+        y_pred_new = y_pred.add_prefix("Pred_")
+
+        if k_folds is not None:
+            y_pred_new["kFolds"] = k_folds
+
+        y_true_new = y_true.add_prefix("True_")
+
+        y_true_new.reset_index(inplace=True, drop=True)
+
+        df = pd.concat([y_true_new, y_pred_new], axis=1, sort=False)
+
+        df.to_csv(path + label + "/Ensemble_" + str(j) + ".csv")
+
+
+
+def save_ensemble_proba(y_pred_probas_ensemble, y_true, label, k_folds=None, path="../prediction_results/"):
+    """
+    Script to save the prediction probabilities for each label, binary only
+
+    :param y_pred_probas: Probabilities of predictions
+    :param y_true: true labels
+    :param label: name for the file without .csv attachement
+    :param k_folds: array with sequence of k_folds
+    :param path: path of directory where the file should be saved. Default
+    :return: Saving predicted probabilities of the positive labels and true labels into file
+    """
+
+    if np.array(y_pred_probas_ensemble).T.shape[1:3] != y_true.shape:
+        raise Exception("True labels  do not match predicted labels: " + str(y_true.shape) + " != " + str(np.array(y_pred_probas_ensemble).T.shape[1:3]))
+
+
+    Path(path + label).mkdir(parents=True, exist_ok=True)
+
+    for j, y_pred_probas in enumerate(y_pred_probas_ensemble):
+        y_pred_dict = {}
+
+        drugs = y_true.columns.values.tolist()
+
+        for i, probas in enumerate(y_pred_probas):
+            y_pred_dict.update({drugs[i]: probas[:, 1]})
+
+        y_pred = pd.DataFrame(y_pred_dict)
+
+        y_pred_new = y_pred.add_prefix("Pred_Proba_")
+
+        if k_folds is not None:
+            y_pred_new["kFolds"] = k_folds
+
+
+        y_true_new = y_true.add_prefix("True_")
+
+        y_true_new.reset_index(inplace=True, drop=True)
+
+        df = pd.concat([y_true_new, y_pred_new], axis=1, sort=False)
+
+        df.to_csv(path + label + "/Ensemble_probas_" + str(j) + ".csv")
 
 
 

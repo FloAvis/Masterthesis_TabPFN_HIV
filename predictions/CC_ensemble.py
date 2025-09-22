@@ -21,8 +21,9 @@ from tabpfn import TabPFNClassifier
 
 from Classifiers import ClassifierChains as cc
 
+from Classifiers import Ensemble as en
 
-
+from sklearn.metrics import jaccard_score
 
 def main():
     files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",
@@ -62,42 +63,43 @@ def main():
 
         folds = 5
 
-
+        n_jobs = 4
 
         X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
-        multi_target_pfn.fit(X_train, y_train)
 
-        y_pred = multi_target_pfn.predict(X_test)
 
-        y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+        ensemble = en(cc, random_state=42, n_jobs=n_jobs)
+
+        ensemble.fit(X=X_train, Y=y_train)
+
+        y_pred = ensemble.predict(X_test)
+
+        y_pred_proba = ensemble.predict_proba(X_test)
+
 
         y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-        utils.save_multilabel(y_pred_df, y_test_df, label=(
+
+        for i, proba in enumerate(y_pred_proba):
+            y_pred_proba[i] = np.stack(proba, axis=1)
+
+        utils.save_ensemble(y_pred, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_homebrew_prediction"))
-
-        y_pred_proba = multi_target_pfn.predict_proba(X_test)
+                0] + "_Classifier_Chain_ensemble"))
 
 
-        #changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
-        y_pred_proba_new = np.stack(y_pred_proba, axis=1)
-
-        utils.save_multilabel_proba(y_pred_proba_new, y_test_df, label=(
+        utils.save_ensemble_proba(y_pred_proba, y_test_df, label=(
                 file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Classifier_Chain_probabilities_homebrew_prediction"))
+            0] + "_Classifier_Chain_ensemble_probabilities"))
 
 
-
+        """
         kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
         y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
 
-        # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
-        y_pred_new = np.stack(y_pred, axis=1)
-
-        y_pred_df = pd.DataFrame(utils.calc_labels(y_pred_new), columns=drugs)
+        y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
 
         kfolds = np.zeros((y_pred[0].shape[0], 1))
 
@@ -109,7 +111,7 @@ def main():
             k += 1
 
         # y_pred_df["kFolds"] = kfolds
-        """
+
         y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
 
         t = 0
@@ -121,7 +123,6 @@ def main():
                     y_test[t, j] = Y.iloc[i, j]
                 t += 1
 
-        """
 
         # y_test_df = pd.DataFrame(y_test, columns=drugs)
 
@@ -132,7 +133,7 @@ def main():
         utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds, label=(
                 file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
             0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction"))
-
+        """
 
 if __name__ == '__main__':
     main()
