@@ -130,11 +130,11 @@ def main():
 
             # y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-            utils.save_multilabel(y_pred_labels, Y, k_folds=kfolds.flatten(), label=(
+            utils.save_ensemble(y_pred_labels, Y, k_folds=kfolds.flatten(), label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble"))
 
-            utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds.flatten(), label=(
+            utils.save_ensemble_proba(y_pred, Y, k_folds=kfolds.flatten(), label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities"))
 
