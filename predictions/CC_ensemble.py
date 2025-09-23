@@ -116,16 +116,10 @@ def main():
 
             # y_pred_df["kFolds"] = kfolds
 
-            y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
+            y_pred_proba_new = []
 
-            t = 0
-
-            for _, test in kf.split(X, Y):
-                for i in test:
-                    # print(i)
-                    for j in range(Y.shape[1]):
-                        y_test[t, j] = Y.iloc[i, j]
-                    t += 1
+            for proba in y_pred:
+                y_pred_proba_new.append(np.stack(proba, axis=1))
 
 
             # y_test_df = pd.DataFrame(y_test, columns=drugs)
@@ -134,7 +128,7 @@ def main():
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble"))
 
-            utils.save_ensemble_proba(y_pred, Y, k_folds=kfolds.flatten(), label=(
+            utils.save_ensemble_proba(y_pred_proba_new, Y, k_folds=kfolds.flatten(), label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities"))
 
