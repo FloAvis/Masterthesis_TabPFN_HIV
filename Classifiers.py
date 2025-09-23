@@ -312,5 +312,7 @@ class Ensemble(ClassifierMixin, BaseEstimator):
 
         if self.averaging:
             return np.mean(np.array([chain.predict_proba(X) for chain in self.chains_])[...,1], axis=0)
+            #return np.mean(np.array([chain.predict_proba(X) for chain in self.chains_]), axis=0)
+
         else:
             return np.array([chain.predict_proba(X) for chain in self.chains_])

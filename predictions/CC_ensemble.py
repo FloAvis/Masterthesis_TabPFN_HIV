@@ -59,7 +59,7 @@ def main():
 
         multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
-        use_kfold = False
+        use_kfold = True
 
         folds = 5
 
@@ -71,70 +71,71 @@ def main():
 
         ensemble = en(cc, random_state=42, n_jobs=n_jobs)
 
-        ensemble.fit(X=X_train, Y=y_train)
+        if not use_kfold:
 
-        y_pred = ensemble.predict(X_test)
+            ensemble.fit(X=X_train, Y=y_train)
 
-        y_pred_proba = ensemble.predict_proba(X_test)
+            y_pred = ensemble.predict(X_test)
+
+            y_pred_proba = ensemble.predict_proba(X_test)
 
 
-        y_test_df = pd.DataFrame(y_test, columns=drugs)
+            y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-        y_pred_proba_new = []
+            y_pred_proba_new = []
 
-        for proba in y_pred_proba:
-            y_pred_proba_new.append( np.stack(proba, axis=1))
+            for proba in y_pred_proba:
+                y_pred_proba_new.append( np.stack(proba, axis=1))
 
-        utils.save_ensemble(y_pred, y_test_df, label=(
+            utils.save_ensemble(y_pred, y_test_df, label=(
+                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                    0] + "_Classifier_Chain_ensemble"))
+
+
+            utils.save_ensemble_proba(y_pred_proba_new, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_ensemble"))
+                0] + "_Classifier_Chain_ensemble_probabilities"))
+        else:
+
+            kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+
+            y_pred = utils.ensemble_cv_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
+
+            y_pred_labels = (y_pred[...,1] >= 0.5) * 1.0
+
+            kfolds = np.zeros((y_pred[0].shape[0], 1))
+
+            k = 0
+
+            for _, test in kf.split(X, Y):
+                for i in test:
+                    kfolds[i] = k
+                k += 1
+
+            # y_pred_df["kFolds"] = kfolds
+
+            y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
+
+            t = 0
+
+            for _, test in kf.split(X, Y):
+                for i in test:
+                    # print(i)
+                    for j in range(Y.shape[1]):
+                        y_test[t, j] = Y.iloc[i, j]
+                    t += 1
 
 
-        utils.save_ensemble_proba(y_pred_proba_new, y_test_df, label=(
-                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Classifier_Chain_ensemble_probabilities"))
+            # y_test_df = pd.DataFrame(y_test, columns=drugs)
 
+            utils.save_multilabel(y_pred_labels, Y, k_folds=kfolds.flatten(), label=(
+                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble"))
 
-        """
-        kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+            utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds.flatten(), label=(
+                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities"))
 
-        y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
-
-        y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
-
-        kfolds = np.zeros((y_pred[0].shape[0], 1))
-
-        k = 0
-
-        for _, test in kf.split(X, Y):
-            for i in test:
-                kfolds[i] = k
-            k += 1
-
-        # y_pred_df["kFolds"] = kfolds
-
-        y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
-
-        t = 0
-
-        for _, test in kf.split(X, Y):
-            for i in test:
-                # print(i)
-                for j in range(Y.shape[1]):
-                    y_test[t, j] = Y.iloc[i, j]
-                t += 1
-
-
-        # y_test_df = pd.DataFrame(y_test, columns=drugs)
-
-        utils.save_multilabel(y_pred_df, Y, k_folds=kfolds, label=(
-                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction"))
-
-        utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds, label=(
-                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction"))
-        """
 
 if __name__ == '__main__':
     main()
