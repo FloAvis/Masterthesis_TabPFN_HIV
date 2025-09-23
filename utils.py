@@ -437,9 +437,12 @@ def ensemble_cv_predict(ensemble, X, Y, cv, method="predict_proba"):
 
     y_pred = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1], 2))  # (n_samples, n_labels, n_classes)
 
+    X_arr = np.array(X)
+    Y_arr = np.array(Y)
+
     for train_idx, test_idx in cv.split(X):
-        ensemble.fit(X[train_idx], Y[train_idx])
-        y_pred[:,test_idx] = ensemble.predict_proba(X[test_idx])
+        ensemble.fit(X_arr[train_idx], Y_arr[train_idx])
+        y_pred[:,test_idx] = ensemble.predict_proba(X_arr[test_idx])
 
     return y_pred
 

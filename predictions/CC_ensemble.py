@@ -97,6 +97,8 @@ def main():
                 0] + "_Classifier_Chain_ensemble_probabilities"))
         else:
 
+            #print(X)
+
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
             y_pred = utils.ensemble_cv_predict(ensemble, X, Y, cv=kf, method="predict_proba")

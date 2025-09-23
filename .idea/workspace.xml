@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="CC ensemble method k fold implementation and prediction">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="CC ensemble method k fold implementation and prediction debugging 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/CC_ensemble.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/CC_ensemble.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,27 +63,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.AutoTABPFN_prediction.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Binary_prediction.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ML_comparison_standard.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Sandbox.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/flori/Desktop/Masterarbeit/Models&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.AutoTABPFN_prediction.executor": "Run",
+    "Python.Binary_prediction.executor": "Run",
+    "Python.CC_ensemble.executor": "Run",
+    "Python.ML_comparison_standard.executor": "Run",
+    "Python.Sandbox.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/flori/Desktop/Masterarbeit/Models",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\data\Other_datasets" />
@@ -208,15 +210,7 @@
       <workItem from="1758526410461" duration="6824000" />
       <workItem from="1758538631831" duration="10065000" />
       <workItem from="1758561330423" duration="2309000" />
-      <workItem from="1758616645420" duration="5107000" />
-    </task>
-    <task id="LOCAL-00042" summary="Comparison standard prediction">
-      <option name="closed" value="true" />
-      <created>1754312435057</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1754312435057</updated>
+      <workItem from="1758616645420" duration="6030000" />
     </task>
     <task id="LOCAL-00043" summary="bugfixing">
       <option name="closed" value="true" />
@@ -602,7 +596,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758621119489</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="CC ensemble method k fold implementation and prediction debugging 1">
+      <option name="closed" value="true" />
+      <created>1758625668532</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1758625668532</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -626,7 +628,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Running &quot;multilabel&quot; prediction again with binary results" />
     <MESSAGE value="New binary predictions using all labels in the multilabel_predictions.py file" />
     <MESSAGE value="New binary predictions bugfixing" />
     <MESSAGE value="New binary predictions bugfixing 2" />
@@ -651,7 +652,8 @@
     <MESSAGE value="CC ensemble method implementation and static test prediction" />
     <MESSAGE value="CC ensemble method implementation and static test prediction debugging 1" />
     <MESSAGE value="CC ensemble method k fold implementation and prediction" />
-    <option name="LAST_COMMIT_MESSAGE" value="CC ensemble method k fold implementation and prediction" />
+    <MESSAGE value="CC ensemble method k fold implementation and prediction debugging 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="CC ensemble method k fold implementation and prediction debugging 1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
@@ -660,5 +662,6 @@
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Binary_prediction.coverage" NAME="Binary_prediction Coverage Results" MODIFIED="1751804896417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$test.coverage" NAME="test Coverage Results" MODIFIED="1749568166750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$AutoTABPFN_prediction.coverage" NAME="AutoTABPFN_prediction Coverage Results" MODIFIED="1754473003728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
+    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$CC_ensemble.coverage" NAME="CC_ensemble Coverage Results" MODIFIED="1758626411252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
   </component>
 </project>
