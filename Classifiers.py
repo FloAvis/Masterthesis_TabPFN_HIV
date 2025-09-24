@@ -150,7 +150,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
         # Store parameters
         self.random_state = random_state
         self.estimator = estimator
-        self.order_type = order
+        self.order = order
 
         # Initialize the underlying classifier with given parameters
         #self.clf = self.estimator(**tabpfn_params)
@@ -159,10 +159,10 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
     def fit(self, X, Y, sample_weight=None, **fit_params):
 
-        if isinstance(self.order_type, collections.abc.Sequence) and not isinstance(self.order_type, str) and len(self.order_type) == Y.shape[1]:
-            order = self.order_type
+        if isinstance(self.order, collections.abc.Sequence) and not isinstance(self.order, str) and len(self.order) == Y.shape[1]:
+            order = self.order
         else:
-            if self.order_type != "random":
+            if self.order != "random":
                 warnings.warn("Invalid ordering, contunuing with random")
             random.seed(self.random_state)
 
@@ -170,7 +170,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
             random.shuffle(order)
 
-        self.order = order
+            self.order = order
 
         print(order)
 
