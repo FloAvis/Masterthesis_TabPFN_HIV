@@ -159,6 +159,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
     def fit(self, X, Y, sample_weight=None, **fit_params):
 
+
         if isinstance(self.order, collections.abc.Sequence) and not isinstance(self.order, str) and len(self.order) == Y.shape[1]:
             order = self.order
         else:
@@ -172,9 +173,10 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
             self.order = order
 
-        print(order)
+        #print(order)
 
         self.estimators_ = []
+
 
         if isinstance(X, np.ndarray):
             col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
@@ -185,9 +187,15 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
         if isinstance(Y, np.ndarray):
             col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
             df_Y = pd.DataFrame(Y, columns=col_names)
+
+            # currently only works with binary due to cross_val_predict changin Nan to a number higher than number of classes i presume
+
+            df_Y.replace(2, np.nan, inplace=True)
         else:
             df_Y = Y
 
+            #currently only works with binary due to cross_val_predict changin Nan to a number higher than number of classes i presume
+            df_Y.replace(2, np.nan, inplace=True)
 
 
         for est_num, i in enumerate(self.order):

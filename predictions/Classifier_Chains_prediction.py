@@ -90,11 +90,14 @@ def main():
 
         else:
 
+            multi_target_pfn2 = cc(TabPFNClassifier, random_state=42)
+
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-            y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
 
-            print(y_pred.shape)
+            y_pred = cross_val_predict(multi_target_pfn2, X, Y, cv=kf,verbose=2, method="predict_proba")
+
+            #print(y_pred.shape)
 
             y_pred_new = (y_pred[...,1] >= 0.5) * 1.0
 
