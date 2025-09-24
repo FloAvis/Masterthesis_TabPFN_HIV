@@ -97,7 +97,7 @@ def main():
             y_pred = (y_pred[...,1] >= 0.5) * 1.0
 
             # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
-            y_pred_new = np.stack(y_pred, axis=1)
+            #y_pred_new = np.stack(y_pred, axis=1)
 
             y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
 
