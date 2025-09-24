@@ -99,11 +99,13 @@ def main():
             y_pred_new = (y_pred[...,1] >= 0.5) * 1.0
 
             # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
-            y_pred_new = np.stack(y_pred_new, axis=1)
+            #y_pred_new = np.stack(y_pred_new, axis=1)
+
+            print(y_pred_new.shape)
 
             y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
 
-            kfolds = np.zeros((y_pred[0].shape[0], 1))
+            kfolds = np.zeros((y_pred_new.shape[0], 1))
 
             k = 0
 

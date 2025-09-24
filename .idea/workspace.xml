@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 4">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 5">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/statistics/CC_ensemble_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/CC_ensemble_statistics.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,15 +210,7 @@
       <workItem from="1758538631831" duration="10065000" />
       <workItem from="1758561330423" duration="2309000" />
       <workItem from="1758616645420" duration="12280000" />
-      <workItem from="1758701055259" duration="6581000" />
-    </task>
-    <task id="LOCAL-00051" summary="Adding saving multilable prediction function">
-      <option name="closed" value="true" />
-      <created>1756143907954</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1756143907954</updated>
+      <workItem from="1758701055259" duration="6857000" />
     </task>
     <task id="LOCAL-00052" summary="debugging throwing out CAB">
       <option name="closed" value="true" />
@@ -605,7 +596,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758706625808</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 5">
+      <option name="closed" value="true" />
+      <created>1758708236312</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1758708236312</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -629,7 +628,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Binary relevance self implementation debugging 2" />
     <MESSAGE value="Binary relevance self implementation debugging 3" />
     <MESSAGE value="Binary relevance self implementation debugging and classifier chain as well as prediction test" />
     <MESSAGE value="Binary relevance self implementation including na rows" />
@@ -654,7 +652,8 @@
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 2" />
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 3" />
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 4" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 4" />
+    <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 5" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
