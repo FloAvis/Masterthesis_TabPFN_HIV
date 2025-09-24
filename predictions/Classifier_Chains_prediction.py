@@ -135,7 +135,7 @@ def main():
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                 0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction_new"))
 
-            utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds, label=(
+            utils.save_multilabel_proba(np.stack(y_pred, axis=1), Y, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                 0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction_new"))
 
