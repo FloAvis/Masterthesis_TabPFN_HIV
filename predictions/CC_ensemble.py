@@ -101,7 +101,7 @@ def main():
 
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-            y_pred = utils.ensemble_cv_predict(ensemble, X, Y, cv=kf, method="predict_proba")
+            y_pred = utils.cv_predict_proba(ensemble, X, Y, cv=kf, method="ensemble")
 
             y_pred_labels = (y_pred[...,1] >= 0.5) * 1.0
 

@@ -95,9 +95,11 @@ def main():
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
 
-            y_pred = cross_val_predict(multi_target_pfn2, X, Y, cv=kf,verbose=2, method="predict_proba")
+            #y_pred = cross_val_predict(multi_target_pfn2, X, Y, cv=kf,verbose=2, method="predict_proba")
 
-            #print(y_pred.shape)
+            y_pred = utils.cv_predict_proba(multi_target_pfn2, X, Y, cv=kf, method="single")
+
+            print(y_pred.shape)
 
             y_pred_new = (y_pred[...,1] >= 0.5) * 1.0
 

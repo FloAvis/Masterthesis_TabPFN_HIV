@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 7">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 8">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classifiers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifiers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/CC_ensemble.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/CC_ensemble.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/statistics/BR_CC_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/BR_CC_statistics.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/statistics/CC_ensemble_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/CC_ensemble_statistics.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,15 +214,7 @@
       <workItem from="1758538631831" duration="10065000" />
       <workItem from="1758561330423" duration="2309000" />
       <workItem from="1758616645420" duration="12280000" />
-      <workItem from="1758701055259" duration="10236000" />
-    </task>
-    <task id="LOCAL-00054" summary="debugging label savings">
-      <option name="closed" value="true" />
-      <created>1756193708751</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1756193708751</updated>
+      <workItem from="1758701055259" duration="11430000" />
     </task>
     <task id="LOCAL-00055" summary="debugging label savings 2">
       <option name="closed" value="true" />
@@ -609,7 +600,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758708661727</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 8">
+      <option name="closed" value="true" />
+      <created>1758711950632</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1758711950632</updated>
+    </task>
+    <option name="localTasksCounter" value="104" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -633,7 +632,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Binary relevance self implementation including na rows" />
     <MESSAGE value="Binary relevance self implementation debugging removing nas from y" />
     <MESSAGE value="Binary relevance self implementation debugging scikit compatibility" />
     <MESSAGE value="Binary relevance self implementation debugging array compatibility" />
@@ -658,18 +656,8 @@
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 5" />
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 6" />
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 7" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 7" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/predictions/CC_ensemble.py</url>
-          <line>84</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 8" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
