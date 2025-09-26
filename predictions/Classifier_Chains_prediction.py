@@ -97,7 +97,7 @@ def main():
 
             #y_pred = cross_val_predict(multi_target_pfn2, X, Y, cv=kf,verbose=2, method="predict_proba")
 
-            y_pred = utils.cv_predict_proba(multi_target_pfn2, X, Y, cv=kf, method="single")
+            y_pred, y_true = utils.cv_predict_proba(multi_target_pfn2, X, Y, cv=kf, method="single")
 
             print(y_pred.shape)
 
@@ -136,13 +136,16 @@ def main():
 
             # y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-            utils.save_multilabel(y_pred_df, Y, k_folds=kfolds, label=(
-                    file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction_new"))
+            print(y_pred_df)
+            print(y_pred)
 
-            utils.save_multilabel_proba(np.stack(y_pred, axis=1), Y, k_folds=kfolds, label=(
+            utils.save_multilabel(y_pred_df, y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction_new"))
+                0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction_new_save"))
+
+            utils.save_multilabel_proba(np.stack(y_pred, axis=1), y_true, k_folds=kfolds, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction_new_save"))
 
 
 if __name__ == '__main__':

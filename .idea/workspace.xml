@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 8">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction with own CV as other cv does weird things">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/CC_ensemble.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/CC_ensemble.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/statistics/BR_CC_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/BR_CC_statistics.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/statistics/CC_ensemble_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/CC_ensemble_statistics.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -65,29 +65,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.AutoTABPFN_prediction.executor": "Run",
-    "Python.Binary_prediction.executor": "Run",
-    "Python.CC_ensemble.executor": "Run",
-    "Python.Classifier_Chains_prediction.executor": "Run",
-    "Python.ML_comparison_standard.executor": "Run",
-    "Python.Sandbox.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/flori/Desktop/Masterarbeit/Models",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.AutoTABPFN_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Binary_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.CC_ensemble.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Classifier_Chains_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ML_comparison_standard.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Sandbox.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/flori/Desktop/Masterarbeit/Models&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\data\Other_datasets" />
@@ -214,15 +214,10 @@
       <workItem from="1758538631831" duration="10065000" />
       <workItem from="1758561330423" duration="2309000" />
       <workItem from="1758616645420" duration="12280000" />
-      <workItem from="1758701055259" duration="11430000" />
-    </task>
-    <task id="LOCAL-00055" summary="debugging label savings 2">
-      <option name="closed" value="true" />
-      <created>1756196470066</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1756196470066</updated>
+      <workItem from="1758701055259" duration="13094000" />
+      <workItem from="1758725740180" duration="2016000" />
+      <workItem from="1758783998401" duration="2238000" />
+      <workItem from="1758886561586" duration="1768000" />
     </task>
     <task id="LOCAL-00056" summary="Adding probability prediction and baseline comparison methods">
       <option name="closed" value="true" />
@@ -608,7 +603,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758711950632</updated>
     </task>
-    <option name="localTasksCounter" value="104" />
+    <task id="LOCAL-00104" summary="Rerunning Classifier Chain prediction with own CV as other cv does weird things">
+      <option name="closed" value="true" />
+      <created>1758715109300</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1758715109300</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -632,7 +635,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Binary relevance self implementation debugging removing nas from y" />
     <MESSAGE value="Binary relevance self implementation debugging scikit compatibility" />
     <MESSAGE value="Binary relevance self implementation debugging array compatibility" />
     <MESSAGE value="Binary relevance self implementation debugging sklearn compatibility again" />
@@ -657,7 +659,8 @@
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 6" />
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 7" />
     <MESSAGE value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 8" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction as possible problem with result calculation debugging 8" />
+    <MESSAGE value="Rerunning Classifier Chain prediction with own CV as other cv does weird things" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction with own CV as other cv does weird things" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
@@ -665,7 +668,7 @@
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$main.coverage" NAME="main Coverage Results" MODIFIED="1749551806284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Binary_prediction.coverage" NAME="Binary_prediction Coverage Results" MODIFIED="1751804896417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$test.coverage" NAME="test Coverage Results" MODIFIED="1749568166750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Classifier_Chains_prediction.coverage" NAME="Classifier_Chains_prediction Coverage Results" MODIFIED="1758710437363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
+    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Classifier_Chains_prediction.coverage" NAME="Classifier_Chains_prediction Coverage Results" MODIFIED="1758888227521" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$AutoTABPFN_prediction.coverage" NAME="AutoTABPFN_prediction Coverage Results" MODIFIED="1754473003728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$CC_ensemble.coverage" NAME="CC_ensemble Coverage Results" MODIFIED="1758626646675" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
   </component>
