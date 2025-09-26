@@ -439,7 +439,7 @@ def cv_predict_proba(ensemble, X, Y, cv, method="single"):
         y_true = np.zeros((X.shape[0], Y.shape[1], 2))# (n_samples, n_labels, n_classes)
     elif method == "ensemble":
         y_pred = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1], 2))  # (n_samples, n_labels, n_classes)
-        y_true = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1], 2))  # (n_samples, n_labels, n_classes)
+        y_true = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
     else:
         raise Exception("Mode not valid. Please Select 'single' for normal estimators or 'ensemble' for ensembles")
 
