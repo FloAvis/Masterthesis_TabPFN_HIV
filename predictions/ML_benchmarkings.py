@@ -116,6 +116,7 @@ def main():
 
                 y_pred_proba = model.predict_proba(X_test)
 
+                y_pred_df = pd.DataFrame(y_pred, columns=drugs)
 
                 y_test_df = pd.DataFrame(y_test, columns=drugs)
 
@@ -124,7 +125,7 @@ def main():
                 for proba in y_pred_proba:
                     y_pred_proba_new.append( np.stack(proba, axis=1))
 
-                utils.save_multilabel(y_pred, y_test_df, label=(
+                utils.save_multilabel(y_pred_df, y_test_df, label=(
                             file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
                         0] + "_" + name))
 
