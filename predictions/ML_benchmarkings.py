@@ -63,7 +63,7 @@ def main():
             drugs = [drug for drug in drugs if drug not in unusable_drugs]
 
         # dropping rows with na labels
-        #df.dropna(subset=drugs, inplace=True)
+        df.dropna(subset=drugs, inplace=True)
 
         X = df.drop(drugs, axis=1)
 
