@@ -101,6 +101,8 @@ def main():
 
             print(y_pred.shape)
 
+            df_y_true = pd.DataFrame(y_true, columns=drugs)
+
             y_pred_new = (y_pred[...,1] >= 0.5) * 1.0
 
             # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
@@ -139,11 +141,11 @@ def main():
             print(y_pred_df)
             print(y_pred)
 
-            utils.save_multilabel(y_pred_df, y_true, k_folds=kfolds, label=(
+            utils.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                 0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction_new_save"))
 
-            utils.save_multilabel_proba(np.stack(y_pred, axis=1), y_true, k_folds=kfolds, label=(
+            utils.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                 0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction_new_save"))
 
