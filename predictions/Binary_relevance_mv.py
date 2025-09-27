@@ -112,7 +112,7 @@ def main():
 
             y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
 
-            kfolds = np.zeros((y_pred[0].shape[0], 1))
+            kfolds = np.zeros((y_pred_new.shape[0], 1))
 
             k = 0
 
