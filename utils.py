@@ -449,11 +449,19 @@ def cv_predict_proba(ensemble, X, Y, cv, method="single"):
     for train_idx, test_idx in cv.split(X):
         ensemble.fit(X_arr[train_idx], Y_arr[train_idx])
         if method == "single":
-            y_pred[test_idx] = ensemble.predict_proba(X_arr[test_idx])
+            y_pred_tmp = ensemble.predict_proba(X_arr[test_idx])
+            if y_pred[test_idx].shape != y_pred_tmp.shape:
+                y_pred[test_idx] = np.stack(y_pred_tmp, axis=1)
+            else:
+                y_pred[test_idx] = y_pred_tmp
             y_true[test_idx] = Y_arr[test_idx]
         else:
-            y_pred[:,test_idx] = ensemble.predict_proba(X_arr[test_idx])
-            y_true[:,test_idx] = Y_arr[test_idx]
+            y_pred_tmp = ensemble.predict_proba(X_arr[test_idx])
+            if y_pred[:,test_idx].shape != y_pred_tmp.shape:
+                y_pred[:, test_idx] = np.stack(y_pred_tmp, axis=1)
+            else:
+                y_pred[:,test_idx] = ensemble.predict_proba(X_arr[test_idx])
+                y_true[:,test_idx] = Y_arr[test_idx]
 
     return y_pred, y_true
 
