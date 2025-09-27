@@ -124,12 +124,12 @@ def main():
                 for proba in y_pred_proba:
                     y_pred_proba_new.append( np.stack(proba, axis=1))
 
-                utils.save_ensemble(y_pred, y_test_df, label=(
+                utils.save_multilabel(y_pred, y_test_df, label=(
                             file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
                         0] + "_" + name))
 
 
-                utils.save_ensemble_proba(y_pred_proba_new, y_test_df, label=(
+                utils.save_multilabel_proba(y_pred_proba_new, y_test_df, label=(
                         file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
                     0] + "_" + name + "_probabilities"))
         else:
