@@ -436,7 +436,7 @@ def save_ensemble_proba(y_pred_probas_ensemble, y_true, label, k_folds=None, pat
 def cv_predict_proba(ensemble, X, Y, cv, method="single"):
     if method == "single":
         y_pred = np.zeros((X.shape[0], Y.shape[1], 2))
-        y_true = np.zeros((X.shape[0], Y.shape[1], 2))# (n_samples, n_labels, n_classes)
+        y_true = np.zeros((X.shape[0], Y.shape[1]))# (n_samples, n_labels, n_classes)
     elif method == "ensemble":
         y_pred = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1], 2))  # (n_samples, n_labels, n_classes)
         y_true = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)

@@ -12,13 +12,16 @@ import utils
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn.multioutput import ClassifierChain as skl_cc
-from sklearn.multioutput import
+from sklearn.multioutput import MultiOutputClassifier
 
 from xgboost import XGBClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 
 from skmultilearn.problem_transform import BinaryRelevance
 
+
+from sklearn import tree
 from skmultilearn.ensemble import RakelO
 
 
@@ -78,13 +81,27 @@ def main():
 
         X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
+        forest = RandomForestClassifier(random_state=42)
+        xgb = XGBClassifier(random_state=42)
+        lr = LogisticRegression()
 
+        models = [
+            ("BR LR", MultiOutputClassifier(lr, n_jobs=2)),
+            ("BR XGB", MultiOutputClassifier(xgb, n_jobs=2)),
+            ("BR forest", MultiOutputClassifier(forest, n_jobs=2)),
+            ("CC LR", skl_cc(lr, order="random", random_state=42)),
+            ("CC xgb", skl_cc(xgb, order="random", random_state=42)),
+            ("CC forest", skl_cc(forest, order="random", random_state=42)),
+            ("Rakel lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=4)),
+            ("Rakel xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=4)),
+            ("Rakel forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=4)),
+        ]
 
-        ensemble = en(cc, random_state=42, n_jobs=n_jobs)
+        #ensemble = en(cc, random_state=42, n_jobs=n_jobs)
 
         if not use_kfold:
 
-            ensemble.fit(X=X_train, Y=y_train)
+            #ensemble.fit(X=X_train, Y=y_train)
 
             y_pred = ensemble.predict(X_test)
 
