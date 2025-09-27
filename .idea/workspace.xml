@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 2">
-      <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/statistics/BR_CC_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/BR_CC_statistics.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,15 +218,7 @@
       <workItem from="1758725740180" duration="2016000" />
       <workItem from="1758783998401" duration="2238000" />
       <workItem from="1758886561586" duration="6835000" />
-      <workItem from="1758978177599" duration="1081000" />
-    </task>
-    <task id="LOCAL-00059" summary="implementation of kfold cross validation to get error bars">
-      <option name="closed" value="true" />
-      <created>1756378027880</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1756378027880</updated>
+      <workItem from="1758978177599" duration="2627000" />
     </task>
     <task id="LOCAL-00060" summary="debugging kfold">
       <option name="closed" value="true" />
@@ -608,7 +604,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758981232215</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL-00108" summary="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 3">
+      <option name="closed" value="true" />
+      <created>1758981494566</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1758981494566</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -632,7 +636,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Classifier Chain prediction file" />
     <MESSAGE value="Classifier Chain prediction file debugging 1" />
     <MESSAGE value="Classifier Chain prediction file debugging 2" />
     <MESSAGE value="Classifier Chain prediction file debugging 3" />
@@ -657,7 +660,8 @@
     <MESSAGE value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there?" />
     <MESSAGE value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 1" />
     <MESSAGE value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 2" />
+    <MESSAGE value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />

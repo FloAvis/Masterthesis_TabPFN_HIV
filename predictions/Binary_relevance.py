@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 import time
 
+import utils
+
 import sys
 import os
 
@@ -68,7 +70,7 @@ def main():
 
         Y = utils.get_classes(df, drugs, mode="binary")
 
-        clf = TabPFNClassifier()
+        clf = TabPFNClassifier(random_state=42)
 
         multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
 
@@ -105,12 +107,18 @@ def main():
 
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-            y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
+            y_pred, y_true = utils.cv_predict_proba(multi_target_pfn, X, Y, cv=kf, method="single")
 
+            df_y_true = pd.DataFrame(y_true, columns=drugs)
 
+            y_pred_new = (y_pred[..., 1] >= 0.5) * 1.0
 
+            # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
+            # y_pred_new = np.stack(y_pred_new, axis=1)
 
-            y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
+            print(y_pred_new.shape)
+
+            y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
 
             kfolds = np.zeros((y_pred[0].shape[0], 1))
 
@@ -138,15 +146,15 @@ def main():
 
             #y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-            utils.save_multilabel(y_pred_df, Y, k_folds=kfolds, label=(
+            utils.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_MOC_prediction"))
+                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_MOC_prediction_new_save"))
 
 
 
-            utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds, label=(
+            utils.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_MOC_prediction"))
+                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_MOC_prediction_new_save"))
 
 
 

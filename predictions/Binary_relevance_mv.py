@@ -73,69 +73,78 @@ def main():
 
         folds = 5
 
+        if use_kfold == False:
 
+            X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
+            trained_model_pfn = multi_target_pfn.fit(X_train, y_train)
 
-        trained_model_pfn = multi_target_pfn.fit(X_train, y_train)
+            y_pred = trained_model_pfn.predict(X_test)
 
-        y_pred = trained_model_pfn.predict(X_test)
+            y_pred_df = pd.DataFrame(y_pred, columns=drugs)
 
-        y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+            y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-        y_test_df = pd.DataFrame(y_test, columns=drugs)
+            utils.save_multilabel(y_pred_df, y_test_df, label=(
+                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                    0] + "_Binary_Relevance_homebrew_prediction"))
 
-        utils.save_multilabel(y_pred_df, y_test_df, label=(
+            y_pred_proba = trained_model_pfn.predict_proba(X_test)
+
+            utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_homebrew_prediction"))
+                0] + "_Binary_Relevance_probabilities_homebrew_prediction"))
 
-        y_pred_proba = trained_model_pfn.predict_proba(X_test)
+        else:
 
-        utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
-                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Binary_Relevance_probabilities_homebrew_prediction"))
+            kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
+            y_pred, y_true = utils.cv_predict_proba(multi_target_pfn, X, Y, cv=kf, method="single")
 
+            df_y_true = pd.DataFrame(y_true, columns=drugs)
 
-        kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+            y_pred_new = (y_pred[..., 1] >= 0.5) * 1.0
 
-        y_pred = cross_val_predict(multi_target_pfn, X, Y, cv=kf, method="predict_proba")
+            # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
+            # y_pred_new = np.stack(y_pred_new, axis=1)
 
-        y_pred_df = pd.DataFrame(utils.calc_labels(y_pred), columns=drugs)
+            print(y_pred_new.shape)
 
-        kfolds = np.zeros((y_pred[0].shape[0], 1))
+            y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
 
-        k = 0
+            kfolds = np.zeros((y_pred[0].shape[0], 1))
 
-        for _, test in kf.split(X, Y):
-            for i in test:
-                kfolds[i] = k
-            k += 1
+            k = 0
 
-        # y_pred_df["kFolds"] = kfolds
-        """
-        y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
+            for _, test in kf.split(X, Y):
+                for i in test:
+                    kfolds[i] = k
+                k += 1
 
-        t = 0
+            # y_pred_df["kFolds"] = kfolds
+            """
+            y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
+    
+            t = 0
+    
+            for _, test in kf.split(X, Y):
+                for i in test:
+                    # print(i)
+                    for j in range(Y.shape[1]):
+                        y_test[t, j] = Y.iloc[i, j]
+                    t += 1
+    
+            """
 
-        for _, test in kf.split(X, Y):
-            for i in test:
-                # print(i)
-                for j in range(Y.shape[1]):
-                    y_test[t, j] = Y.iloc[i, j]
-                t += 1
+            # y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-        """
+            utils.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                0] + "_Binary_Relevance_" + str(folds) + "_fold_homebrew_prediction"))
 
-        # y_test_df = pd.DataFrame(y_test, columns=drugs)
-
-        utils.save_multilabel(y_pred_df, Y, k_folds=kfolds, label=(
-                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Binary_Relevance_" + str(folds) + "_fold_homebrew_prediction"))
-
-        utils.save_multilabel_proba(y_pred, Y, k_folds=kfolds, label=(
-                file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-            0] + "_Binary_Relevance_probabilities_" + str(folds) + "_fold_homebrew_prediction"))
+            utils.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
+                0] + "_Binary_Relevance_probabilities_" + str(folds) + "_fold_homebrew_prediction"))
 
 
 if __name__ == '__main__':

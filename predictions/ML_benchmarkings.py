@@ -4,10 +4,10 @@
 import pandas as pd
 import numpy as np
 import time
-
+import os
 
 import utils
-
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
@@ -86,43 +86,45 @@ def main():
         lr = LogisticRegression()
 
         models = [
-            ("BR LR", MultiOutputClassifier(lr, n_jobs=2)),
-            ("BR XGB", MultiOutputClassifier(xgb, n_jobs=2)),
-            ("BR forest", MultiOutputClassifier(forest, n_jobs=2)),
-            ("CC LR", skl_cc(lr, order="random", random_state=42)),
-            ("CC xgb", skl_cc(xgb, order="random", random_state=42)),
-            ("CC forest", skl_cc(forest, order="random", random_state=42)),
-            ("Rakel lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=4)),
-            ("Rakel xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=4)),
-            ("Rakel forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=4)),
+            ("BR_LR", MultiOutputClassifier(lr, n_jobs=2)),
+            ("BR_XGB", MultiOutputClassifier(xgb, n_jobs=2)),
+            ("BR_forest", MultiOutputClassifier(forest, n_jobs=2)),
+            ("CC_LR", skl_cc(lr, order="random", random_state=42)),
+            ("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
+            ("CC_forest", skl_cc(forest, order="random", random_state=42)),
+            ("Rakel_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=4)),
+            ("Rakel_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=4)),
+            ("Rakel_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=4)),
         ]
 
         #ensemble = en(cc, random_state=42, n_jobs=n_jobs)
 
         if not use_kfold:
 
-            #ensemble.fit(X=X_train, Y=y_train)
+            for name, model in models:
 
-            y_pred = ensemble.predict(X_test)
+                model.fit(X=X_train, Y=y_train)
 
-            y_pred_proba = ensemble.predict_proba(X_test)
+                y_pred = model.predict(X_test)
 
-
-            y_test_df = pd.DataFrame(y_test, columns=drugs)
-
-            y_pred_proba_new = []
-
-            for proba in y_pred_proba:
-                y_pred_proba_new.append( np.stack(proba, axis=1))
-
-            utils.save_ensemble(y_pred, y_test_df, label=(
-                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Classifier_Chain_ensemble"))
+                y_pred_proba = model.predict_proba(X_test)
 
 
-            utils.save_ensemble_proba(y_pred_proba_new, y_test_df, label=(
-                    file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_ensemble_probabilities"))
+                y_test_df = pd.DataFrame(y_test, columns=drugs)
+
+                y_pred_proba_new = []
+
+                for proba in y_pred_proba:
+                    y_pred_proba_new.append( np.stack(proba, axis=1))
+
+                utils.save_ensemble(y_pred, y_test_df, label=(
+                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
+                        0] + "_" + name))
+
+
+                utils.save_ensemble_proba(y_pred_proba_new, y_test_df, label=(
+                        file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
+                    0] + "_" + name + "_probabilities"))
         else:
 
             #print(X)
