@@ -20,6 +20,7 @@ from sklearn.linear_model import LogisticRegression
 
 from skmultilearn.problem_transform import BinaryRelevance
 
+from sklearn.preprocessing import OneHotEncoder
 
 from sklearn import tree
 from skmultilearn.ensemble import RakelO
@@ -65,8 +66,14 @@ def main():
         # dropping rows with na labels
         df.dropna(subset=drugs, inplace=True)
 
+        enc = OneHotEncoder(handle_unknown='error')
+
+
+
         X = df.drop(drugs, axis=1)
 
+        enc.fit(X)
+        X_trafo = enc.transform(X).toarray()
         Y = utils.get_classes(df, drugs, mode="binary")
 
         #clf = TabPFNClassifier()
@@ -79,7 +86,7 @@ def main():
 
         n_jobs = 4
 
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_trafo, Y, test_size=0.33, random_state=42)
 
         forest = RandomForestClassifier(random_state=42)
         xgb = XGBClassifier(random_state=42)
