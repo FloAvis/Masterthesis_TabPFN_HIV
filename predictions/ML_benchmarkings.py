@@ -25,7 +25,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn import tree
 from skmultilearn.ensemble import RakelO
 
-
+import scipy
 
 
 from sklearn.model_selection import cross_val_predict
@@ -99,9 +99,9 @@ def main():
             ("CC_LR", skl_cc(lr, order="random", random_state=42)),
             ("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
             ("CC_forest", skl_cc(forest, order="random", random_state=42)),
-            ("Rakel_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=4)),
-            ("Rakel_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=4)),
-            ("Rakel_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=4)),
+            ("Rakel_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
+            ("Rakel_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=y_train.shape[1] // 4, model_count=6)),
+            ("Rakel_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6))
         ]
 
         #ensemble = en(cc, random_state=42, n_jobs=n_jobs)
@@ -109,67 +109,48 @@ def main():
         if not use_kfold:
 
             for name, model in models:
-
-                model.fit(X=X_train, Y=y_train)
+                print()
+                model.fit(X_train, y_train)
 
                 y_pred = model.predict(X_test)
+                print(type(y_pred))
 
-                y_pred_proba = model.predict_proba(X_test)
+                if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
+                    y_pred = y_pred.todense()
 
                 y_pred_df = pd.DataFrame(y_pred, columns=drugs)
 
                 y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-                y_pred_proba_new = []
-
-                for proba in y_pred_proba:
-                    y_pred_proba_new.append( np.stack(proba, axis=1))
+                # print(np.array(y_pred_proba).shape)
 
                 utils.save_multilabel(y_pred_df, y_test_df, label=(
-                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
-                        0] + "_" + name))
-
-
-                utils.save_multilabel_proba(y_pred_proba_new, y_test_df, label=(
                         file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
-                    0] + "_" + name + "_probabilities"))
-        else:
+                    0] + "_" + name))
 
-            #print(X)
+                if name.startswith("CC"):
 
-            kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+                    y_pred_proba = model.predict_proba(X_test)
+                    # y_pred_proba_new = np.stack(y_pred_proba, axis=1)
+                    # print(y_pred_proba_new.shape)
 
-            y_pred = utils.cv_predict_proba(ensemble, X, Y, cv=kf, method="ensemble")
+                    y_pred_proba_new = pd.DataFrame(y_pred_proba, columns=drugs)
 
-            y_pred_labels = (y_pred[...,1] >= 0.5) * 1.0
+                    utils.save_multilabel(y_pred_proba_new, y_test_df, label=(
+                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
+                            file.split("/")[-1].split("_")[
+                                0] + "_" + name + "_probabilities"))
+                elif name.startswith("Rakel"):
+                    pass
+                else:
+                    y_pred_proba = model.predict_proba(X_test)
 
-            kfolds = np.zeros((y_pred[0].shape[0], 1))
+                    y_pred_proba_new = y_pred_proba
 
-            k = 0
-
-            for _, test in kf.split(X, Y):
-                for i in test:
-                    kfolds[i] = k
-                k += 1
-
-            # y_pred_df["kFolds"] = kfolds
-
-            y_pred_proba_new = []
-
-            for proba in y_pred:
-                y_pred_proba_new.append(np.stack(proba, axis=1))
-
-
-            # y_test_df = pd.DataFrame(y_test, columns=drugs)
-
-            utils.save_ensemble(y_pred_labels, Y, k_folds=kfolds.flatten(), label=(
-                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble"))
-
-            utils.save_ensemble_proba(y_pred_proba_new, Y, k_folds=kfolds.flatten(), label=(
-                        file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities"))
-
+                    utils.save_multilabel_proba(y_pred_proba_new, y_test_df, label=(
+                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
+                            file.split("/")[-1].split("_")[
+                                0] + "_" + name + "_probabilities"))
 
 if __name__ == '__main__':
     main()
