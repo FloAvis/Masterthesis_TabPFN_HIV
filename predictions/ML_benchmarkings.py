@@ -202,7 +202,7 @@ def main():
 
                 # print(np.array(y_pred_proba).shape)
 
-                utils.save_multilabel(y_pred_df, y_test_df, label=(
+                utils.save_multilabel(y_pred_df, y_test_df, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
                     0] + "_" + name + "_" + str(folds) + "_fold"))
 
