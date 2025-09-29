@@ -48,7 +48,7 @@ def main():
             drugs = [drug for drug in drugs if drug not in unusable_drugs]
 
         # dropping rows with na labels
-        #df.dropna(subset=drugs, inplace=True)
+        df.dropna(subset=drugs, inplace=True)
 
         X = df.drop(drugs, axis=1)
 
@@ -143,11 +143,11 @@ def main():
 
             utils.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction_new_save"))
+                0] + "_Classifier_Chain_" + str(folds) + "_fold_homebrew_prediction_woNaN_new_save"))
 
             utils.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction_new_save"))
+                0] + "_Classifier_Chain_probabilities_" + str(folds) + "_fold_homebrew_prediction_woNaN_new_save"))
 
 
 if __name__ == '__main__':

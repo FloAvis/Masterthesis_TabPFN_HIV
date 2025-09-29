@@ -499,7 +499,7 @@ def exam_acc(y_pred, y_true, nan_mode="warning"):
                     tmp += 1
 
 
-        acc = acc + (tmp / y_pred.shape[1])
+        acc = acc + (tmp / np.sum(~np.isnan(y_true.iloc[i,:])))
 
     acc = acc/y_pred.shape[0]
 
