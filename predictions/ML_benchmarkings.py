@@ -80,7 +80,7 @@ def main():
 
         multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
-        use_kfold = False
+        use_kfold = True
 
         folds = 5
 
@@ -93,15 +93,15 @@ def main():
         lr = LogisticRegression()
 
         models = [
-            #("BR_LR", MultiOutputClassifier(lr, n_jobs=2)),
-            #("BR_XGB", MultiOutputClassifier(xgb, n_jobs=2)),
-            #("BR_forest", MultiOutputClassifier(forest, n_jobs=2)),
-            #("CC_LR", skl_cc(lr, order="random", random_state=42)),
-            #("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
-            #("CC_forest", skl_cc(forest, order="random", random_state=42)),
-            ("Rakel_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
-            ("Rakel_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=y_train.shape[1] // 4, model_count=6)),
-            ("Rakel_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6))
+            ("BR_LR", MultiOutputClassifier(lr, n_jobs=2)),
+            ("BR_XGB", MultiOutputClassifier(xgb, n_jobs=2)),
+            ("BR_forest", MultiOutputClassifier(forest, n_jobs=2)),
+            ("CC_LR", skl_cc(lr, order="random", random_state=42)),
+            ("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
+            ("CC_forest", skl_cc(forest, order="random", random_state=42)),
+            #("Rakel_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
+            #("Rakel_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=y_train.shape[1] // 4, model_count=6)),
+            #("Rakel_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6))
         ]
 
         #ensemble = en(cc, random_state=42, n_jobs=n_jobs)
@@ -151,6 +151,86 @@ def main():
                             file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
                             file.split("/")[-1].split("_")[
                                 0] + "_" + name + "_probabilities"))
+
+        else:
+
+            for name, model in models:
+
+                kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+
+                y_pred, y_true = utils.cv_predict(model, X_trafo, Y, cv=kf, method="single")
+
+                #if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
+                #    y_pred = y_pred.todense()
+
+                y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+
+                y_test_df = pd.DataFrame(y_true, columns=drugs)
+
+                #y_pred_new = (y_pred[..., 1] >= 0.5) * 1.0
+
+                # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
+                # y_pred_new = np.stack(y_pred_new, axis=1)
+
+                #print(y_pred_new.shape)
+
+                #y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
+
+                kfolds = np.zeros((y_pred.shape[0], 1))
+
+                k = 0
+
+                for _, test in kf.split(X, Y):
+                    for i in test:
+                        kfolds[i] = k
+                    k += 1
+
+                # y_pred_df["kFolds"] = kfolds
+                """
+                y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
+
+                t = 0
+
+                for _, test in kf.split(X, Y):
+                    for i in test:
+                        # print(i)
+                        for j in range(Y.shape[1]):
+                            y_test[t, j] = Y.iloc[i, j]
+                        t += 1
+
+                """
+
+                # print(np.array(y_pred_proba).shape)
+
+                utils.save_multilabel(y_pred_df, y_test_df, label=(
+                        file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
+                    0] + "_" + name + "_" + str(folds) + "_fold"))
+
+                """
+                if name.startswith("CC"):
+
+                    y_pred_proba = model.predict_proba(X_test)
+                    # y_pred_proba_new = np.stack(y_pred_proba, axis=1)
+                    # print(y_pred_proba_new.shape)
+
+                    y_pred_proba_new = pd.DataFrame(y_pred_proba, columns=drugs)
+
+                    utils.save_multilabel(y_pred_proba_new, y_test_df, label=(
+                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
+                            file.split("/")[-1].split("_")[
+                                0] + "_" + name + "_" + str(folds) + "_fold"+ "_probabilities"))
+                elif name.startswith("Rakel"):
+                    pass
+                else:
+                    y_pred_proba = model.predict_proba(X_test)
+
+                    y_pred_proba_new = y_pred_proba
+
+                    utils.save_multilabel_proba(y_pred_proba_new, y_test_df, label=(
+                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
+                            file.split("/")[-1].split("_")[
+                                0] + "_" + name + "_" + str(folds) + "_fold" + "_probabilities"))
+                """
 
 if __name__ == '__main__':
     main()

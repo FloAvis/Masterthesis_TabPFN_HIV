@@ -4,6 +4,8 @@
 import pandas as pd
 import numpy as np
 
+import scipy
+
 from pathlib import Path
 
 
@@ -466,3 +468,76 @@ def cv_predict_proba(ensemble, X, Y, cv, method="single"):
     return y_pred, y_true
 
 
+def exam_acc(y_pred, y_true, nan_mode="warning"):
+    """
+    Calculates the subset accuracy for multilabel prediction
+
+    :param y_pred: Predicted labels
+    :param y_true: true labels
+    :param nan_mode: mode determining what happens when NaN is encountered:
+                        - "warning": message informing about presence of NaNs which always leads to negative result
+                        - "ignore": ignoring the NaNs in calculation
+    :return: calculated subset accuracy
+    """
+
+    acc = 0
+
+    for i in range(y_pred.shape[0]):
+        tmp = 0
+        for j in range(y_pred.shape[1]):
+            if np.isnan(y_true.iloc[i,j]):
+                if nan_mode == "ignore":
+                    continue
+                elif nan_mode == "warning":
+                    print("Warning: True label is Missing, example not determinable")
+                    break
+                else:
+                    print("Invalid NaN handling")
+                    return
+            else:
+                if y_pred.iloc[i,j] == y_true.iloc[i,j]:
+                    tmp += 1
+
+
+        acc = acc + (tmp / y_pred.shape[1])
+
+    acc = acc/y_pred.shape[0]
+
+    return acc
+
+
+def cv_predict(ensemble, X, Y, cv, method="single"):
+    if method == "single":
+        y_pred = np.zeros((X.shape[0], Y.shape[1]))
+        y_true = np.zeros((X.shape[0], Y.shape[1]))# (n_samples, n_labels, n_classes)
+    elif method == "ensemble":
+        y_pred = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
+        y_true = np.zeros((ensemble.n_jobs, X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
+    else:
+        raise Exception("Mode not valid. Please Select 'single' for normal estimators or 'ensemble' for ensembles")
+
+    X_arr = np.array(X)
+    Y_arr = np.array(Y)
+
+    for train_idx, test_idx in cv.split(X):
+        ensemble.fit(X_arr[train_idx], Y_arr[train_idx])
+        if method == "single":
+            y_pred_tmp = ensemble.predict(X_arr[test_idx])
+
+            if isinstance(y_pred_tmp, scipy.sparse._csr.csr_matrix):
+                y_pred_tmp = y_pred_tmp.todense()
+
+            if y_pred[test_idx].shape != np.array(y_pred_tmp).shape:
+                y_pred[test_idx] = np.stack(y_pred_tmp, axis=1)
+            else:
+                y_pred[test_idx] = y_pred_tmp
+            y_true[test_idx] = Y_arr[test_idx]
+        else:
+            y_pred_tmp = ensemble.predict(X_arr[test_idx])
+            if y_pred[:,test_idx].shape != np.array(y_pred_tmp).shape:
+                y_pred[:, test_idx] = np.stack(y_pred_tmp, axis=1)
+            else:
+                y_pred[:,test_idx] = ensemble.predict_proba(X_arr[test_idx])
+                y_true[:,test_idx] = Y_arr[test_idx]
+
+    return y_pred, y_true
