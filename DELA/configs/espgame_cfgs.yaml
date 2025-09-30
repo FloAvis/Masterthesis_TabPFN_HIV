@@ -1,0 +1,6 @@
+beta: 1.0
+lr: 0.003
+lr_ratio: 10.0
+lr_scheduler: step_epoch
+max_epoch: 50
+scheduler_decay_epoch: 4

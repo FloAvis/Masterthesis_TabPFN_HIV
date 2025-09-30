@@ -1,0 +1,7 @@
+beta: 0.01
+drop_ratio: 0.1
+latent_dim: 256
+lr: 0.0003
+lr_scheduler: step_epoch
+max_epoch: 250
+scheduler_warmup_epoch: 40

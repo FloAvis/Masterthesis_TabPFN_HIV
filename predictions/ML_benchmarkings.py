@@ -42,9 +42,8 @@ from sklearn.metrics import jaccard_score
 
 def main():
     #files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",r"../data/NNRTI_DataSet.txt"]
-    files = [r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",
-                     r"../data/NNRTI_DataSet.txt"]
-
+    #files = [r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
+    files = [r"../data/PI_DataSet.txt"]
 
     for file in files:
 
@@ -104,7 +103,7 @@ def main():
                 #("Rakeld_lr", RakelD(base_classifier=lr, base_classifier_require_dense=[True, True])),
                 #("Rakeld_xgb", RakelD(base_classifier=xgb,base_classifier_require_dense=[True, True])),
                 #("Rakeld_forest", RakelD(base_classifier=forest, base_classifier_require_dense=[True, True])),
-                #("Rakelo_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
+                ("Rakelo_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
                 ("Rakelo_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=y_train.shape[1] // 4, model_count=6)),
                 ("Rakelo_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6))
             ]
