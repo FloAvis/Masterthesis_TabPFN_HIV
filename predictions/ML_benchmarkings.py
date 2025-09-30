@@ -99,9 +99,9 @@ def main():
             #("CC_LR", skl_cc(lr, order="random", random_state=42)),
             #("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
             #("CC_forest", skl_cc(forest, order="random", random_state=42)),
-            ("Rakeld_lr", RakelD(base_classifier=lr, base_classifier_require_dense=[True, True])),
-            ("Rakeld_xgb", RakelD(base_classifier=xgb,base_classifier_require_dense=[True, True])),
-            ("Rakeld_forest", RakelD(base_classifier=forest, base_classifier_require_dense=[True, True])),
+            #("Rakeld_lr", RakelD(base_classifier=lr, base_classifier_require_dense=[True, True])),
+            #("Rakeld_xgb", RakelD(base_classifier=xgb,base_classifier_require_dense=[True, True])),
+            #("Rakeld_forest", RakelD(base_classifier=forest, base_classifier_require_dense=[True, True])),
             ("Rakelo_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
             ("Rakelo_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=y_train.shape[1] // 4, model_count=6)),
             ("Rakelo_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6))
@@ -161,6 +161,9 @@ def main():
 
                 print(name)
                 kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+
+                print(X_trafo)
+                print(Y)
 
                 y_pred, y_true = utils.cv_predict(model, X_trafo, Y, cv=kf, method="single")
 
