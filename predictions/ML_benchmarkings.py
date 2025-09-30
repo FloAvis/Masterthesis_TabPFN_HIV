@@ -23,7 +23,7 @@ from skmultilearn.problem_transform import BinaryRelevance
 from sklearn.preprocessing import OneHotEncoder
 
 from sklearn import tree
-from skmultilearn.ensemble import RakelO
+from skmultilearn.ensemble import RakelO, RakelD
 
 import scipy
 
@@ -93,15 +93,18 @@ def main():
         lr = LogisticRegression()
 
         models = [
-            ("BR_LR", MultiOutputClassifier(lr, n_jobs=2)),
-            ("BR_XGB", MultiOutputClassifier(xgb, n_jobs=2)),
-            ("BR_forest", MultiOutputClassifier(forest, n_jobs=2)),
-            ("CC_LR", skl_cc(lr, order="random", random_state=42)),
-            ("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
-            ("CC_forest", skl_cc(forest, order="random", random_state=42)),
-            #("Rakel_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
-            #("Rakel_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=y_train.shape[1] // 4, model_count=6)),
-            #("Rakel_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6))
+            #("BR_LR", MultiOutputClassifier(lr, n_jobs=2)),
+            #("BR_XGB", MultiOutputClassifier(xgb, n_jobs=2)),
+            #("BR_forest", MultiOutputClassifier(forest, n_jobs=2)),
+            #("CC_LR", skl_cc(lr, order="random", random_state=42)),
+            #("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
+            #("CC_forest", skl_cc(forest, order="random", random_state=42)),
+            ("Rakeld_lr", RakelD(base_classifier=lr, base_classifier_require_dense=[True, True])),
+            ("Rakeld_xgb", RakelD(base_classifier=xgb,base_classifier_require_dense=[True, True])),
+            ("Rakeld_forest", RakelD(base_classifier=forest, base_classifier_require_dense=[True, True])),
+            ("Rakelo_lr", RakelO(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6)),
+            ("Rakelo_xgb", RakelO(base_classifier=xgb,base_classifier_require_dense=[True, True],labelset_size=y_train.shape[1] // 4, model_count=6)),
+            ("Rakelo_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=y_train.shape[1] // 4, model_count=6))
         ]
 
         #ensemble = en(cc, random_state=42, n_jobs=n_jobs)
@@ -156,6 +159,7 @@ def main():
 
             for name, model in models:
 
+                print(name)
                 kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
                 y_pred, y_true = utils.cv_predict(model, X_trafo, Y, cv=kf, method="single")
