@@ -6,6 +6,10 @@ import numpy as np
 import time
 import os
 
+import torch
+from DELA.DELAModel import DELAModel
+from DELA.utils import init_random_seed, generate_default_config, clear_old_logs
+
 import utils
 from pathlib import Path
 
@@ -91,27 +95,17 @@ def main():
         # Setting configurations
         configs = generate_default_config()
         # device params
-        configs['use_gpu'] = args.cuda
+        configs['use_gpu'] = True
         configs['device'] = torch.device('cuda' if torch.cuda.is_available() and configs['use_gpu'] else 'cpu')
         # training params
-        configs['train_batch_size'] = args.batch_size
-        configs['test_batch_size'] = 2 * configs['train_batch_size']
-        configs['max_epoch'] = args.max_epoch
-        configs['lr'] = args.lr
-        configs['weight_decay'] = args.weight_decay
-        configs['drop_ratio'] = args.dropout
-        configs['beta'] = args.beta
-        configs['lr_scheduler'] = args.lr_scheduler
-        configs['scheduler_warmup_epoch'] = args.warmup
-        configs['scheduler_decay_epoch'] = args.step
+
+        configs['beta'] = 1.0
 
         # Loading dataset
         configs['shuffle'] = True
-        if args.dataset in binary_datasets:
-            configs['data_standardizing'] = False
-        else:
-            configs['data_standardizing'] = True
-        print(args.dataset)
+
+        configs['data_standardizing'] = False
+
         dataset = eval(args.dataset)(configs=configs)
         configs['dataset_name'] = dataset.name()
 

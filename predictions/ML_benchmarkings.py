@@ -43,7 +43,7 @@ from sklearn.metrics import jaccard_score
 def main():
     #files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",r"../data/NNRTI_DataSet.txt"]
     #files = [r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
-    files = [r"../data/PI_DataSet.txt"]
+    files = [r"../data/NNRTI_DataSet.txt"]
 
     for file in files:
 
