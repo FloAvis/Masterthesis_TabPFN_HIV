@@ -155,7 +155,7 @@ class Dataset():
         fileName = os.path.join(self.datadir, self.name(), self.name()+
                                 split_config+'_{:s}_cv{:d}.mat'.format(data_type, fold))
         return fileName
-             
+
 class emotions(Dataset):
     pass
         

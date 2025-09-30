@@ -2,11 +2,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from utils import init_random_seed
-from type_def import *
-from layers.MLP import MLP
-from gumbel_softmax_trick import gumbel_sigmoid
-from optims.StepLRScheduler import StepLRScheduler
+from DELA.utils import init_random_seed
+from DELA.type_def import *
+from DELA.layers.MLP import MLP
+from DELA.gumbel_softmax_trick import gumbel_sigmoid
+from DELA.optims.StepLRScheduler import StepLRScheduler
 
 class DELANet(nn.Module):
     def __init__(self, configs):

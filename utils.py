@@ -519,7 +519,10 @@ def cv_predict(ensemble, X, Y, cv, method="single"):
     X_arr = np.array(X)
     Y_arr = np.array(Y)
 
+    counter = 0
     for train_idx, test_idx in cv.split(X):
+        counter += 1
+        print("CV {}".format(counter))
         ensemble.fit(X_arr[train_idx], Y_arr[train_idx])
         if method == "single":
             y_pred_tmp = ensemble.predict(X_arr[test_idx])

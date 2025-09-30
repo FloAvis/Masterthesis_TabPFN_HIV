@@ -9,7 +9,7 @@ import os
 import torch
 from DELA.DELAModel import DELAModel
 from DELA.utils import init_random_seed, generate_default_config, clear_old_logs
-
+from DELA.dataset import DatasetLoader, Dataset
 import utils
 from pathlib import Path
 
@@ -84,7 +84,7 @@ def main():
 
         multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
-        use_kfold = True
+        use_kfold = False
 
         folds = 5
 
@@ -99,24 +99,24 @@ def main():
         configs['device'] = torch.device('cuda' if torch.cuda.is_available() and configs['use_gpu'] else 'cpu')
         # training params
 
-        configs['beta'] = 1.0
+        configs['beta'] = 1e-4
 
         # Loading dataset
         configs['shuffle'] = True
 
         configs['data_standardizing'] = False
 
-        dataset = eval(args.dataset)(configs=configs)
-        configs['dataset_name'] = dataset.name()
+        #dataset = Dataset()
+        configs['dataset_name'] = "PI"
 
         # Setting architecture params
         configs['model_name'] = 'DELAModel'
-        configs['in_features'] = dataset.feat_dim
-        configs['num_classes'] = dataset.num_class
-        configs['latent_dim'] = args.latent_dim
+        #configs['in_features'] = dataset.feat_dim
+        #configs['num_classes'] = dataset.num_class
+        #configs['latent_dim'] = args.latent_dim
 
         # Setting other params
-        configs['exp'] = args.exp
+        configs['exp'] = "1"
         configs['exp_dir'] = os.path.join(configs['model_name'],
                                           configs['exp'],
                                           configs['dataset_name'])
@@ -126,52 +126,35 @@ def main():
 
         if not use_kfold:
 
-            for name, model in models:
-                print()
-                model.fit(X_train, y_train)
+            model = DELAModel(configs)
 
-                y_pred = model.predict(X_test)
-                print(type(y_pred))
 
-                if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
-                    y_pred = y_pred.todense()
+            model.train(DatasetLoader(X_train, y_train,
+                                              batch_size=configs['train_batch_size'],
+                                              shuffle=configs['shuffle']))
 
-                y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+            model.load_checkpoint(model.configs['best_checkpoint_path'])
+            model.configs['start_epoch'] = 0
 
-                y_test_df = pd.DataFrame(y_test, columns=drugs)
+            y_pred = model.predict(X_test)
+            print(type(y_pred))
 
-                # print(np.array(y_pred_proba).shape)
+            if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
+                y_pred = y_pred.todense()
 
-                utils.save_multilabel(y_pred_df, y_test_df, label=(
-                        file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
-                    0] + "_" + name))
+            y_pred_df = pd.DataFrame(y_pred, columns=drugs)
 
-                if name.startswith("CC"):
+            y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-                    y_pred_proba = model.predict_proba(X_test)
-                    # y_pred_proba_new = np.stack(y_pred_proba, axis=1)
-                    # print(y_pred_proba_new.shape)
+            # print(np.array(y_pred_proba).shape)
 
-                    y_pred_proba_new = pd.DataFrame(y_pred_proba, columns=drugs)
+            utils.save_multilabel(y_pred_df, y_test_df, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
+                0] + "_DELA"))
 
-                    utils.save_multilabel(y_pred_proba_new, y_test_df, label=(
-                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
-                            file.split("/")[-1].split("_")[
-                                0] + "_" + name + "_probabilities"))
-                elif name.startswith("Rakel"):
-                    pass
-                else:
-                    y_pred_proba = model.predict_proba(X_test)
-
-                    y_pred_proba_new = y_pred_proba
-
-                    utils.save_multilabel_proba(y_pred_proba_new, y_test_df, label=(
-                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
-                            file.split("/")[-1].split("_")[
-                                0] + "_" + name + "_probabilities"))
 
         else:
-
+            """
             for name, model in models:
 
                 print(name)
@@ -207,52 +190,14 @@ def main():
                         kfolds[i] = k
                     k += 1
 
-                # y_pred_df["kFolds"] = kfolds
-                """
-                y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
-
-                t = 0
-
-                for _, test in kf.split(X, Y):
-                    for i in test:
-                        # print(i)
-                        for j in range(Y.shape[1]):
-                            y_test[t, j] = Y.iloc[i, j]
-                        t += 1
-
-                """
 
                 # print(np.array(y_pred_proba).shape)
 
                 utils.save_multilabel(y_pred_df, y_test_df, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
                     0] + "_" + name + "_" + str(folds) + "_fold"))
+"""
 
-                """
-                if name.startswith("CC"):
-
-                    y_pred_proba = model.predict_proba(X_test)
-                    # y_pred_proba_new = np.stack(y_pred_proba, axis=1)
-                    # print(y_pred_proba_new.shape)
-
-                    y_pred_proba_new = pd.DataFrame(y_pred_proba, columns=drugs)
-
-                    utils.save_multilabel(y_pred_proba_new, y_test_df, label=(
-                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
-                            file.split("/")[-1].split("_")[
-                                0] + "_" + name + "_" + str(folds) + "_fold"+ "_probabilities"))
-                elif name.startswith("Rakel"):
-                    pass
-                else:
-                    y_pred_proba = model.predict_proba(X_test)
-
-                    y_pred_proba_new = y_pred_proba
-
-                    utils.save_multilabel_proba(y_pred_proba_new, y_test_df, label=(
-                            file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
-                            file.split("/")[-1].split("_")[
-                                0] + "_" + name + "_" + str(folds) + "_fold" + "_probabilities"))
-                """
 
 
 if __name__ == '__main__':

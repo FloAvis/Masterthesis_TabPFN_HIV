@@ -2,9 +2,9 @@ import torch
 import math
 import os
 
-from DELANet import DELANet
-from optims.Engine import DELAModelEngine
-from metrics import *
+from DELA.DELANet import DELANet
+from DELA.optims.Engine import DELAModelEngine
+from DELA.metrics import *
     
 class DELAModel:
     '''

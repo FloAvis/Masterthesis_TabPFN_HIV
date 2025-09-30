@@ -38,7 +38,7 @@ def generate_default_config():
     configs['save_checkpoint_path'] = 'checkpoint'
     
     # Reproducibility
-    configs['rand_seed'] = 0
+    configs['rand_seed'] = 42
     
     # Testing parameters
     configs['test_batch_size'] = 2 * configs['train_batch_size']
