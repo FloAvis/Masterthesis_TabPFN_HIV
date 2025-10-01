@@ -117,4 +117,3 @@ if __name__ == '__main__':
     # Displaying results of cross-validation
     for key in val_metrics:
         print('{}: {:.4f} / {:.4f}'.format(key, val_metrics[key].value()[0], val_metrics[key].value()[1]))
-    

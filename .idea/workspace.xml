@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Running Rakel only NNRTI">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Running Rakel only INI with track">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DELA/DELAModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/DELA/DELAModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DELA/DELANet.py" beforeDir="false" afterPath="$PROJECT_DIR$/DELA/DELANet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DELA/DELA_10-fold_cv.py" beforeDir="false" afterPath="$PROJECT_DIR$/DELA/DELA_10-fold_cv.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DELA/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/DELA/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DELA/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/DELA/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sandbox2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox2.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/DELA_benchmark_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/DELA_benchmark_prediction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,9 +73,11 @@
     &quot;Python.Binary_prediction.executor&quot;: &quot;Run&quot;,
     &quot;Python.CC_ensemble.executor&quot;: &quot;Run&quot;,
     &quot;Python.Classifier_Chains_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.DELA_benchmark_prediction.executor&quot;: &quot;Run&quot;,
     &quot;Python.ML_benchmarkings.executor&quot;: &quot;Run&quot;,
     &quot;Python.ML_comparison_standard.executor&quot;: &quot;Run&quot;,
     &quot;Python.Sandbox.executor&quot;: &quot;Run&quot;,
+    &quot;Python.dataset.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -229,15 +229,9 @@
       <workItem from="1759132463609" duration="9083000" />
       <workItem from="1759148208660" duration="2371000" />
       <workItem from="1759224974378" duration="11260000" />
-      <workItem from="1759238361932" duration="401000" />
-    </task>
-    <task id="LOCAL-00081" summary="Binary relevance self implementation debugging array compatibility">
-      <option name="closed" value="true" />
-      <created>1758219172717</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1758219172717</updated>
+      <workItem from="1759238361932" duration="6336000" />
+      <workItem from="1759246121518" duration="4092000" />
+      <workItem from="1759307348442" duration="3638000" />
     </task>
     <task id="LOCAL-00082" summary="Binary relevance self implementation debugging sklearn compatibility again">
       <option name="closed" value="true" />
@@ -623,7 +617,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759234840752</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="Running Rakel only INI with track">
+      <option name="closed" value="true" />
+      <created>1759238877148</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1759238877148</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -647,7 +649,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rerunning Classifier Chain prediction with own CV as other cv does weird things" />
     <MESSAGE value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there?" />
     <MESSAGE value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 1" />
     <MESSAGE value="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 2" />
@@ -672,13 +673,16 @@
     <MESSAGE value="No RakelO with LR" />
     <MESSAGE value="Adding DELA + running Rakel only PI again" />
     <MESSAGE value="Running Rakel only NNRTI" />
-    <option name="LAST_COMMIT_MESSAGE" value="Running Rakel only NNRTI" />
+    <MESSAGE value="Running Rakel only INI with track" />
+    <option name="LAST_COMMIT_MESSAGE" value="Running Rakel only INI with track" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
-    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_benchmarkings.coverage" NAME="ML_benchmarkings Coverage Results" MODIFIED="1759237390951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
+    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$DELA_benchmark_prediction.coverage" NAME="DELA_benchmark_prediction Coverage Results" MODIFIED="1759250122096" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
+    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_benchmarkings.coverage" NAME="ML_benchmarkings Coverage Results" MODIFIED="1759308224314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
+    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$dataset.coverage" NAME="dataset Coverage Results" MODIFIED="1759241077386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DELA" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Sandbox.coverage" NAME="Sandbox Coverage Results" MODIFIED="1750931842395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$main.coverage" NAME="main Coverage Results" MODIFIED="1749551806284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$main.coverage" NAME="main Coverage Results" MODIFIED="1759246252082" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Binary_prediction.coverage" NAME="Binary_prediction Coverage Results" MODIFIED="1751804896417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$test.coverage" NAME="test Coverage Results" MODIFIED="1749568166750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$Classifier_Chains_prediction.coverage" NAME="Classifier_Chains_prediction Coverage Results" MODIFIED="1758888227521" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />

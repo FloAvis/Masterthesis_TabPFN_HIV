@@ -1,6 +1,7 @@
 import torch
 import math
 import os
+import numpy as np
 
 from DELA.DELANet import DELANet
 from DELA.optims.Engine import DELAModelEngine
@@ -92,6 +93,26 @@ class DELAModel:
             pred_probs = torch.cat(pred_probs, dim=0)
 
         return self.evaluate(pred_labels, pred_probs, targets)
+
+    def test_labels(self, dataloader):
+        self.net.eval()
+        with torch.no_grad():
+            targets = []
+            pred_labels = []
+            pred_probs = []
+            for (X, y) in dataloader:
+                X = X.to(self.configs['device'])
+                y = y.to(self.configs['device'])
+
+                pred_label, pred_prob = self.predict(X)
+                targets.append(y)
+                pred_labels.append(pred_label)
+                pred_probs.append(pred_prob)
+            targets = torch.cat(targets, dim=0)
+            pred_labels = torch.cat(pred_labels, dim=0)
+            pred_probs = torch.cat(pred_probs, dim=0)
+
+        return np.array(pred_labels), np.array(pred_probs), np.array(targets)
     
     def predict(self, X):
         '''

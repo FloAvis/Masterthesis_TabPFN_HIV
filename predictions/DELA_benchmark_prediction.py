@@ -9,31 +9,21 @@ import os
 import torch
 from DELA.DELAModel import DELAModel
 from DELA.utils import init_random_seed, generate_default_config, clear_old_logs
-from DELA.dataset import DatasetLoader, Dataset
+from DELA.dataset import DatasetLoader, Dataset, PI, INI, NRTI, NNRTI
 import utils
 from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from sklearn.multioutput import ClassifierChain as skl_cc
-from sklearn.multioutput import MultiOutputClassifier
 
-from xgboost import XGBClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-
-from skmultilearn.problem_transform import BinaryRelevance
 
 from sklearn.preprocessing import OneHotEncoder
 
-from sklearn import tree
-from skmultilearn.ensemble import RakelO, RakelD
 
 import scipy
 
 import DELA as dela
 
-from sklearn.model_selection import cross_val_predict
 
 # Baseline Imports
 
@@ -41,14 +31,11 @@ from tabpfn import TabPFNClassifier
 
 from Classifiers import ClassifierChains as cc
 
-from Classifiers import Ensemble as en
-
-from sklearn.metrics import jaccard_score
 
 
 def main():
-    files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",r"../data/NNRTI_DataSet.txt"]
-    #files = [r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
+    #files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",r"../data/NNRTI_DataSet.txt"]
+    files = [r"../data/INI_DataSet.txt"]
 
     for file in files:
 
@@ -84,7 +71,7 @@ def main():
 
         multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
-        use_kfold = False
+        use_kfold = True
 
         folds = 5
 
@@ -107,13 +94,22 @@ def main():
         configs['data_standardizing'] = False
 
         #dataset = Dataset()
-        configs['dataset_name'] = "PI"
+        configs['nfold'] = 5
 
         # Setting architecture params
         configs['model_name'] = 'DELAModel'
-        #configs['in_features'] = dataset.feat_dim
-        #configs['num_classes'] = dataset.num_class
-        #configs['latent_dim'] = args.latent_dim
+
+
+        #dataset = eval(file.split("/")[-1].split("_")[0])(configs=configs, X=X_train, y=y_train, nfold=configs['nfold'])
+        configs['dataset_name'] = file.split("/")[-1].split("_")
+        #print(dataset.name())
+
+
+        # Setting architecture params
+        configs['model_name'] = 'DELAModel'
+        configs['in_features'] = dataset.feat_dim
+        configs['num_classes'] = dataset.num_class
+        configs['latent_dim'] = 50
 
         # Setting other params
         configs['exp'] = "1"
@@ -126,18 +122,41 @@ def main():
 
         if not use_kfold:
 
+            dataset = eval(file.split("/")[-1].split("_")[0])(configs=configs, X=X_train, y=y_train,
+                                                              nfold=configs['nfold'])
+
+            configs['in_features'] = dataset.feat_dim
+            configs['num_classes'] = dataset.num_class
+
+
             model = DELAModel(configs)
+            count = 1
+
+            dataset.data_splitter()
+
+            print(type(dataset.train_dataloader.data_inds))
+            print(dataset.test_dataloader.data_inds)
+
+            #print()
 
 
-            model.train(DatasetLoader(X_train, y_train,
-                                              batch_size=configs['train_batch_size'],
-                                              shuffle=configs['shuffle']))
+            train_dataloader = dataset.train_dataloader
+            val_dataloader = dataset.val_dataloader
+            test_dataloader = dataset.test_dataloader
 
+            # Training with evaluation
+            model.reset_parameters()
+            model.configs['best_epoch'] = 0
+            model.train(train_dataloader, val_dataloader, quiet_mode=False)
             model.load_checkpoint(model.configs['best_checkpoint_path'])
             model.configs['start_epoch'] = 0
 
-            y_pred = model.predict(X_test)
-            print(type(y_pred))
+            y_pred, y_pred_probas = model.predict(torch.from_numpy(np.array(X_test).astype(float)).type(configs['dtype']))
+
+
+            #print(np.array(y_pred).shape)
+
+            #print(np.array(y_pred_probas).shape)
 
             if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
                 y_pred = y_pred.todense()
@@ -146,57 +165,103 @@ def main():
 
             y_test_df = pd.DataFrame(y_test, columns=drugs)
 
+            y_pred_probas_df = pd.DataFrame(y_pred_probas, columns=drugs)
+
             # print(np.array(y_pred_proba).shape)
 
             utils.save_multilabel(y_pred_df, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
                 0] + "_DELA"))
 
+            utils.save_multilabel(y_pred_probas_df, y_test_df, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
+                0] + "_DELA_probas"))
+        
 
         else:
-            """
-            for name, model in models:
+            dataset = eval(file.split("/")[-1].split("_")[0])(configs=configs, X=X_trafo, y=Y,
+                                                              nfold=configs['nfold'])
 
-                print(name)
-                kf = KFold(n_splits=folds, random_state=42, shuffle=True)
+            configs['in_features'] = dataset.feat_dim
+            configs['num_classes'] = dataset.num_class
 
-                print(X_trafo)
-                print(Y)
+            model = DELAModel(configs)
 
-                y_pred, y_true = utils.cv_predict(model, X_trafo, Y, cv=kf, method="single")
+            y_pred_con = []
+
+            y_pred_probas_con = []
+
+            y_test_con = []
+
+            kfolds = []
+
+            for count in range(1, configs['nfold']+1):
+
+                dataset.data_cv_splitter(count, configs['nfold'], configs['shuffle'], configs['random_seed'])
+
+                train_dataloader = dataset.train_dataloader
+                val_dataloader = dataset.val_dataloader
+                test_dataloader = dataset.test_dataloader
+
+                # Training with evaluation
+                model.reset_parameters()
+                model.configs['best_epoch'] = 0
+                model.train(train_dataloader, val_dataloader, quiet_mode=False)
+                model.load_checkpoint(model.configs['best_checkpoint_path'])
+                model.configs['start_epoch'] = 0
+
+
+
+                y_pred, y_pred_probas, y_true = model.test_labels(test_dataloader)
+
+                y_pred_con.append(y_pred)
+
+                y_pred_probas_con.append(y_pred_probas)
+
+                y_test_con.append(y_true)
+
+                kfolds += [count-1] * y_pred.shape[0]
 
                 # if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
                 #    y_pred = y_pred.todense()
 
-                y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+            kfolds = np.array(kfolds)
 
-                y_test_df = pd.DataFrame(y_true, columns=drugs)
+            y_pred_df = pd.DataFrame(np.concatenate(y_pred_con), columns=drugs)
 
-                # y_pred_new = (y_pred[..., 1] >= 0.5) * 1.0
+            y_test_df = pd.DataFrame(np.concatenate(y_test_con), columns=drugs)
 
-                # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
-                # y_pred_new = np.stack(y_pred_new, axis=1)
+            y_pred_probas_df = pd.DataFrame(np.concatenate(y_pred_probas_con), columns=drugs)
 
-                # print(y_pred_new.shape)
+            # y_pred_new = (y_pred[..., 1] >= 0.5) * 1.0
 
-                # y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
+            # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
+            # y_pred_new = np.stack(y_pred_new, axis=1)
 
-                kfolds = np.zeros((y_pred.shape[0], 1))
+            # print(y_pred_new.shape)
 
-                k = 0
+            # y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
+            """
+            kfolds = np.zeros((y_pred.shape[0], 1))
 
-                for _, test in kf.split(X, Y):
-                    for i in test:
-                        kfolds[i] = k
-                    k += 1
+            k = 0
 
+            for _, test in kf.split(X, Y):
+                for i in test:
+                    kfolds[i] = k
+                k += 1
+            """
 
-                # print(np.array(y_pred_proba).shape)
+            # print(np.array(y_pred_proba).shape)
 
-                utils.save_multilabel(y_pred_df, y_test_df, k_folds=kfolds, label=(
-                        file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
-                    0] + "_" + name + "_" + str(folds) + "_fold"))
-"""
+            utils.save_multilabel(y_pred_df, y_test_df, k_folds=kfolds, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
+                0] + "_DELA_" + "_" + str(folds) + "_fold"))
+
+            utils.save_multilabel(y_pred_probas_df, y_test_df, k_folds=kfolds, label=(
+                    file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
+                0] + "_DELA_probas" + "_" + str(folds) + "_fold"))
+
 
 
 
