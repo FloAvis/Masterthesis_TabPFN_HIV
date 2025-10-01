@@ -101,8 +101,8 @@ def main():
 
 
         #dataset = eval(file.split("/")[-1].split("_")[0])(configs=configs, X=X_train, y=y_train, nfold=configs['nfold'])
-        configs['dataset_name'] = file.split("/")[-1].split("_")
-        #print(dataset.name())
+        configs['dataset_name'] = file.split("/")[-1].split("_")[0]
+        print(configs['dataset_name'])
 
 
         # Setting architecture params
@@ -197,7 +197,7 @@ def main():
 
             for count in range(1, configs['nfold']+1):
 
-                dataset.data_cv_splitter(count, configs['nfold'], configs['shuffle'], configs['random_seed'])
+                dataset.data_cv_splitter(count, configs['nfold'], configs['shuffle'], configs['rand_seed'])
 
                 train_dataloader = dataset.train_dataloader
                 val_dataloader = dataset.val_dataloader
