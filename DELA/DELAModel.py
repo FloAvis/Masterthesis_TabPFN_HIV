@@ -112,7 +112,7 @@ class DELAModel:
             pred_labels = torch.cat(pred_labels, dim=0)
             pred_probs = torch.cat(pred_probs, dim=0)
 
-        return np.array(pred_labels), np.array(pred_probs), np.array(targets)
+        return np.array(pred_labels.cpu()), np.array(pred_probs.cpu()), np.array(targets.cpu())
     
     def predict(self, X):
         '''
