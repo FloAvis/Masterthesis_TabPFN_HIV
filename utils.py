@@ -527,10 +527,14 @@ def cv_predict(ensemble, X, Y, cv, method="single"):
         if method == "single":
             y_pred_tmp = ensemble.predict(X_arr[test_idx])
 
-            if isinstance(y_pred_tmp, scipy.sparse._csr.csr_matrix):
+            if isinstance(y_pred_tmp, scipy.sparse.spmatrix):
                 y_pred_tmp = y_pred_tmp.todense()
 
             if y_pred[test_idx].shape != np.array(y_pred_tmp).shape:
+                print(y_pred[test_idx])
+                print(y_pred_tmp)
+                print(y_pred[test_idx].shape)
+                print(y_pred_tmp.shape)
                 y_pred[test_idx] = np.stack(y_pred_tmp, axis=1)
             else:
                 y_pred[test_idx] = y_pred_tmp

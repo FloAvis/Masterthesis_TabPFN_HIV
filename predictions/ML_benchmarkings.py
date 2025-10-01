@@ -119,7 +119,9 @@ def main():
                     y_pred = model.predict(X_test)
                     print(type(y_pred))
 
-                    if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
+                    print(y_pred)
+
+                    if isinstance(y_pred, scipy.sparse.spmatrix):
                         y_pred = y_pred.todense()
 
                     y_pred_df = pd.DataFrame(y_pred, columns=drugs)

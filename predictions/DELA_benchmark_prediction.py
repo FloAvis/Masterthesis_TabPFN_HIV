@@ -107,8 +107,8 @@ def main():
 
         # Setting architecture params
         configs['model_name'] = 'DELAModel'
-        configs['in_features'] = dataset.feat_dim
-        configs['num_classes'] = dataset.num_class
+        #configs['in_features'] = dataset.feat_dim
+        #configs['num_classes'] = dataset.num_class
         configs['latent_dim'] = 50
 
         # Setting other params
