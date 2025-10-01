@@ -34,8 +34,8 @@ from Classifiers import ClassifierChains as cc
 
 
 def main():
-    #files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",r"../data/NNRTI_DataSet.txt"]
-    files = [r"../data/INI_DataSet.txt"]
+    files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",r"../data/NNRTI_DataSet.txt"]
+    #files = [r"../data/INI_DataSet.txt"]
 
     for file in files:
 
@@ -256,7 +256,7 @@ def main():
 
             utils.save_multilabel(y_pred_df, y_test_df, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
-                0] + "_DELA_" + "_" + str(folds) + "_fold"))
+                0] + "_DELA_" + str(folds) + "_fold"))
 
             utils.save_multilabel(y_pred_probas_df, y_test_df, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" + file.split("/")[-1].split("_")[
