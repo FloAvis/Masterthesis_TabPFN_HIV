@@ -92,7 +92,7 @@ def main():
 
         else:
 
-            multi_target_pfn2 = cc(TabPFNClassifier, random_state=42)
+            multi_target_pfn2 = cc(TabICLClassifier, random_state=42)
 
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
