@@ -32,7 +32,7 @@ from tabpfn import TabPFNClassifier
 
 from Classifiers import BinaryRelevance as br
 
-
+from tabicl import TabICLClassifier
 
 
 def main():
@@ -67,7 +67,9 @@ def main():
 
         #clf = TabPFNClassifier()
 
-        multi_target_pfn = br(TabPFNClassifier, random_state=42)
+        #multi_target_pfn = br(TabPFNClassifier, random_state=42)
+
+        multi_target_pfn = br(TabICLClassifier, random_state=42)
 
         use_kfold = True
 
@@ -87,13 +89,13 @@ def main():
 
             utils.save_multilabel(y_pred_df, y_test_df, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Binary_Relevance_homebrew_prediction"))
+                    0] + "_Binary_Relevance_tabicl_prediction"))
 
             y_pred_proba = trained_model_pfn.predict_proba(X_test)
 
             utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_homebrew_prediction"))
+                0] + "_Binary_Relevance_probabilities_tabicl_prediction"))
 
         else:
 
@@ -140,11 +142,11 @@ def main():
 
             utils.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_" + str(folds) + "_fold_homebrew_prediction_new_save"))
+                0] + "_Binary_Relevance_" + str(folds) + "_fold_tabicl_prediction_new_save"))
 
             utils.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_" + str(folds) + "_fold_homebrew_prediction_new_save"))
+                0] + "_Binary_Relevance_probabilities_" + str(folds) + "_fold_tabicl_prediction_new_save"))
 
 
 if __name__ == '__main__':
