@@ -4,41 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Classifier chains tabicl">
-      <change afterPath="$PROJECT_DIR$/data/Other_datasets/birds-test.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/Other_datasets/birds-train.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/Other_datasets/emotions.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_preprocessing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/result_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classifiers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifiers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_import_preprocess.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Data_import_preprocess.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Import_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results_drugs_hq" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sandbox.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sandbox2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox2.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Statistics_single_drug.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test_run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/AutoTABPFN_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/AutoTABPFN_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Binary_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/Binary_prediction_outdated.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance_baseline.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance_baseline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/CC_ensemble.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/CC_ensemble.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/DELA_benchmark_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/DELA_benchmark_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/ML_comparison_standard.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/ML_comparison_standard_outdated.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Multilabel_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/Multilabel_prediction_outdated.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Standard_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/Standard_prediction_outdated.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preliminary_test.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sample.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/statistics/Benchmark_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/Benchmark_statistics.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/prediction_handler.py" afterDir="false" />
-    </list>
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Classifier chain scene dataset + a lot of changes apparently" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -291,15 +257,7 @@
       <workItem from="1760973680681" duration="1168000" />
       <workItem from="1761404230514" duration="2765000" />
       <workItem from="1761729696268" duration="366000" />
-      <workItem from="1762159114782" duration="1205000" />
-    </task>
-    <task id="LOCAL-00091" summary="CC ensemble method k fold implementation and prediction debugging 1">
-      <option name="closed" value="true" />
-      <created>1758625668532</created>
-      <option name="number" value="00091" />
-      <option name="presentableId" value="LOCAL-00091" />
-      <option name="project" value="LOCAL" />
-      <updated>1758625668532</updated>
+      <workItem from="1762159114782" duration="1420000" />
     </task>
     <task id="LOCAL-00092" summary="CC ensemble method k fold implementation and prediction debugging 2">
       <option name="closed" value="true" />
@@ -685,7 +643,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759753742590</updated>
     </task>
-    <option name="localTasksCounter" value="140" />
+    <task id="LOCAL-00140" summary="Classifier chain scene dataset + a lot of changes apparently">
+      <option name="closed" value="true" />
+      <created>1762161244080</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1762161244080</updated>
+    </task>
+    <option name="localTasksCounter" value="141" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -709,7 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rerunning BR as it seems to have been the problem and attempt of running benchmarks debugging 3" />
     <MESSAGE value="Rerunning BR as it seems to have been the problem and attempt of running benchmarks debugging 4" />
     <MESSAGE value="Removing NaNs from dataset for benchmark" />
     <MESSAGE value="One hot encoding datasets" />
@@ -734,7 +699,8 @@
     <MESSAGE value="Running DELA cv try 5" />
     <MESSAGE value="Binary relevance with tabicl" />
     <MESSAGE value="Classifier chains tabicl" />
-    <option name="LAST_COMMIT_MESSAGE" value="Classifier chains tabicl" />
+    <MESSAGE value="Classifier chain scene dataset + a lot of changes apparently" />
+    <option name="LAST_COMMIT_MESSAGE" value="Classifier chain scene dataset + a lot of changes apparently" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />

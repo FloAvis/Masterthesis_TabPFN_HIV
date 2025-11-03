@@ -22,7 +22,7 @@ from tabpfn import TabPFNClassifier
 import result_handler
 from Classifiers import ClassifierChains as cc
 
-from tabicl import TabICLClassifier
+#from tabicl import TabICLClassifier
 
 
 def main():
