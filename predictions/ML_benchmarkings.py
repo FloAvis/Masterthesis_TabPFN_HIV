@@ -6,7 +6,7 @@ import numpy as np
 import time
 import os
 
-import utils
+import prediction_handler
 from pathlib import Path
 
 from sklearn.model_selection import train_test_split

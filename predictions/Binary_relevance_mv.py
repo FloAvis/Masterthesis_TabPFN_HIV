@@ -9,7 +9,7 @@ import time
 import sys
 import os
 
-import utils
+import prediction_handler
 
 from sklearn.metrics import (
     accuracy_score,

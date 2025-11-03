@@ -1,26 +1,23 @@
 """This script calculates the ROC AUC for the prediction of TabPFN, Random Forest, XGBoost, and
 CatBoost and saves time in a file for all drugs in the stanford database file"""
 
+
+### It was used in the beginning for exploratory search and is now outdated and not used in any of the results as it
+### was replaced by newer methods
+
 # Setup Imports
 import pandas as pd
 import numpy as np
 import time
 
-import utils
+import prediction_handler
 
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import (
-    accuracy_score,
-    mean_absolute_error,
-    mean_squared_error,
-    root_mean_squared_error,
-    r2_score,
     roc_auc_score,
 )
 from sklearn.model_selection import train_test_split
 
-
-from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 
 # Baseline Imports
@@ -137,7 +134,7 @@ def main():
     for file in files:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
     '''
-    file = r"../data/INI_DataSet.txt"
+    file = r"../../data/INI_DataSet.txt"
 
     running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_results.csv"))
 if __name__ == '__main__':

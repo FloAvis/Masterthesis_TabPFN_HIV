@@ -1,5 +1,8 @@
-"""This script calculates different evaluation metrics of base prediction settings of TabPFN
-for the comparison with the multilabel and other approaches"""
+"""This script calculates calculates different statistics of Multilabel predictions for
+the different drugs"""
+
+### It was used in the beginning for exploratory search and is now outdated and not used in any of the results as it
+### was replaced by newer methods
 
 # Setup Imports
 import pandas as pd
@@ -11,7 +14,7 @@ import os
 
 #sys.path.append(os.path.abspath('..'))
 
-import utils
+import prediction_handler
 
 from sklearn.metrics import (
     accuracy_score,
@@ -44,6 +47,21 @@ def running_models(input_file, output_file):
     #list of current drugs of the dataset
     drugs = [drug for drug in list(df.columns) if not drug.startswith("P") ]
 
+    #-----------------------------------------------------------------------------------------------
+    #Removign all examples where not all drugs are present for comparison with binary relevance
+
+    # Filtering out drugs with less than 10 labels present
+    unusable_drugs = [drug for drug in drugs if df[drug].count() <= 10]
+
+    if len(unusable_drugs) > 0:
+        df.drop(columns=unusable_drugs, inplace=True)
+
+        drugs = [drug for drug in drugs if drug not in unusable_drugs]
+
+    # dropping rows with na labels
+    df.dropna(subset=drugs, inplace=True)
+
+    #---------------------------------------------------------------------------------------------------------
     #creating the one hot encoding for the features
     enc = OneHotEncoder(handle_unknown='error')
 
@@ -67,14 +85,10 @@ def running_models(input_file, output_file):
         tmp_drugs = drugs.copy()
         tmp_drugs.remove(drug)
 
-        #print(drugs)
+        #getting labels of only needed drug
+        #dataframe = df.drop(tmp_drugs, axis=1)
 
-        print(tmp_drugs)
-
-        # getting labels of only needed drug
-        dataframe = df.drop(tmp_drugs, axis=1)
-
-        dataframe = dataframe.dropna()
+        dataframe = df.dropna(subset=[drug])
 
         #If no thresholds for drug available no prediction possible
         if drug not in utils.THRESHOLD_INDICES:
@@ -85,12 +99,16 @@ def running_models(input_file, output_file):
 
 
         # encoding the levels of susceptibility as 0 for susceptible, 1 as partly resistant and 2 as completly resistant
-        y = utils.get_classes(dataframe, drug, mode="multiclass")
+        y = utils.get_classes(dataframe, drug, mode="binary")
 
 
         X = dataframe.drop([drug], axis=1)
 
+        #encoding the classes in X
+        classes = utils.get_classes(X, tmp_drugs, mode="binary")
 
+        for clas in tmp_drugs:
+            X[clas] = classes[clas].values
 
         #X_trafo = enc.transform(X).toarray()
 
@@ -112,6 +130,7 @@ def running_models(input_file, output_file):
 
         y_pred_class = np.argmax(y_pred, axis=1)
 
+
         #--------------------------------------------------------------------------------------------------------------------
         # Evaluation metrics
 
@@ -119,7 +138,7 @@ def running_models(input_file, output_file):
         scores = {"Accuracy": accuracy_score(y_test, y_pred_class)}
 
         #Person coefficient:
-        scores.update({"Pearson": pearsonr(y_test, y_pred_class)[0]})
+        scores.update({"Pearson": pearsonr(list(y_test[drug]), y_pred_class)[0]})
 
         #F1 score:
         scores.update({"F1": f1_score(y_test, y_pred_class, average="micro")})
@@ -148,7 +167,7 @@ def running_models(input_file, output_file):
 
 
         #saving results:
-        utils.save_results(y_pred, y_test, label= (input_file.split("/")[-1].split("_")[0] + "_results/" + drug + "_results/" + "Standard_comparison"))
+        utils.save_results(y_pred, np.array(list(y_test[drug])), label= (input_file.split("/")[-1].split("_")[0] + "_results/" + drug + "_results/" + "Binary_complete_labels_Multilabel_prediction"))
 
 
     results.to_csv(output_file)
@@ -159,7 +178,7 @@ def main():
     files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
 
     for file in files:
-        running_models(file, "../output/" + (file.split("/")[-1].strip(".txt") + "_Standard_comparison_results.csv"))
+        running_models(file, "../output/" + (file.split("/")[-1].strip(".txt") + "_binary_multilabel_results.csv"))
 
 if __name__ == '__main__':
     main()

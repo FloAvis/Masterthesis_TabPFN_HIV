@@ -10,7 +10,7 @@ import torch
 from DELA.DELAModel import DELAModel
 from DELA.utils import init_random_seed, generate_default_config, clear_old_logs
 from DELA.dataset import DatasetLoader, Dataset, PI, INI, NRTI, NNRTI
-import utils
+import prediction_handler
 from pathlib import Path
 
 from sklearn.model_selection import train_test_split

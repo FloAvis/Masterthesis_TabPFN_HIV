@@ -4,31 +4,14 @@ as an example"""
 # Setup Imports
 import pandas as pd
 import numpy as np
-import time
 
-import utils
-
-import sys
-import os
-
-
-import utils
-
-from sklearn.metrics import (
-    accuracy_score,
-    f1_score,
-    roc_auc_score,
-)
 from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
-from sklearn.model_selection import StratifiedKFold, KFold
+from sklearn.model_selection import KFold
 
-
-from sklearn.model_selection import cross_val_predict, cross_val_score, cross_validate
-
-from scipy.stats import pearsonr
-
-from sklearn.preprocessing import OneHotEncoder
+import data_preprocessing
+import prediction_handler
+import result_handler
 
 # Baseline Imports
 
@@ -43,32 +26,8 @@ def main():
     for file in files:
 
 
-        # Reading in and processing high quality File
-        df = pd.read_csv(file, sep='\t')
+        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
 
-        # removing index and summary column
-        df = df.iloc[:, 1:-1]
-
-        # list of current drugs of the dataset
-        drugs = [drug for drug in list(df.columns) if not drug.startswith("P")]
-
-        #Filtering out drugs with less than 10 labels present
-        unusable_drugs = [drug for drug in drugs if df[drug].count() <= 10]
-
-        if len(unusable_drugs) > 0:
-            df.drop(columns=unusable_drugs, inplace=True)
-
-            drugs = [drug for drug in drugs if drug not in unusable_drugs]
-
-
-        #dropping rows with na labels
-        df.dropna(subset=drugs, inplace=True)
-
-
-        X = df.drop(drugs, axis=1)
-
-
-        Y = utils.get_classes(df, drugs, mode="binary")
 
         clf = TabPFNClassifier(random_state=42)
 
@@ -93,13 +52,13 @@ def main():
             y_test_df = pd.DataFrame(y_test, columns=drugs)
 
 
-            utils.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
+            result_handler.save_multilabel(y_pred_df, y_test_df, label= (file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[0] + "_Binary_Relevance_MOC_prediction"))
 
 
             y_pred_proba = trained_model_pfn.predict_proba(X_test)
 
 
-            utils.save_multilabel_proba(y_pred_proba, y_test_df, label=(
+            result_handler.save_multilabel_proba(y_pred_proba, y_test_df, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Binary_Relevance_probabilities_MOC_prediction"))
 
@@ -107,52 +66,26 @@ def main():
 
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-            y_pred, y_true = utils.cv_predict_proba(multi_target_pfn, X, Y, cv=kf, method="single")
+            y_pred, y_true = prediction_handler.cv_predict(multi_target_pfn, X, Y, cv=kf, mode="single", method="predict_proba")
 
             df_y_true = pd.DataFrame(y_true, columns=drugs)
 
             y_pred_new = (y_pred[..., 1] >= 0.5) * 1.0
 
-            # changed the saving mechanism of classifier chain, new way is better but I don't wanna change my system so gotta convert back again
-            # y_pred_new = np.stack(y_pred_new, axis=1)
-
             print(y_pred_new.shape)
 
             y_pred_df = pd.DataFrame(y_pred_new, columns=drugs)
 
-            kfolds = np.zeros((y_pred_new.shape[0], 1))
+            kfolds = result_handler.get_kfold(kf, X, Y)
 
-            k = 0
 
-            for _, test in kf.split(X, Y):
-                for i in test:
-                    kfolds[i] = k
-                k += 1
-
-            #y_pred_df["kFolds"] = kfolds
-            """
-            y_test = np.zeros((y_pred[0].shape[0], Y.shape[1]))
-
-            t = 0
-
-            for _, test in kf.split(X, Y):
-                for i in test:
-                    # print(i)
-                    for j in range(Y.shape[1]):
-                        y_test[t, j] = Y.iloc[i, j]
-                    t += 1
-            
-            """
-
-            #y_test_df = pd.DataFrame(y_test, columns=drugs)
-
-            utils.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
+            result_handler.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Binary_Relevance_"+ str(folds) + "_fold_MOC_prediction_new_save"))
 
 
 
-            utils.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
+            result_handler.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                 0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_MOC_prediction_new_save"))
 

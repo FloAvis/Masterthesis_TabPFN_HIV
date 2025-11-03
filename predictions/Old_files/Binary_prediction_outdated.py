@@ -1,6 +1,9 @@
 """This script calculates the ROC AUC for the prediction of TabPFN, Random Forest, XGBoost, and
 CatBoost and saves time in a file for all drugs in the stanford database file"""
 
+### It was used in the beginning for exploratory search and is now outdated and not used in any of the results as it
+### was replaced by newer methods
+
 # Setup Imports
 import pandas as pd
 import numpy as np
@@ -202,7 +205,7 @@ def main():
         for mode in ["sensitive", "precise"]:
             running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"), mode=mode)'''
 
-    file = r"../data/INI_DataSet.txt"
+    file = r"../../data/INI_DataSet.txt"
 
     for mode in ["sensitive", "precise"]:
         running_models(file, "output/" + (file.split("/")[-1].strip(".txt") + "_" + mode + "_binary_results.csv"),

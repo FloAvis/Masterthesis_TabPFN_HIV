@@ -4,9 +4,40 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Binary relevance with tabicl">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Classifier chains tabicl">
+      <change afterPath="$PROJECT_DIR$/data/Other_datasets/birds-test.arff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Other_datasets/birds-train.arff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Other_datasets/emotions.arff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_preprocessing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/result_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classifiers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifiers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_import_preprocess.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Data_import_preprocess.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Import_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Results_drugs_hq" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sandbox.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sandbox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sandbox2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox2.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Statistics_single_drug.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test_run.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/AutoTABPFN_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/AutoTABPFN_prediction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Binary_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/Binary_prediction_outdated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance_baseline.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance_baseline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance_mv.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/CC_ensemble.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/CC_ensemble.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/DELA_benchmark_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/DELA_benchmark_prediction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/ML_comparison_standard.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/ML_comparison_standard_outdated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Multilabel_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/Multilabel_prediction_outdated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Standard_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Old_files/Standard_prediction_outdated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preliminary_test.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/statistics/Benchmark_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/Benchmark_statistics.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/prediction_handler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,40 +93,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.AutoTABPFN_prediction.executor": "Run",
-    "Python.Binary_prediction.executor": "Run",
-    "Python.CC_ensemble.executor": "Run",
-    "Python.Classifier_Chains_prediction.executor": "Run",
-    "Python.DELA_benchmark_prediction.executor": "Run",
-    "Python.ML_benchmarkings.executor": "Run",
-    "Python.ML_comparison_standard.executor": "Run",
-    "Python.Sandbox.executor": "Run",
-    "Python.dataset.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/flori/Desktop/Masterarbeit/Models",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.AutoTABPFN_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Binary_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.CC_ensemble.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Classifier_Chains_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.DELA_benchmark_prediction.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ML_benchmarkings.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ML_comparison_standard.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Sandbox.executor&quot;: &quot;Run&quot;,
+    &quot;Python.dataset.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/flori/Desktop/Masterarbeit/Models/prediction_results/PI_results&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\prediction_results\PI_results" />
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\prediction_results\NRTI_results" />
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\prediction_results\NNRTI_results" />
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\prediction_results\INI_results" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\data\Other_datasets" />
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\predictions\Old_files" />
+      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\predictions" />
       <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\Cores" />
       <recent name="C:\Users\flori\Desktop\Masterarbeit\Models" />
-      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\data\Other_datasets" />
-      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\predictions" />
-      <recent name="C:\Users\flori\Desktop\Masterarbeit\Models\statistics" />
     </key>
   </component>
   <component name="RunManager">
@@ -230,15 +267,31 @@
       <workItem from="1759307348442" duration="12535000" />
       <workItem from="1759390387336" duration="1990000" />
       <workItem from="1759670446710" duration="300000" />
-      <workItem from="1759752335896" duration="1376000" />
-    </task>
-    <task id="LOCAL-00090" summary="CC ensemble method k fold implementation and prediction">
-      <option name="closed" value="true" />
-      <created>1758621119489</created>
-      <option name="number" value="00090" />
-      <option name="presentableId" value="LOCAL-00090" />
-      <option name="project" value="LOCAL" />
-      <updated>1758621119489</updated>
+      <workItem from="1759752335896" duration="2442000" />
+      <workItem from="1759762993333" duration="1033000" />
+      <workItem from="1759819176129" duration="12000" />
+      <workItem from="1760014845050" duration="816000" />
+      <workItem from="1760020859265" duration="11000" />
+      <workItem from="1760021045655" duration="1707000" />
+      <workItem from="1760040158108" duration="6595000" />
+      <workItem from="1760085032000" duration="184000" />
+      <workItem from="1760121659273" duration="817000" />
+      <workItem from="1760180304478" duration="95000" />
+      <workItem from="1760261162010" duration="4693000" />
+      <workItem from="1760338753584" duration="1002000" />
+      <workItem from="1760361016496" duration="169000" />
+      <workItem from="1760376289132" duration="1290000" />
+      <workItem from="1760426075925" duration="15168000" />
+      <workItem from="1760514048579" duration="752000" />
+      <workItem from="1760529843962" duration="4536000" />
+      <workItem from="1760623971638" duration="499000" />
+      <workItem from="1760788334708" duration="26000" />
+      <workItem from="1760945678991" duration="1845000" />
+      <workItem from="1760960901656" duration="170000" />
+      <workItem from="1760973680681" duration="1168000" />
+      <workItem from="1761404230514" duration="2765000" />
+      <workItem from="1761729696268" duration="366000" />
+      <workItem from="1762159114782" duration="1205000" />
     </task>
     <task id="LOCAL-00091" summary="CC ensemble method k fold implementation and prediction debugging 1">
       <option name="closed" value="true" />
@@ -624,7 +677,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759753647489</updated>
     </task>
-    <option name="localTasksCounter" value="139" />
+    <task id="LOCAL-00139" summary="Classifier chains tabicl">
+      <option name="closed" value="true" />
+      <created>1759753742590</created>
+      <option name="number" value="00139" />
+      <option name="presentableId" value="LOCAL-00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1759753742590</updated>
+    </task>
+    <option name="localTasksCounter" value="140" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -648,7 +709,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rerunning BR as it seems to have been the problem and attempt of running benchmarks debugging 2" />
     <MESSAGE value="Rerunning BR as it seems to have been the problem and attempt of running benchmarks debugging 3" />
     <MESSAGE value="Rerunning BR as it seems to have been the problem and attempt of running benchmarks debugging 4" />
     <MESSAGE value="Removing NaNs from dataset for benchmark" />
@@ -673,7 +733,8 @@
     <MESSAGE value="Running DELA cv try 4" />
     <MESSAGE value="Running DELA cv try 5" />
     <MESSAGE value="Binary relevance with tabicl" />
-    <option name="LAST_COMMIT_MESSAGE" value="Binary relevance with tabicl" />
+    <MESSAGE value="Classifier chains tabicl" />
+    <option name="LAST_COMMIT_MESSAGE" value="Classifier chains tabicl" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
