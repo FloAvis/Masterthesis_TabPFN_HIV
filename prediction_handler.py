@@ -197,7 +197,7 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
         counter += 1
         print("CV {}".format(counter))
 
-        model.fit(pd.DataFrame(X_arr[train_idx]), pd.DataFrame(Y_arr[train_idx]))
+        model.fit(pd.DataFrame(X_arr[train_idx], columns=list(X.columns.values())), pd.DataFrame(Y_arr[train_idx], list(Y.columns.values())))
 
         if mode == "single":
             if method == "predict":
