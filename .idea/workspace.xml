@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Classifier chain scene dataset debug 1" />
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Classifier chain scene dataset debug 3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prediction_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/prediction_handler.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -257,23 +260,7 @@
       <workItem from="1760973680681" duration="1168000" />
       <workItem from="1761404230514" duration="2765000" />
       <workItem from="1761729696268" duration="366000" />
-      <workItem from="1762159114782" duration="1841000" />
-    </task>
-    <task id="LOCAL-00093" summary="CC ensemble method k fold implementation and prediction debugging 3">
-      <option name="closed" value="true" />
-      <created>1758627087728</created>
-      <option name="number" value="00093" />
-      <option name="presentableId" value="LOCAL-00093" />
-      <option name="project" value="LOCAL" />
-      <updated>1758627087728</updated>
-    </task>
-    <task id="LOCAL-00094" summary="CC ensemble method k fold implementation and prediction debugging 4">
-      <option name="closed" value="true" />
-      <created>1758627814094</created>
-      <option name="number" value="00094" />
-      <option name="presentableId" value="LOCAL-00094" />
-      <option name="project" value="LOCAL" />
-      <updated>1758627814094</updated>
+      <workItem from="1762159114782" duration="3646000" />
     </task>
     <task id="LOCAL-00095" summary="Rerunning Classifier Chain prediction as possible problem with result calculation">
       <option name="closed" value="true" />
@@ -651,7 +638,23 @@
       <option name="project" value="LOCAL" />
       <updated>1762161431858</updated>
     </task>
-    <option name="localTasksCounter" value="142" />
+    <task id="LOCAL-00142" summary="Classifier chain scene dataset debug 2">
+      <option name="closed" value="true" />
+      <created>1762161905761</created>
+      <option name="number" value="00142" />
+      <option name="presentableId" value="LOCAL-00142" />
+      <option name="project" value="LOCAL" />
+      <updated>1762161905761</updated>
+    </task>
+    <task id="LOCAL-00143" summary="Classifier chain scene dataset debug 3">
+      <option name="closed" value="true" />
+      <created>1762161996770</created>
+      <option name="number" value="00143" />
+      <option name="presentableId" value="LOCAL-00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1762161996770</updated>
+    </task>
+    <option name="localTasksCounter" value="144" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -675,8 +678,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Removing NaNs from dataset for benchmark" />
-    <MESSAGE value="One hot encoding datasets" />
     <MESSAGE value="One hot encoding datasets debugging 1" />
     <MESSAGE value="One hot encoding datasets debugging 2" />
     <MESSAGE value="Running benchmarks" />
@@ -700,7 +701,9 @@
     <MESSAGE value="Classifier chains tabicl" />
     <MESSAGE value="Classifier chain scene dataset + a lot of changes apparently" />
     <MESSAGE value="Classifier chain scene dataset debug 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Classifier chain scene dataset debug 1" />
+    <MESSAGE value="Classifier chain scene dataset debug 2" />
+    <MESSAGE value="Classifier chain scene dataset debug 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Classifier chain scene dataset debug 3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
