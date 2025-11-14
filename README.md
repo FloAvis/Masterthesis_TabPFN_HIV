@@ -6,27 +6,40 @@
 
 Abstract
 
-The repository contains the code used for the prediction and evaluation of the 
+The repository contains the code used for the dataset preprocessing, preliminary analyses and PT prediction appraoches
+
+The repositroy containing the code for the retrainign of TabPFN and TabICL for MA can be found [here](https://github.com/FloAvis/MultiLabel-PFN/)
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+Dependencies are described in the requirenments.txt file and a more conclusive list of packages used during the Thesis can be found under thesis_package_list.txt
 
-### Installing
+### Repository structure
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Data
+  * datasets are saved under data/
+  * The HIVDRD are saved as their high quality filtered and the complete datasets with the suffix of .Full
+  * The benchmarking datasets are saved under data/Other_dataset as .arff and processed .csv files
 
-### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
+* Predictions
+  * scripts for multi-label predictions can be found under predictions/
+  * The scripts load the HIVDRD and either perform a single prediction absed on a training and test data split or perform k-fold cross validation
+  * The predicted labels as well as well as the probabilities are saved in prediction_results/
+
+
+* Statistics
+  * scripts for the evaluation of the predictions can be found under statistics/
+  * They consist of jupyter notebooks with the evaluations
+
+
+* Helper functions:
+  * data_preprocessing: provides functions for data preprocessing
+  * prediction_handler: provides functions for cross validation and predictions
+  * result_handler: provides functions for saving prediction results and metric calculation
+  * Classifiers: provides BR and CC as well as function for CC ensemble
 
 ## Help
 
@@ -35,30 +48,39 @@ Any advise for common problems or issues.
 command to run if program contains helper info
 ```
 
-## Authors
+## Author
 
-Contributors names and contact info
+Florian Benedikt Vögele  
 
-Florian Vögele  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
+* 0.0.1
+  * Hand in of Thesis
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+MIT License
 
-## Acknowledgments
+Copyright (c) 2025 Florian Benedikt Vögele
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+

@@ -94,12 +94,12 @@ def main():
             lr = LogisticRegression()
 
             models = [
-                #("BR_LR", MultiOutputClassifier(lr, n_jobs=2)),
-                #("BR_XGB", MultiOutputClassifier(xgb, n_jobs=2)),
-                #("BR_forest", MultiOutputClassifier(forest, n_jobs=2)),
-                #("CC_LR", skl_cc(lr, order="random", random_state=42)),
-                #("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
-                #("CC_forest", skl_cc(forest, order="random", random_state=42)),
+                ("BR_LR", MultiOutputClassifier(lr, n_jobs=2)),
+                ("BR_XGB", MultiOutputClassifier(xgb, n_jobs=2)),
+                ("BR_forest", MultiOutputClassifier(forest, n_jobs=2)),
+                ("CC_LR", skl_cc(lr, order="random", random_state=42)),
+                ("CC_xgb", skl_cc(xgb, order="random", random_state=42)),
+                ("CC_forest", skl_cc(forest, order="random", random_state=42)),
                 #("Rakeld_lr", RakelD(base_classifier=lr, base_classifier_require_dense=[True, True], labelset_size=2)),
                 #("Rakeld_xgb", RakelD(base_classifier=xgb,base_classifier_require_dense=[True, True], labelset_size=2)),
                 #("Rakeld_forest", RakelD(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=2)),

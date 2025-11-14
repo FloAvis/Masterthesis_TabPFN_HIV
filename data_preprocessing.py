@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from scipy.io import arff
 
-
+# Thresholds for the classification of HIV drug resistances
 THRESHOLDS = [
     [3, 15],  # FPV
     [3, 15],  # ATV
@@ -50,8 +50,6 @@ def get_thresholds():
     """
 
     return pd.DataFrame(THRESHOLDS, index=THRESHOLD_INDICES, columns=THRESHOLD_COLUMNS)
-
-
 
 
 def get_classes(df, drugs, mode="binary"):
@@ -145,74 +143,3 @@ def hq_hiv_loader(filename, drop_na=False, class_mode="binary"):
     Y = get_classes(df, drugs, mode=class_mode)
 
     return X, Y, drugs
-
-def arff_loader(filename, drop_na=False, class_mode="binary"):
-    """
-        Function to load and preprocess high-quality HIV datasets from the Stanford HIV database
-
-        :param filename: Filename of the target dataset to be processed
-        :param drop_na: Whether to drop all rows containing NaNs in one or more targets. Default is False
-        :param class_mode: Classification mode, either "multiclass" or "binary". Default is "binary"
-        :return:
-                 X (DataFrame): DataFrame of input features with shape (T, H),
-                                where T is the number of examples and H is the number of features
-                 Y (DataFrame): DataFrame of categorical classes with shape (T, L),
-                                where T is the number of examples and L is the number of labels
-                                - In 'multiclass' mode: 0 = susceptible, 1 = intermediate, 2 = resistant
-                                - In 'binary' mode: 0 = susceptible, 1 = resistant
-                 drugs (list[str]): List of label names in the dataset
-    """
-
-    # Reading in and processing arff file
-
-    arff_file = arff.loadarff(filename)
-
-    df = pd.read_csv(filename, sep='\t')
-
-    # removing index and summary column
-    df = df.iloc[:, 1:-1]
-
-    # list of current drugs of the dataset
-    drugs = [drug for drug in list(df.columns) if not drug.startswith("P")]
-
-    #Filtering out drugs with less than 10 labels present
-    unusable_drugs = [drug for drug in drugs if df[drug].count() <= 10]
-
-    if len(unusable_drugs) > 0:
-        df.drop(columns=unusable_drugs, inplace=True)
-
-        drugs = [drug for drug in drugs if drug not in unusable_drugs]
-
-
-    if drop_na:
-        #dropping rows with na labels
-        df.dropna(subset=drugs, inplace=True)
-
-    # collecting all features
-    X = df.drop(drugs, axis=1)
-
-    #getting the classlabels from the laboratory values
-    Y = get_classes(df, drugs, mode=class_mode)
-
-    return X, Y, drugs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

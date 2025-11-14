@@ -164,7 +164,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
             order = self.order
         else:
             if self.order != "random":
-                warnings.warn("Invalid ordering, contunuing with random")
+                warnings.warn("Invalid ordering, continuing with random")
             random.seed(self.random_state)
 
             order = list(range(Y.shape[1]))
@@ -173,7 +173,6 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
             self.order = order
 
-        #print(order)
 
         self.estimators_ = []
 

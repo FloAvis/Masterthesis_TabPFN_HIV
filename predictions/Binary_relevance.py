@@ -16,6 +16,8 @@ import result_handler
 # Baseline Imports
 
 from tabpfn import TabPFNClassifier
+from tabicl import TabICLClassifier
+
 
 
 def main():
@@ -29,7 +31,8 @@ def main():
         X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
 
 
-        clf = TabPFNClassifier(random_state=42)
+        #clf = TabPFNClassifier(random_state=42)
+        clf = TabICLClassifier(random_state=42)
 
         multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
 
@@ -81,13 +84,13 @@ def main():
 
             result_handler.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_MOC_prediction_new_save"))
+                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_tabicl_MOC_prediction_new_save"))
 
 
 
             result_handler.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_MOC_prediction_new_save"))
+                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_tabicl_MOC_prediction_new_save"))
 
 
 

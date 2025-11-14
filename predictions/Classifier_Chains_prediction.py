@@ -27,10 +27,10 @@ from Classifiers import ClassifierChains as cc
 
 def main():
 
-    #files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",
-    #         r"../data/NNRTI_DataSet.txt"]
+    files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",
+             r"../data/NNRTI_DataSet.txt"]
 
-    files = [r"../data/Other_datasets/scene.csv"]
+    #files = [r"../data/Other_datasets/scene.csv"]
 
     feature_prefix = "F"
     label_prefix = "T"
@@ -43,8 +43,8 @@ def main():
 
     for file in files:
 
-        #X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
-
+        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
+        '''
         df = pd.read_csv(file, true_values=["b'1'"], false_values=["b'0'"], dtype=float)
 
         X = df.filter(regex=feature_prefix)
@@ -54,6 +54,7 @@ def main():
         # print(Y)
 
         drugs = list(Y.columns.values)
+        '''
 
         multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
