@@ -254,7 +254,7 @@ def calc_metrics(paths, models, metric, metric_args, ending="", drop_na=True):
                 results.dropna(subset=results.columns[results.columns.str.startswith('True_')].tolist(), inplace=True)
 
             subs_accs_groups = results.groupby(by="kFolds").apply(
-                lambda x: metric(x.filter(regex="Pred_*"), x.filter(regex="True_*"), **metric_args),
+                lambda x: metric(x.filter(regex="True_*"), x.filter(regex="Pred_*"), **metric_args),
                 include_groups=False)
 
             acc_list_mean.append(subs_accs_groups.mean())
@@ -276,6 +276,9 @@ def prc_auc_score(y_true, y_score, multiclass="raise"):
     :param multiclass: which mode of multiclass to use
     :return: prc score
     """
+
+    y_true = np.array(y_true)
+    y_score = np.array(y_score)
 
     if y_score.shape[-1] == 2:
         tab_prec, tab_rec, thresholds = precision_recall_curve(y_true, y_score[:, 1])
@@ -319,7 +322,7 @@ def prc_auc_score(y_true, y_score, multiclass="raise"):
     return score_prc
 
 
-def subset_acc(y_pred, y_true, nan_mode="warning"):
+def subset_acc(y_true, y_pred, nan_mode="warning"):
     """
     Calculates the subset accuracy for multilabel prediction
 
@@ -357,7 +360,7 @@ def subset_acc(y_pred, y_true, nan_mode="warning"):
 
     return acc
 
-def exam_acc(y_pred, y_true, nan_mode="warning"):
+def exam_acc(y_true, y_pred, nan_mode="warning"):
     """
     Calculates the subset accuracy for multilabel prediction
 
