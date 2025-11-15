@@ -159,17 +159,19 @@ def main():
                         0] + "_" + name + "_" + str(folds) + "_fold"))
                     """
 
-                    y_pred_df = pd.DataFrame(y_pred, columns=drugs)
+
 
 
                     if name.startswith("CC") or name.startswith("Rakel"):
+
+                        y_pred_df = pd.DataFrame(y_pred, columns=drugs)
 
                         result_handler.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                                 file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
                                 file.split("/")[-1].split("_")[
                                     0] + "_" + name + "_" + str(folds) + "_fold" + "_probabilities"))
                     else:
-                        result_handler.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds,
+                        result_handler.save_multilabel_proba(y_pred, df_y_true, k_folds=kfolds,
                                                              label=(
                                 file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
                                 file.split("/")[-1].split("_")[

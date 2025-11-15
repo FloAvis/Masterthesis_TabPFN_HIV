@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Predicting TabICL wo NaN with homebrew">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/ML_benchmarkings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/statistics/PT_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/PT_statistics.ipynb" afterDir="false" />
-    </list>
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Get benchmark 5 fold prediction probabilities try 1" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -278,15 +274,7 @@
       <workItem from="1763118942481" duration="67000" />
       <workItem from="1763119060980" duration="8215000" />
       <workItem from="1763134424611" duration="1165000" />
-      <workItem from="1763156834789" duration="5040000" />
-    </task>
-    <task id="LOCAL-00107" summary="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 2">
-      <option name="closed" value="true" />
-      <created>1758981232213</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1758981232215</updated>
+      <workItem from="1763156834789" duration="5348000" />
     </task>
     <task id="LOCAL-00108" summary="Rerunning Classifier Chain prediction with own CV and saving true labels directly as possible fuck up there? Debugging 3">
       <option name="closed" value="true" />
@@ -672,7 +660,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763159748461</updated>
     </task>
-    <option name="localTasksCounter" value="156" />
+    <task id="LOCAL-00156" summary="Get benchmark 5 fold prediction probabilities try 1">
+      <option name="closed" value="true" />
+      <created>1763162584797</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1763162584797</updated>
+    </task>
+    <option name="localTasksCounter" value="157" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -696,7 +692,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adding DELA + running Rakel only PI again" />
     <MESSAGE value="Running Rakel only NNRTI" />
     <MESSAGE value="Running Rakel only INI with track" />
     <MESSAGE value="Running DELA cv try 1" />
@@ -721,7 +716,8 @@
     <MESSAGE value="Repredicting tabicl BR without missing values debug 4" />
     <MESSAGE value="Predicting TabPFN wo NaN with homebrew for comparison" />
     <MESSAGE value="Predicting TabICL wo NaN with homebrew" />
-    <option name="LAST_COMMIT_MESSAGE" value="Predicting TabICL wo NaN with homebrew" />
+    <MESSAGE value="Get benchmark 5 fold prediction probabilities try 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Get benchmark 5 fold prediction probabilities try 1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
