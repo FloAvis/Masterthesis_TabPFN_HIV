@@ -173,7 +173,7 @@ def main():
                     else:
 
 
-                        result_handler.save_multilabel_proba(y_pred, df_y_true, k_folds=kfolds,
+                        result_handler.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds,
                                                              label=(
                                 file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
                                 file.split("/")[-1].split("_")[
