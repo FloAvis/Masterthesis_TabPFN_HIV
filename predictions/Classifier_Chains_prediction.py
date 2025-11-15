@@ -44,17 +44,7 @@ def main():
     for file in files:
 
         X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
-        '''
-        df = pd.read_csv(file, true_values=["b'1'"], false_values=["b'0'"], dtype=float)
 
-        X = df.filter(regex=feature_prefix)
-        Y = df.filter(regex=label_prefix)
-
-        # print(X)
-        # print(Y)
-
-        drugs = list(Y.columns.values)
-        '''
 
         multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
