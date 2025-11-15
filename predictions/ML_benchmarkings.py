@@ -139,8 +139,8 @@ def main():
 
                     y_pred, y_true = prediction_handler.cv_predict(model, X_trafo, Y, cv=kf, mode="single", method="predict_proba")
 
-                    #if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
-                    #    y_pred = y_pred.todense()
+                    if isinstance(y_pred, scipy.sparse._csr.csr_matrix):
+                        y_pred = y_pred.todense()
 
                     df_y_true = pd.DataFrame(y_true, columns=drugs)
 
@@ -159,8 +159,8 @@ def main():
                         0] + "_" + name + "_" + str(folds) + "_fold"))
                     """
 
-
-
+                    print(y_pred.shape)
+                    print(np.stack(y_pred, axis=1).shape)
 
                     if name.startswith("CC") or name.startswith("Rakel"):
 
@@ -171,6 +171,8 @@ def main():
                                 file.split("/")[-1].split("_")[
                                     0] + "_" + name + "_" + str(folds) + "_fold" + "_probabilities"))
                     else:
+
+
                         result_handler.save_multilabel_proba(y_pred, df_y_true, k_folds=kfolds,
                                                              label=(
                                 file.split("/")[-1].split("_")[0] + "_results/benchmarkings/" +
