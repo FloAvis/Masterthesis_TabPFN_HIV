@@ -110,6 +110,9 @@ def save_multilabel_proba(y_pred_probas, y_true, label, k_folds=None, path="../p
 
     drugs = y_true.columns.values.tolist()
 
+    print(drugs)
+    print(y_pred_probas.shape)
+
     for i, probas in enumerate(y_pred_probas):
         y_pred_dict.update({drugs[i]: probas[:, 1]})
 
