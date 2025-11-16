@@ -70,6 +70,10 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
             else:
                 y_pred_tmp = model.predict_proba(X_arr[test_idx])
 
+                if isinstance(y_pred_tmp, scipy.sparse.spmatrix):
+                    y_pred_tmp = y_pred_tmp.todense()
+
+
                 y_pred_tmp = np.array(y_pred_tmp)
                 print(y_pred_tmp.shape)
 
