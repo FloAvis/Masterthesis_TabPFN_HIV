@@ -78,7 +78,7 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
         if self.use_labels:
 
-            if Y == None:
+            if Y is None:
                 raise Exception("Labels not given for prediction")
             else:
 
@@ -112,7 +112,7 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
         if self.use_labels:
 
-            if Y == None:
+            if Y is None:
                 raise Exception("Labels not given for prediction")
             else:
 
@@ -241,7 +241,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
         if self.use_labels:
 
-            if Y == None:
+            if Y is None:
                 raise Exception("Labels not given for prediction")
 
             for est_num, i in enumerate(self.order):
