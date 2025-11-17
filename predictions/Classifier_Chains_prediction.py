@@ -35,7 +35,7 @@ def main():
     feature_prefix = "F"
     label_prefix = "T"
 
-    version = "_scene_data_wo_NaN"
+    version = "_use_labels"
 
     use_kfold = True
 
@@ -46,7 +46,7 @@ def main():
         X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
 
 
-        multi_target_pfn = cc(TabPFNClassifier, random_state=42)
+        multi_target_pfn = cc(TabPFNClassifier, random_state=42, use_labels=True)
 
         if not use_kfold:
 

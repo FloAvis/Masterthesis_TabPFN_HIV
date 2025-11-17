@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Try BR with NaN values">
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="Try BR with NaN values 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classifiers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifiers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sandbox2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Sandbox2.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/statistics/PT_statistics.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/PT_statistics.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -285,15 +285,7 @@
       <workItem from="1763283809230" duration="2656000" />
       <workItem from="1763299492606" duration="11115000" />
       <workItem from="1763328989370" duration="1071000" />
-      <workItem from="1763362549699" duration="19960000" />
-    </task>
-    <task id="LOCAL-00122" summary="running CC without NaNs">
-      <option name="closed" value="true" />
-      <created>1759139360337</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1759139360337</updated>
+      <workItem from="1763362549699" duration="22257000" />
     </task>
     <task id="LOCAL-00123" summary="Running RakelD and Rakel O, at least trying">
       <option name="closed" value="true" />
@@ -679,7 +671,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763381019339</updated>
     </task>
-    <option name="localTasksCounter" value="171" />
+    <task id="LOCAL-00171" summary="Try BR with NaN values 2">
+      <option name="closed" value="true" />
+      <created>1763390495652</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1763390495652</updated>
+    </task>
+    <option name="localTasksCounter" value="172" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -703,7 +703,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Classifier chain scene dataset debug 4" />
     <MESSAGE value="Classifier chain scene dataset debug 5" />
     <MESSAGE value="Classifier chain scene dataset debug 6" />
     <MESSAGE value="Classifier chain scene dataset debug 7" />
@@ -728,7 +727,8 @@
     <MESSAGE value="Ensemble wo NaN try 4" />
     <MESSAGE value="Ensemble wo NaN try 6" />
     <MESSAGE value="Try BR with NaN values" />
-    <option name="LAST_COMMIT_MESSAGE" value="Try BR with NaN values" />
+    <MESSAGE value="Try BR with NaN values 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Try BR with NaN values 2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />

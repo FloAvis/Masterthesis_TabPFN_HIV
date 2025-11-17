@@ -29,13 +29,13 @@ def main():
     for file in files:
 
 
-        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=False)
+        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
 
 
         #clf = TabPFNClassifier(random_state=42)
         #clf = TabICLClassifier(random_state=42)
 
-        multi_target_pfn = br(TabPFNClassifier, random_state=42)
+        multi_target_pfn = br(TabPFNClassifier, random_state=42, use_labels=True)
 
         #multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
 
@@ -87,13 +87,13 @@ def main():
 
             result_handler.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_homebrew_prediction_NaN_training"))
+                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_homebrew_prediction_use_labels"))
 
 
 
             result_handler.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_homebrew_prediction_NaN_training"))
+                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_homebrew_prediction_use_labels"))
 
 
 
