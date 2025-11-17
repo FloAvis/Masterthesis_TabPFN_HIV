@@ -27,7 +27,7 @@ from Classifiers import Ensemble as en
 from sklearn.metrics import jaccard_score
 
 def main():
-    files = [r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",
+    files = [r"../data/NRTI_DataSet.txt",
              r"../data/NNRTI_DataSet.txt",r"../data/PI_DataSet.txt"]
 
     for file in files:
