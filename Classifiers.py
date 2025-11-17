@@ -316,7 +316,6 @@ class Ensemble(ClassifierMixin, BaseEstimator):
 
     def predict_proba(self, X):
 
-
         if self.averaging:
             return np.mean(np.array([chain.predict_proba(X) for chain in self.chains_])[...,1], axis=0)
             #return np.mean(np.array([chain.predict_proba(X) for chain in self.chains_]), axis=0)

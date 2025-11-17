@@ -96,13 +96,18 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
 
             else:
                 y_pred_tmp = model.predict_proba(X_arr[test_idx])
+                print(y_pred_tmp.shape)
 
             if y_pred[:,test_idx].shape != np.array(y_pred_tmp).shape:
                 y_pred[:, test_idx] = np.stack(y_pred_tmp, axis=1)
             else:
-                y_pred[:,test_idx] = model.predict_proba(X_arr[test_idx])
+                y_pred[:,test_idx] = y_pred_tmp
                 y_true[:,test_idx] = Y_arr[test_idx]
 
+        print(y_pred)
+        print(y_pred.shape)
+        print(y_true)
+        print(y_true.shape)
     #if method == "predict_proba":
     #    y_pred = y_pred[..., 1]
 
