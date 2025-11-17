@@ -36,7 +36,7 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
             y_true = np.zeros((X.shape[0], Y.shape[1]))# (n_samples, n_labels, n_classes)
         elif mode == "ensemble":
             y_pred = np.zeros((model.n_jobs, X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
-            y_true = np.zeros((model.n_jobs, X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
+            y_true = np.zeros((X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
 
     #print(method)
 
@@ -46,7 +46,7 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
             y_true = np.zeros((X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
         elif mode == "ensemble":
             y_pred = np.zeros((model.n_jobs, X.shape[0], Y.shape[1], 2))  # (n_jobs, n_samples, n_labels, n_classes)
-            y_true = np.zeros((model.n_jobs, X.shape[0], Y.shape[1]))  # (n_jobs, n_samples, n_labels, n_classes)
+            y_true = np.zeros((X.shape[0], Y.shape[1]))  # (n_jobs, n_samples, n_labels, n_classes)
 
 
 
@@ -88,7 +88,8 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
                 y_pred[test_idx] = np.stack(y_pred_tmp, axis=1)
             else:
                 y_pred[test_idx] = y_pred_tmp
-            y_true[test_idx] = Y_arr[test_idx]
+
+            #y_true[test_idx] = Y_arr[test_idx]
         else:
 
             if method == "predict":
@@ -102,7 +103,8 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
                 y_pred[:, test_idx] = np.stack(y_pred_tmp, axis=1)
             else:
                 y_pred[:,test_idx] = y_pred_tmp
-                y_true[:,test_idx] = Y_arr[test_idx]
+
+        y_true[test_idx] = Y_arr[test_idx]
 
         print(y_pred)
         print(y_pred.shape)
