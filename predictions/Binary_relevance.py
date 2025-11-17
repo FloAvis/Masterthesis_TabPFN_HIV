@@ -29,7 +29,7 @@ def main():
     for file in files:
 
 
-        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
+        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=False)
 
 
         #clf = TabPFNClassifier(random_state=42)

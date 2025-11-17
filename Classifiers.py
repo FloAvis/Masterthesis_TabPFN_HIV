@@ -205,7 +205,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
             tmp_comb = tmp_X.join(df_Y)
 
-            tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
+            #tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
 
             filt_X = tmp_comb[df_X.columns.values.tolist()]
 
@@ -225,7 +225,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
         return
 
 
-    def predict(self, X):
+    def predict(self, X, Y=None):
 
         if isinstance(X, np.ndarray):
             col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
@@ -233,21 +233,38 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
         else:
             df_X = X
 
+        Y = np.array(Y)
 
         y = np.zeros((len(self.estimators_), X.shape[0]))
 
         tmp_X = df_X.copy()
 
-        for est_num, i in enumerate(self.order):
+        if self.use_labels:
 
-            if est_num != 0:
-                tmp_X[("Feat_" + str(est_num - 1))] = y[self.order[est_num - 1]]
+            if Y == None:
+                raise Exception("Labels not given for prediction")
 
-            y[i] = self.estimators_[est_num].predict(tmp_X)
+            for est_num, i in enumerate(self.order):
+
+
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = Y[:,self.order[est_num - 1]]
+
+                    #exchanging NaN values with predicted ones for better prediction
+                    tmp_X.iloc[np.isnan(np.array(tmp_X))] = y[np.isnan(np.array(tmp_X))]
+
+                y[i] = self.estimators_[est_num].predict(tmp_X)
+        else:
+            for est_num, i in enumerate(self.order):
+
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = y[self.order[est_num - 1]]
+
+                y[i] = self.estimators_[est_num].predict(tmp_X)
 
         return y.T
 
-    def predict_proba(self, X):
+    def predict_proba(self, X, Y=None):
 
         if isinstance(X, np.ndarray):
             col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
@@ -259,14 +276,29 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
         results = [None] * len(self.estimators_)
 
-        for est_num, i in enumerate(self.order):
+        if self.use_labels:
+            for est_num, i in enumerate(self.order):
 
-            if est_num != 0:
-                tmp_X[("Feat_" + str(est_num - 1))] = y_pred_class
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = Y[:,self.order[est_num - 1]]
 
-            results[i] = self.estimators_[est_num].predict_proba(tmp_X)
+                    # exchanging NaN values with predicted ones for better prediction
+                    tmp_X.iloc[np.isnan(np.array(tmp_X)[:,-1]), -1] = y[np.isnan(np.array(tmp_X)[:,-1]), -1]
 
-            y_pred_class = np.argmax(results[i], axis=1)
+
+                results[i] = self.estimators_[est_num].predict_proba(tmp_X)
+
+                y_pred_class = np.argmax(results[i], axis=1)
+        else:
+            for est_num, i in enumerate(self.order):
+
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = y_pred_class
+
+
+                results[i] = self.estimators_[est_num].predict_proba(tmp_X)
+
+                y_pred_class = np.argmax(results[i], axis=1)
 
         return np.stack(results, axis=1)
 
