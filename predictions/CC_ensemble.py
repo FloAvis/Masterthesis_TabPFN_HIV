@@ -8,7 +8,8 @@ import time
 
 
 import prediction_handler
-
+import data_preprocessing
+import result_handler
 
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
@@ -31,29 +32,7 @@ def main():
 
     for file in files:
 
-        # Reading in and processing high quality File
-        df = pd.read_csv(file, sep='\t')
-
-        # removing index and summary column
-        df = df.iloc[:, 1:-1]
-
-        # list of current drugs of the dataset
-        drugs = [drug for drug in list(df.columns) if not drug.startswith("P")]
-
-        # Filtering out drugs with less than 10 labels present
-        unusable_drugs = [drug for drug in drugs if df[drug].count() <= 10]
-
-        if len(unusable_drugs) > 0:
-            df.drop(columns=unusable_drugs, inplace=True)
-
-            drugs = [drug for drug in drugs if drug not in unusable_drugs]
-
-        # dropping rows with na labels
-        #df.dropna(subset=drugs, inplace=True)
-
-        X = df.drop(drugs, axis=1)
-
-        Y = utils.get_classes(df, drugs, mode="binary")
+        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
 
         #clf = TabPFNClassifier()
 
@@ -65,7 +44,7 @@ def main():
 
         n_jobs = 4
 
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
+        #X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
 
 
 
@@ -97,24 +76,13 @@ def main():
                 0] + "_Classifier_Chain_ensemble_probabilities"))
         else:
 
-            #print(X)
-
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-            y_pred = utils.cv_predict_proba(ensemble, X, Y, cv=kf, method="ensemble")
+            y_pred = prediction_handler.cv_predict(ensemble, X, Y, cv=kf, mode="ensemble", method="predict_proba")
 
             y_pred_labels = (y_pred[...,1] >= 0.5) * 1.0
 
-            kfolds = np.zeros((y_pred[0].shape[0], 1))
-
-            k = 0
-
-            for _, test in kf.split(X, Y):
-                for i in test:
-                    kfolds[i] = k
-                k += 1
-
-            # y_pred_df["kFolds"] = kfolds
+            kfolds = result_handler.get_kfold(kf, X, Y)
 
             y_pred_proba_new = []
 
@@ -124,13 +92,13 @@ def main():
 
             # y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-            utils.save_ensemble(y_pred_labels, Y, k_folds=kfolds.flatten(), label=(
+            result_handler.save_ensemble(y_pred_labels, Y, k_folds=kfolds.flatten(), label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble"))
+                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_wo_NaN"))
 
-            utils.save_ensemble_proba(y_pred_proba_new, Y, k_folds=kfolds.flatten(), label=(
+            result_handler.save_ensemble_proba(y_pred_proba_new, Y, k_folds=kfolds.flatten(), label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities"))
+                    0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities_wo_NaN"))
 
 
 if __name__ == '__main__':
