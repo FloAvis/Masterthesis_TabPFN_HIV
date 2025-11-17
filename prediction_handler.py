@@ -11,7 +11,7 @@ import scipy
 Cross validation methods
 """
 
-def cv_predict(model, X, Y, cv, mode="single", method="predict"):
+def cv_predict(model, X, Y, cv, mode="single", method="predict", use_labels=False):
     """
         Cross validation returning prediction probabilities of all k folds and storing them
 
@@ -62,13 +62,19 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
 
         if mode == "single":
             if method == "predict":
-                y_pred_tmp = model.predict(X_arr[test_idx])
+                if use_labels:
+                    y_pred_tmp = model.predict(X_arr[test_idx], Y_arr[test_idx])
+                else:
+                    y_pred_tmp = model.predict(X_arr[test_idx])
 
                 if isinstance(y_pred_tmp, scipy.sparse.spmatrix):
                     y_pred_tmp = y_pred_tmp.todense()
 
             else:
-                y_pred_tmp = model.predict_proba(X_arr[test_idx])
+                if use_labels:
+                    y_pred_tmp = model.predict_proba(X_arr[test_idx], Y_arr[test_idx])
+                else:
+                    y_pred_tmp = model.predict_proba(X_arr[test_idx])
 
                 if isinstance(y_pred_tmp, scipy.sparse.spmatrix):
                     y_pred_tmp = y_pred_tmp.todense()
@@ -93,10 +99,16 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict"):
         else:
 
             if method == "predict":
-                y_pred_tmp = model.predict(X_arr[test_idx])
+                if use_labels:
+                    y_pred_tmp = model.predict(X_arr[test_idx], Y_arr[test_idx])
+                else:
+                    y_pred_tmp = model.predict(X_arr[test_idx])
 
             else:
-                y_pred_tmp = model.predict_proba(X_arr[test_idx])
+                if use_labels:
+                    y_pred_tmp = model.predict_proba(X_arr[test_idx], Y_arr[test_idx])
+                else:
+                    y_pred_tmp = model.predict_proba(X_arr[test_idx])
                 print(y_pred_tmp.shape)
 
             if y_pred[:,test_idx].shape != np.array(y_pred_tmp).shape:
