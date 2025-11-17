@@ -56,7 +56,7 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
                 filt_y = np.asarray(filt_Y)
 
-                self.estimators_.append(self.estimator(random_state=self.random_state).fit(filt_X, filt_y[:, 0]))
+                self.estimators_.append(self.estimator(random_state=self.random_state).fit(filt_X, filt_y))
 
             else:
                 filt_X = tmp_comb[df_X.columns.values.tolist()]
