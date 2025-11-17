@@ -47,7 +47,7 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
             tmp_comb = df_X.join(df_Y)
 
-            tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
+            #tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
 
             if self.use_labels:
                 filt_X = tmp_comb.drop(df_Y.columns.values.tolist()[i], axis=1)
