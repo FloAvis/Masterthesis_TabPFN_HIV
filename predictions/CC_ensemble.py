@@ -80,6 +80,8 @@ def main():
 
             y_pred, y_true = prediction_handler.cv_predict(ensemble, X, Y, cv=kf, mode="ensemble", method="predict_proba")
 
+            df_y_true = pd.DataFrame(y_true, columns=drugs)
+
             y_pred_labels = (y_pred[...,1] >= 0.5) * 1.0
 
             kfolds = result_handler.get_kfold(kf, X, Y)
@@ -92,11 +94,11 @@ def main():
 
             # y_test_df = pd.DataFrame(y_test, columns=drugs)
 
-            result_handler.save_ensemble(y_pred_labels, y_true, k_folds=kfolds.flatten(), label=(
+            result_handler.save_ensemble(y_pred_labels, df_y_true, k_folds=kfolds.flatten(), label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_wo_NaN"))
 
-            result_handler.save_ensemble_proba(y_pred_proba_new, y_true, k_folds=kfolds.flatten(), label=(
+            result_handler.save_ensemble_proba(y_pred_proba_new, df_y_true, k_folds=kfolds.flatten(), label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
                     0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities_wo_NaN"))
 
