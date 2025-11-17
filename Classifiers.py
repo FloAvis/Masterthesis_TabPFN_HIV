@@ -283,7 +283,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
                     tmp_X[("Feat_" + str(est_num - 1))] = Y[:,self.order[est_num - 1]]
 
                     # exchanging NaN values with predicted ones for better prediction
-                    tmp_X.iloc[np.isnan(np.array(tmp_X)[:,-1]), -1] = y_pred_class[np.isnan(np.array(tmp_X)[:,-1])]
+                    tmp_X.iloc[np.isnan(np.array(tmp_X[("Feat_" + str(est_num - 1))])), -1] = y_pred_class[np.isnan(np.array(tmp_X[("Feat_" + str(est_num - 1))]))]
 
 
                 results[i] = self.estimators_[est_num].predict_proba(tmp_X)
