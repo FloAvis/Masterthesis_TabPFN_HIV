@@ -146,11 +146,12 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
 
 
 class ClassifierChains(ClassifierMixin, BaseEstimator):
-    def __init__(self, estimator, random_state=42, order="random"):
+    def __init__(self, estimator, random_state=42, order="random", use_labels=False):
         # Store parameters
         self.random_state = random_state
         self.estimator = estimator
         self.order = order
+        self.use_labels = use_labels
 
         # Initialize the underlying classifier with given parameters
         #self.clf = self.estimator(**tabpfn_params)
