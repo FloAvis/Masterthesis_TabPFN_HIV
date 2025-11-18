@@ -29,7 +29,7 @@ def main():
     for file in files:
 
 
-        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
+        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=False)
 
 
         #clf = TabPFNClassifier(random_state=42)
@@ -87,13 +87,13 @@ def main():
 
             result_handler.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_homebrew_prediction_use_labels"))
+                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_homebrew_prediction_use_labels_wNaN"))
 
 
 
             result_handler.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_homebrew_prediction_use_labels"))
+                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_homebrew_prediction_use_labels_wNaN"))
 
 
 

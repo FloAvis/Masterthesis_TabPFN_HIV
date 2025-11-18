@@ -35,7 +35,7 @@ def main():
     feature_prefix = "F"
     label_prefix = "T"
 
-    version = "_use_labels"
+    version = "_use_labels_wNaN"
 
     use_kfold = True
 
@@ -43,7 +43,7 @@ def main():
 
     for file in files:
 
-        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
+        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=False)
 
 
         multi_target_pfn = cc(TabPFNClassifier, random_state=42, use_labels=True)
