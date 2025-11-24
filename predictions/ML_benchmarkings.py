@@ -80,6 +80,7 @@ def main():
                 #("Rakelo_forest", RakelO(base_classifier=forest, base_classifier_require_dense=[True, True], labelset_size=Y.shape[1] // 4, model_count=6))
             ]
             """
+
             models = [
                 ("BR_LR", br(lr)),
                 ("BR_XGB", br(xgb)),

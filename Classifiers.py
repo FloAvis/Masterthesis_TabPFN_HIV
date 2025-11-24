@@ -187,7 +187,7 @@ class BinaryRelevanceGen(ClassifierMixin, BaseEstimator):
 
                 filt_y = np.asarray(filt_Y)
 
-                self.estimators_.append(self.estimator().fit(filt_X, filt_y))
+                self.estimators_.append(self.estimator.fit(filt_X, filt_y))
 
             else:
                 filt_X = tmp_comb[df_X.columns.values.tolist()]
@@ -196,7 +196,7 @@ class BinaryRelevanceGen(ClassifierMixin, BaseEstimator):
 
                 filt_y = np.asarray(filt_Y)
 
-                self.estimators_.append(self.estimator().fit(filt_X, filt_y[:, i]))
+                self.estimators_.append(self.estimator.fit(filt_X, filt_y[:, i]))
 
         self.classes_ = [estimator.classes_ for estimator in self.estimators_]
 
@@ -507,7 +507,7 @@ class ClassifierChainsGen(ClassifierMixin, BaseEstimator):
                 filt_X[("Feat_" + str(j))] = filt_y[:, self.order[j]]
 
 
-            self.estimators_.append(self.estimator().fit(filt_X, filt_y[:, i]))
+            self.estimators_.append(self.estimator.fit(filt_X, filt_y[:, i]))
 
         self.classes_ = [estimator.classes_ for estimator in self.estimators_]
 
