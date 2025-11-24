@@ -144,6 +144,137 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
         return results
 
 
+class BinaryRelevanceGen(ClassifierMixin, BaseEstimator):
+
+    def __init__(self, estimator, random_state=42, use_labels=False):
+        # Store parameters
+        self.random_state = random_state
+        self.estimator = estimator
+        self.use_labels = use_labels
+
+        # Initialize the underlying classifier with given parameters
+        #self.clf = self.estimator(**tabpfn_params)
+
+
+
+    def fit(self, X, Y, sample_weight=None, **fit_params):
+
+        self.estimators_ = []
+
+        if isinstance(X, np.ndarray):
+            col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+            df_X = pd.DataFrame(X, columns=col_names)
+        else:
+            df_X = X
+
+        if isinstance(Y, np.ndarray):
+            col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
+            df_Y = pd.DataFrame(Y, columns=col_names)
+        else:
+            df_Y = Y
+
+        for i in range(Y.shape[1]):
+
+
+            tmp_comb = df_X.join(df_Y)
+
+            tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
+
+            if self.use_labels:
+                filt_X = tmp_comb.drop(df_Y.columns.values.tolist()[i], axis=1)
+
+                filt_Y = tmp_comb[df_Y.columns.values.tolist()[i]]
+
+                filt_y = np.asarray(filt_Y)
+
+                self.estimators_.append(self.estimator().fit(filt_X, filt_y))
+
+            else:
+                filt_X = tmp_comb[df_X.columns.values.tolist()]
+
+                filt_Y = tmp_comb[df_Y.columns.values.tolist()]
+
+                filt_y = np.asarray(filt_Y)
+
+                self.estimators_.append(self.estimator().fit(filt_X, filt_y[:, i]))
+
+        self.classes_ = [estimator.classes_ for estimator in self.estimators_]
+
+        return self
+
+
+    def predict(self, X, Y=None):
+
+        y = []
+
+        if self.use_labels:
+
+            if Y is None:
+                raise Exception("Labels not given for prediction")
+            else:
+
+                if isinstance(X, np.ndarray):
+                    col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+                    df_X = pd.DataFrame(X, columns=col_names)
+                else:
+                    df_X = X
+
+                if isinstance(Y, np.ndarray):
+                    col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
+                    df_Y = pd.DataFrame(Y, columns=col_names)
+                else:
+                    df_Y = Y
+
+
+                tmp_comb = df_X.join(df_Y)
+
+                for i, e in enumerate(self.estimators_):
+                    tmp_X = tmp_comb.drop(df_Y.columns.values.tolist()[i], axis=1)
+                    y.append(e.predict(tmp_X))
+        else:
+
+            for e in self.estimators_:
+                y.append(e.predict(X))
+
+
+        return np.asarray(y).T
+
+    def predict_proba(self, X, Y=None):
+
+        if self.use_labels:
+
+            if Y is None:
+                raise Exception("Labels not given for prediction")
+            else:
+
+                results = []
+
+                if isinstance(X, np.ndarray):
+                    col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+                    df_X = pd.DataFrame(X, columns=col_names)
+                else:
+                    df_X = X
+
+                if isinstance(Y, np.ndarray):
+                    col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
+                    df_Y = pd.DataFrame(Y, columns=col_names)
+                else:
+                    df_Y = Y
+
+                tmp_comb = df_X.join(df_Y)
+
+                for i, e in enumerate(self.estimators_):
+                    tmp_X = tmp_comb.drop(df_Y.columns.values.tolist()[i], axis=1)
+
+                    results.append(e.predict_proba(tmp_X))
+
+        else:
+
+            results = [estimator.predict_proba(X) for estimator in self.estimators_]
+
+        return results
+
+
 
 class ClassifierChains(ClassifierMixin, BaseEstimator):
     def __init__(self, estimator, random_state=42, order="random", use_labels=False):
@@ -219,6 +350,164 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
 
 
             self.estimators_.append(self.estimator(random_state=self.random_state).fit(filt_X, filt_y[:, i]))
+
+        self.classes_ = [estimator.classes_ for estimator in self.estimators_]
+
+        return
+
+
+    def predict(self, X, Y=None):
+
+        if isinstance(X, np.ndarray):
+            col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+            df_X = pd.DataFrame(X, columns=col_names)
+        else:
+            df_X = X
+
+        Y = np.array(Y)
+
+        y = np.zeros((len(self.estimators_), X.shape[0]))
+
+        tmp_X = df_X.copy()
+
+        if self.use_labels:
+
+            if Y is None:
+                raise Exception("Labels not given for prediction")
+
+            for est_num, i in enumerate(self.order):
+
+
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = Y[:,self.order[est_num - 1]]
+
+                    #exchanging NaN values with predicted ones for better prediction
+                    tmp_X.iloc[np.isnan(np.array(tmp_X))] = y[np.isnan(np.array(tmp_X))]
+
+                y[i] = self.estimators_[est_num].predict(tmp_X)
+        else:
+            for est_num, i in enumerate(self.order):
+
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = y[self.order[est_num - 1]]
+
+                y[i] = self.estimators_[est_num].predict(tmp_X)
+
+        return y.T
+
+    def predict_proba(self, X, Y=None):
+
+        if isinstance(X, np.ndarray):
+            col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+            df_X = pd.DataFrame(X, columns=col_names)
+        else:
+            df_X = X
+
+        tmp_X = df_X.copy()
+
+        results = [None] * len(self.estimators_)
+
+        if self.use_labels:
+            for est_num, i in enumerate(self.order):
+
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = Y[:,self.order[est_num - 1]]
+
+                    # exchanging NaN values with predicted ones for better prediction
+                    tmp_X.iloc[np.isnan(np.array(tmp_X[("Feat_" + str(est_num - 1))])), -1] = y_pred_class[np.isnan(np.array(tmp_X[("Feat_" + str(est_num - 1))]))]
+
+
+                results[i] = self.estimators_[est_num].predict_proba(tmp_X)
+
+                y_pred_class = np.argmax(results[i], axis=1)
+        else:
+            for est_num, i in enumerate(self.order):
+
+                if est_num != 0:
+                    tmp_X[("Feat_" + str(est_num - 1))] = y_pred_class
+
+
+                results[i] = self.estimators_[est_num].predict_proba(tmp_X)
+
+                y_pred_class = np.argmax(results[i], axis=1)
+
+        return np.stack(results, axis=1)
+
+
+class ClassifierChainsGen(ClassifierMixin, BaseEstimator):
+    def __init__(self, estimator, random_state=42, order="random", use_labels=False):
+        # Store parameters
+        self.random_state = random_state
+        self.estimator = estimator
+        self.order = order
+        self.use_labels = use_labels
+
+        # Initialize the underlying classifier with given parameters
+        #self.clf = self.estimator(**tabpfn_params)
+
+
+
+    def fit(self, X, Y, sample_weight=None, **fit_params):
+
+
+        if isinstance(self.order, collections.abc.Sequence) and not isinstance(self.order, str) and len(self.order) == Y.shape[1]:
+            order = self.order
+        else:
+            if self.order != "random":
+                warnings.warn("Invalid ordering, continuing with random")
+            random.seed(self.random_state)
+
+            order = list(range(Y.shape[1]))
+
+            random.shuffle(order)
+
+            self.order = order
+
+
+        self.estimators_ = []
+
+
+        if isinstance(X, np.ndarray):
+            col_names = ["X_" + str(s) for s in list(range(X.shape[1]))]
+            df_X = pd.DataFrame(X, columns=col_names)
+        else:
+            df_X = X
+
+        if isinstance(Y, np.ndarray):
+            col_names = ["Y_" + str(s) for s in list(range(Y.shape[1]))]
+            df_Y = pd.DataFrame(Y, columns=col_names)
+
+            # currently only works with binary due to cross_val_predict changin Nan to a number higher than number of classes i presume
+
+            df_Y.replace(2, np.nan, inplace=True)
+        else:
+            df_Y = Y
+
+            #currently only works with binary due to cross_val_predict changin Nan to a number higher than number of classes i presume
+            df_Y.replace(2, np.nan, inplace=True)
+
+
+        for est_num, i in enumerate(self.order):
+
+            tmp_X = df_X.copy()
+
+
+            tmp_comb = tmp_X.join(df_Y)
+
+            tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
+
+            filt_X = tmp_comb[df_X.columns.values.tolist()]
+
+            filt_Y = tmp_comb[df_Y.columns.values.tolist()]
+
+            filt_y = np.asarray(filt_Y)
+
+
+            for j in range(est_num):
+                filt_X[("Feat_" + str(j))] = filt_y[:, self.order[j]]
+
+
+            self.estimators_.append(self.estimator().fit(filt_X, filt_y[:, i]))
 
         self.classes_ = [estimator.classes_ for estimator in self.estimators_]
 

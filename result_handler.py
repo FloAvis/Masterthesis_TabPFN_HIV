@@ -291,7 +291,17 @@ def prc_auc_score(y_true, y_score, multiclass="raise"):
         if multiclass == "raise":
             raise ValueError("multi_class must be in ('ovo', 'ovr')")
         elif multiclass == "ovo":
-            pass
+            n_classes = y_score.shape[1]
+
+            # For each label
+            average_precision = []
+            for i in range(n_classes):
+                precision, recall, _ = precision_recall_curve(y_true[:, i], y_score[:, i])
+                average_precision.append(auc(recall, precision))
+
+            # score_prc = average_precision_score(Y_test, y_score, average="micro")
+
+            score_prc = np.mean(average_precision)
         elif multiclass == "ovr":
 
             label_binarizer = LabelBinarizer().fit(y_true)
