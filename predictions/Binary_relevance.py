@@ -52,7 +52,7 @@ def main():
         #clf = TabPFNClassifier(random_state=42)
         #clf = TabICLClassifier(random_state=42)
 
-        multi_target_pfn = br(TabPFNClassifier, random_state=42, use_labels=True)
+        multi_target_pfn = br(TabPFNClassifier, random_state=42)
 
         #multi_target_pfn = MultiOutputClassifier(clf, n_jobs=2)
 

@@ -55,7 +55,7 @@ def main():
 
         drugs = list(Y.columns.values)
 
-        multi_target_pfn = cc(TabPFNClassifier, random_state=42, use_labels=True)
+        multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
         if not use_kfold:
 
