@@ -176,7 +176,7 @@ class BinaryRelevanceGen(ClassifierMixin, BaseEstimator):
         for i in range(Y.shape[1]):
 
 
-            tmp_comb = tmp_X.concat(df_Y, axis=1)
+            tmp_comb = df_X.join(df_Y)
 
             tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
 
@@ -334,7 +334,7 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
             tmp_X = df_X.copy()
 
 
-            tmp_comb = tmp_X.concat(df_Y, axis=1)
+            tmp_comb = tmp_X.join(df_Y)
 
             tmp_comb.dropna(subset=df_Y.columns.values.tolist()[i], inplace=True)
 
