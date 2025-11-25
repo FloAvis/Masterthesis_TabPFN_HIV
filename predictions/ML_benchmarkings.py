@@ -82,9 +82,9 @@ def main():
             """
 
             models = [
-                ("BR_LR", br(lr)),
-                ("BR_XGB", br(xgb)),
-                ("BR_forest", br(forest)),
+                #("BR_LR", br(lr)),
+                #("BR_XGB", br(xgb)),
+                #("BR_forest", br(forest)),
                 ("CC_LR", cc(lr)),
                 ("CC_xgb", cc(xgb)),
                 ("CC_forest", cc(forest)),

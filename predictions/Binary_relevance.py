@@ -24,13 +24,30 @@ from tabicl import TabICLClassifier
 def main():
 
 
-    files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
+    #files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
+
+    files = [r"../data/Other_datasets/scene.csv", r"../data/Other_datasets/yeast.csv"]
+
+    feature_prefix = "F"
+    label_prefix = "T"
+
+
 
     for file in files:
 
+        version = "_" + file.split("/")[-1].strip(".csv") +"_wo_NaN"
 
-        X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=False)
+        #X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=False)
 
+        df = pd.read_csv(file, true_values=["b'1'"], false_values=["b'0'"], dtype=float)
+
+        X = df.filter(regex=feature_prefix)
+        Y = df.filter(regex=label_prefix)
+
+        # print(X)
+        # print(Y)
+
+        drugs = list(Y.columns.values)
 
         #clf = TabPFNClassifier(random_state=42)
         #clf = TabICLClassifier(random_state=42)
@@ -87,13 +104,13 @@ def main():
 
             result_handler.save_multilabel(y_pred_df, df_y_true, k_folds=kfolds, label=(
                         file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                    0] + "_Binary_Relevance_"+ str(folds) + "_fold_homebrew_prediction_use_labels_wNaN"))
+                    0] + "_Binary_Relevance_"+ str(folds) + "_fold" + version))
 
 
 
             result_handler.save_multilabel_proba(np.stack(y_pred, axis=1), df_y_true, k_folds=kfolds, label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold_homebrew_prediction_use_labels_wNaN"))
+                0] + "_Binary_Relevance_probabilities_"+ str(folds) + "_fold" + version))
 
 
 
