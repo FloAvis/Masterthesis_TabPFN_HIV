@@ -90,7 +90,7 @@ def main():
 
             #y_pred = cross_val_predict(multi_target_pfn2, X, Y, cv=kf,verbose=2, method="predict_proba")
 
-            y_pred, y_true = prediction_handler.cv_predict(multi_target_pfn, X, Y, cv=kf, mode="single", method="predict_proba", use_labels=True)
+            y_pred, y_true = prediction_handler.cv_predict(multi_target_pfn, X, Y, cv=kf, mode="single", method="predict_proba")
 
             print(y_pred.shape)
 

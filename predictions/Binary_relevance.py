@@ -89,7 +89,7 @@ def main():
 
             kf = KFold(n_splits=folds, random_state=42, shuffle=True)
 
-            y_pred, y_true = prediction_handler.cv_predict(multi_target_pfn, X, Y, cv=kf, mode="single", method="predict_proba", use_labels=True)
+            y_pred, y_true = prediction_handler.cv_predict(multi_target_pfn, X, Y, cv=kf, mode="single", method="predict_proba")
 
             df_y_true = pd.DataFrame(y_true, columns=drugs)
 
