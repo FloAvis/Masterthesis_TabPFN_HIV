@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="predicting other datasets BR CC remove label info">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Binary_relevance.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Binary_relevance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/predictions/Classifier_Chains_prediction.py" afterDir="false" />
+    <list default="true" id="9a6ee3bd-dea0-4356-adbb-3c49ad97bc4c" name="Changes" comment="predicting other datasets BR CC remove label info 2">
+      <change beforePath="$PROJECT_DIR$/Classifiers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classifiers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,15 +301,7 @@
       <workItem from="1763973623078" duration="6063000" />
       <workItem from="1764016784193" duration="1284000" />
       <workItem from="1764057002393" duration="595000" />
-      <workItem from="1764062787300" duration="3063000" />
-    </task>
-    <task id="LOCAL-00135" summary="Running DELA cv try 5">
-      <option name="closed" value="true" />
-      <created>1759319344182</created>
-      <option name="number" value="00135" />
-      <option name="presentableId" value="LOCAL-00135" />
-      <option name="project" value="LOCAL" />
-      <updated>1759319344182</updated>
+      <workItem from="1764062787300" duration="3456000" />
     </task>
     <task id="LOCAL-00136" summary="Running DELA cv try 5">
       <option name="closed" value="true" />
@@ -697,7 +687,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764065939024</updated>
     </task>
-    <option name="localTasksCounter" value="184" />
+    <task id="LOCAL-00184" summary="predicting other datasets BR CC remove label info 2">
+      <option name="closed" value="true" />
+      <created>1764066133651</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1764066133651</updated>
+    </task>
+    <option name="localTasksCounter" value="185" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -721,7 +719,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Get benchmark 5 fold prediction probabilities try 3" />
     <MESSAGE value="Get benchmark 5 fold prediction probabilities try 3.1" />
     <MESSAGE value="Get benchmark 5 fold prediction probabilities try 4" />
     <MESSAGE value="Get benchmark 5 fold prediction probabilities try 5" />
@@ -746,7 +743,8 @@
     <MESSAGE value="Testing benchmarkings with NaN try 2" />
     <MESSAGE value="predicting other datasets BR CC" />
     <MESSAGE value="predicting other datasets BR CC remove label info" />
-    <option name="LAST_COMMIT_MESSAGE" value="predicting other datasets BR CC remove label info" />
+    <MESSAGE value="predicting other datasets BR CC remove label info 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="predicting other datasets BR CC remove label info 2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Masterthesis_TabPFN_HIV$ML_comparison_standard.coverage" NAME="ML_comparison_standard Coverage Results" MODIFIED="1754313556470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predictions" />
