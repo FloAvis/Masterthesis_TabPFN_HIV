@@ -1,6 +1,0 @@
-beta: 0.001
-drop_ratio: 0.1
-lr: 0.001
-lr_scheduler: step_epoch
-max_epoch: 50
-scheduler_decay_epoch: 4

@@ -4,11 +4,12 @@
 
 ## Description
 
-Abstract
+The ongoing AIDS epidemic, caused by HIV, is still affecting millions of people worldwide. In recent decades, many advancements in antiviral drug development, especially research concerning HIV, have been made, resulting in a decreased disease burden in infected patients and a lower transmission rate. However, HIV drug resistance is on the rise, hindering treatment and increasing the risk of transmission. A correct treatment of HIV with effective drugs is vital for the management of the disease. Using the new machine learning model class prior-data fitted networks, this thesis aimed to predict HIV drug resistance based on mutations in the target proteins of the drugs. For this purpose, a multi-label prediction approach was used to leverage multiple drugs targeting the same proteins and overlapping mutation predictors across different drugs. \\
+in this thesis, it has been shown that HIV drug resistance is predictable by simple multi-label classification methods and that additional information about other drug resistances can improve the predictive power. Additionally, modifying prior-data fitted networks for the inherent prediction of multi-label data is possible to a degree, but needs further research to confirm its full potential.
 
-The repository contains the code used for the dataset preprocessing, preliminary analyses and PT prediction appraoches
+The repository contains the code used for the dataset preprocessing, preliminary analyses and PT prediction approaches.
 
-The repositroy containing the code for the retrainign of TabPFN and TabICL for MA can be found [here](https://github.com/FloAvis/MultiLabel-PFN/)
+The repositroy containing the code for the retrainign of TabPFN and TabICL for MA can be found [here](https://github.com/FloAvis/MultiLabel-PFN/).
 
 ## Getting Started
 
@@ -31,8 +32,8 @@ Dependencies are described in the requirenments.txt file and a more conclusive l
 
 
 * Statistics
-  * scripts for the evaluation of the predictions can be found under statistics/
-  * They consist of jupyter notebooks with the evaluations
+  * the script for the evaluation of the predictions can be found under statistics/
+  * It consists of jupyter notebooks with the evaluations
 
 
 * Helper functions:
@@ -43,10 +44,7 @@ Dependencies are described in the requirenments.txt file and a more conclusive l
 
 ## Help
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+The applications of the functions are described at the functions itself. If more questions arise you can contact me under florian.voegele@hotmail.de.
 
 ## Author
 

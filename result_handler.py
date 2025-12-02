@@ -231,7 +231,7 @@ def save_ensemble_proba(y_pred_probas_ensemble, y_true, label, k_folds=None, pat
 Scores concerning Multilabel prediction:
 """
 
-def calc_metrics(paths, models, metric, metric_args, ending="", drop_na=True):
+def calc_metrics(paths, models, metric, metric_args, ending="", drop_na=True, return_groups=False):
     """
     Calculating AUC PRC for binary and multiclass setting. OVR multiclass setting
     was adapted from https://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html
@@ -260,13 +260,21 @@ def calc_metrics(paths, models, metric, metric_args, ending="", drop_na=True):
                 lambda x: metric(x.filter(regex="True_*"), x.filter(regex="Pred_*"), **metric_args),
                 include_groups=False)
 
-            acc_list_mean.append(subs_accs_groups.mean())
-            acc_list_std.append(subs_accs_groups.std())
+            if return_groups:
+                acc_list_mean.append(list(subs_accs_groups))
+            else:
+                acc_list_mean.append(subs_accs_groups.mean())
+                acc_list_std.append(subs_accs_groups.std())
 
         means.update({path.split("/")[-1].strip("_"): acc_list_mean})
-        stds.update({path.split("/")[-1].strip("_"): acc_list_std})
+        if not return_groups:
+            stds.update({path.split("/")[-1].strip("_"): acc_list_std})
 
-    return means, stds
+
+    if return_groups:
+        return means
+    else:
+        return means, stds
 
 
 def prc_auc_score(y_true, y_score, multiclass="raise"):

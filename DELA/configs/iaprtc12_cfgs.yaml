@@ -1,6 +1,0 @@
-beta: 0.1
-latent_dim: 128
-lr: 0.003
-lr_scheduler: step_epoch
-max_epoch: 50
-scheduler_decay_epoch: 8
