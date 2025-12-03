@@ -8,7 +8,7 @@ import collections
 import warnings
 from tabpfn import TabPFNClassifier
 
-import prediction_handler
+
 
 from sklearn.base import BaseEstimator, ClassifierMixin
 
@@ -20,9 +20,6 @@ class BinaryRelevance(ClassifierMixin, BaseEstimator):
         self.random_state = random_state
         self.estimator = estimator
         self.use_labels = use_labels
-
-        # Initialize the underlying classifier with given parameters
-        #self.clf = self.estimator(**tabpfn_params)
 
 
 
@@ -152,8 +149,6 @@ class BinaryRelevanceGen(ClassifierMixin, BaseEstimator):
         self.estimator = estimator
         self.use_labels = use_labels
 
-        # Initialize the underlying classifier with given parameters
-        #self.clf = self.estimator(**tabpfn_params)
 
 
 
@@ -284,8 +279,6 @@ class ClassifierChains(ClassifierMixin, BaseEstimator):
         self.order = order
         self.use_labels = use_labels
 
-        # Initialize the underlying classifier with given parameters
-        #self.clf = self.estimator(**tabpfn_params)
 
 
 
@@ -442,8 +435,6 @@ class ClassifierChainsGen(ClassifierMixin, BaseEstimator):
         self.order = order
         self.use_labels = use_labels
 
-        # Initialize the underlying classifier with given parameters
-        #self.clf = self.estimator(**tabpfn_params)
 
 
 

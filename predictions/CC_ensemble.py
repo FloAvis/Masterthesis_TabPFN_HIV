@@ -23,23 +23,23 @@ from Classifiers import Ensemble as en
 # Running the predictions
 def main():
 
+    #setting the datasets
     files = [r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt",
              r"../data/NNRTI_DataSet.txt",r"../data/PI_DataSet.txt"]
 
     for file in files:
 
-        version = "_" + file.split("/")[-1].strip(".csv") + "_wo_NaN"
+        #naming scheme for data
+        version = "_" + file.split("/")[-1].strip("_DataSet.txt") + "_wo_NaN"
 
+        #loading the dataset
         X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=True)
-
-
-        multi_target_pfn = cc(TabPFNClassifier, random_state=42)
 
 
         # number of members of ensembles
         n_jobs = 4
 
-
+        #command for setting up the ensemble
         ensemble = en(cc, random_state=42, n_jobs=n_jobs)
 
         #kfold splitting
@@ -67,12 +67,12 @@ def main():
         #saving labels
         result_handler.save_ensemble(y_pred_labels, df_y_true, k_folds=kfolds.flatten(), label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_wo_NaN"))
+                0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble" + version))
 
         #saving probabilities
         result_handler.save_ensemble_proba(y_pred_proba_new, df_y_true, k_folds=kfolds.flatten(), label=(
                     file.split("/")[-1].split("_")[0] + "_results/" + file.split("/")[-1].split("_")[
-                0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities_wo_NaN"))
+                0] + "_Classifier_Chain_" + str(folds) + "_folds_ensemble_probabilities" + version))
 
 
 if __name__ == '__main__':

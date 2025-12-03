@@ -4,7 +4,7 @@
 # Setup Imports
 import pandas as pd
 import numpy as np
-from scipy.io import arff
+
 
 # Thresholds for the classification of HIV drug resistances
 THRESHOLDS = [

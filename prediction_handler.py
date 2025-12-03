@@ -38,7 +38,7 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict", use_labels=Fals
             y_pred = np.zeros((model.n_jobs, X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
             y_true = np.zeros((X.shape[0], Y.shape[1]))  # (n_samples, n_labels, n_classes)
 
-    #print(method)
+
 
     elif method == "predict_proba":
         if mode == "single":
@@ -95,7 +95,7 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict", use_labels=Fals
             else:
                 y_pred[test_idx] = y_pred_tmp
 
-            #y_true[test_idx] = Y_arr[test_idx]
+
         else:
 
             if method == "predict":
@@ -118,11 +118,6 @@ def cv_predict(model, X, Y, cv, mode="single", method="predict", use_labels=Fals
 
         y_true[test_idx] = Y_arr[test_idx]
 
-        print(y_pred)
-        print(y_pred.shape)
-        print(y_true)
-        print(y_true.shape)
-    #if method == "predict_proba":
-    #    y_pred = y_pred[..., 1]
+
 
     return y_pred, y_true

@@ -8,7 +8,6 @@ from sklearn.metrics import (
     precision_recall_curve,
     auc,
     average_precision_score,
-    roc_curve
 )
 from sklearn.preprocessing import LabelBinarizer
 
@@ -49,7 +48,6 @@ def calc_labels(y_pred):
 
     y_pred_new = np.zeros((y_pred_probas[0].shape[0], len(y_pred_probas)))
 
-    #print(y_pred_new)
 
     for j, clas in enumerate(y_pred_probas):
         for i in range(clas.shape[0]):
@@ -77,7 +75,7 @@ def save_multilabel(y_pred, y_true, label, k_folds=None, path="../prediction_res
     splt = label.split('/')[:-1]
     sub_filepath = '/'.join(splt)
 
-    #print(sub_filepath)
+
 
     Path(path + sub_filepath).mkdir(parents=True, exist_ok=True)
 
@@ -110,8 +108,6 @@ def save_multilabel_proba(y_pred_probas, y_true, label, k_folds=None, path="../p
 
     drugs = y_true.columns.values.tolist()
 
-    print(drugs)
-    print(y_pred_probas.shape)
 
     for i, probas in enumerate(y_pred_probas):
         y_pred_dict.update({drugs[i]: probas[:, 1]})
@@ -126,7 +122,7 @@ def save_multilabel_proba(y_pred_probas, y_true, label, k_folds=None, path="../p
     splt = label.split('/')[:-1]
     sub_filepath = '/'.join(splt)
 
-    #print(sub_filepath)
+
 
     Path(path + sub_filepath).mkdir(parents=True, exist_ok=True)
 
@@ -147,9 +143,9 @@ def save_multilabel_proba(y_pred_probas, y_true, label, k_folds=None, path="../p
 
 def save_ensemble(y_pred_ensemble, y_true, label, k_folds=None, path="../prediction_results/"):
     """
-    Script to save the prediction probabilities for each label, binary only
+    Script to save the prediction labels for each label, binary only for ensembles
 
-    :param y_pred_probas: Probabilities of predictions
+    :param y_pred_ensemble: labels of predictions
     :param y_true: true labels
     :param label: name for the file without .csv attachement
     :param k_folds: array with sequence of k_folds
@@ -186,9 +182,9 @@ def save_ensemble(y_pred_ensemble, y_true, label, k_folds=None, path="../predict
 
 def save_ensemble_proba(y_pred_probas_ensemble, y_true, label, k_folds=None, path="../prediction_results/"):
     """
-    Script to save the prediction probabilities for each label, binary only
+    Script to save the prediction probabilities for each label, binary only for ensembles
 
-    :param y_pred_probas: Probabilities of predictions
+    :param y_pred_probas_ensemble: Probabilities of predictions
     :param y_true: true labels
     :param label: name for the file without .csv attachement
     :param k_folds: array with sequence of k_folds
@@ -233,13 +229,16 @@ Scores concerning Multilabel prediction:
 
 def calc_metrics(paths, models, metric, metric_args, ending="", drop_na=True, return_groups=False):
     """
-    Calculating AUC PRC for binary and multiclass setting. OVR multiclass setting
-    was adapted from https://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html
+    Calculating the metrics of multiple models at once
 
-    :param y_true: True labels
-    :param y_score: Predicted labels
-    :param multiclass: which mode of multiclass to use
-    :return: prc score
+    :param paths: list of paths to the datasets result
+    :param models: models file names to be evaluated
+    :param metric: metric to be used
+    :param metric_args: arguments to be passed to the evaluation metric as a dictionary
+    :param ending: filename ending of the models
+    :param drop_na: dropping NA values before evaluation
+    :param return_groups: if True, does not return means and std per model, but all means of the corss validation
+    :return: means and stds
     """
     means = {}
     stds = {}
@@ -383,7 +382,7 @@ def subset_acc(y_true, y_pred, nan_mode="warning"):
 
 def exam_acc(y_true, y_pred, nan_mode="warning"):
     """
-    Calculates the subset accuracy for multilabel prediction
+    Calculates the example accuracy for multilabel prediction
 
     :param y_pred: Predicted labels
     :param y_true: true labels

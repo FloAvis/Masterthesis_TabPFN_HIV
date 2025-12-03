@@ -22,13 +22,14 @@ from tabicl import TabICLClassifier
 # Running the predictions
 def main():
 
-
+    # loading the datasets
     files = [r"../data/PI_DataSet.txt", r"../data/INI_DataSet.txt", r"../data/NRTI_DataSet.txt", r"../data/NNRTI_DataSet.txt"]
 
 
     for file in files:
 
-        version = "_" + file.split("/")[-1].strip(".csv") +"_wo_NaN"
+        # naming scheme for data
+        version = "_" + file.split("/")[-1].strip("_DataSet.txt") + "_wo_NaN"
 
         X, Y, drugs = data_preprocessing.hq_hiv_loader(file, drop_na=False)
 
