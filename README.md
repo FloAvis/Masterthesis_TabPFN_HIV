@@ -9,7 +9,7 @@ in this thesis, it has been shown that HIV drug resistance is predictable by sim
 
 The repository contains the code used for the dataset preprocessing, preliminary analyses and PT prediction approaches.
 
-The repositroy containing the code for the retrainign of TabPFN and TabICL for MA can be found [here](https://github.com/FloAvis/MultiLabel-PFN/).
+The repositroy containing the code for the retraining of TabPFN and TabICL for model adaption can be found [here](https://github.com/FloAvis/MultiLabel-PFN/).
 
 ## Getting Started
 
